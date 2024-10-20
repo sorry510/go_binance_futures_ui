@@ -12,9 +12,9 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <!-- <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <lang-select class="right-menu-item hover-effect" />
 
@@ -51,7 +51,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
+// import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import { removeToken } from '@/utils/auth'
@@ -62,7 +62,7 @@ export default {
     Hamburger,
     ErrorLog,
     Screenfull,
-    SizeSelect,
+    // SizeSelect,
     LangSelect,
     Search
   },
