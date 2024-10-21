@@ -1,11 +1,11 @@
-import request from '@/utils/request';
+import request from '@/utils/request'
 
 export function getListenCoins(query = {}) {
   return request({
     url: '/listen/coin',
     method: 'get',
     params: query
-  });
+  })
 }
 
 export function setListenCoin(id, data) {
@@ -13,7 +13,7 @@ export function setListenCoin(id, data) {
     url: `/listen/coin/${id}`,
     method: 'put',
     data
-  });
+  })
 }
 
 export function addListenCoin(data) {
@@ -21,21 +21,21 @@ export function addListenCoin(data) {
     url: `/listen/coin`,
     method: 'post',
     data
-  });
+  })
 }
 
 export function delListenCoin(id) {
   return request({
     url: `/listen/coin/${id}`,
     method: 'delete'
-  });
+  })
 }
 
 export function enableListenCoin(flag = 1) {
   return request({
     url: `/listen/coin/enable/${flag}`,
     method: 'put'
-  });
+  })
 }
 
 export function getKcLineChart(id, query = {}) {
@@ -43,7 +43,7 @@ export function getKcLineChart(id, query = {}) {
     url: `/listen/coin/kc-chart/${id}`,
     method: 'get',
     params: query
-  });
+  })
 }
 
 export function getFundingRates(query = {}) {
@@ -51,7 +51,7 @@ export function getFundingRates(query = {}) {
     url: `/listen/funding-rates`,
     method: 'get',
     params: query
-  });
+  })
 }
 
 export function getFundingRateHistory(query = {}) {
@@ -59,5 +59,5 @@ export function getFundingRateHistory(query = {}) {
     url: `/listen/funding-rate/history`,
     method: 'get',
     params: query
-  });
+  })
 }

@@ -12,14 +12,6 @@
           {{ $t('table.add') }}
         </el-button>
         <el-button
-          type="primary"
-          size="mini"
-          :loading="listLoading"
-          @click="fetchData()"
-        >
-          {{ $t('table.refresh') }}
-        </el-button>
-        <el-button
           type="success"
           size="mini"
           :loading="serviceLoading"
@@ -63,31 +55,39 @@
         {{ $t('table.totalCount') }}: {{ list.length }}
       </div>
     </div>
-    <div style="display: flex;flex-flow: row wrap;gap: 10px; margin-bottom: 10px;">
-      <el-input
-        v-model="search.symbol"
-        :placeholder="$t('trade.coin')"
-        style="width: 150px;"
-        class="filter-item"
-        size="small"
-      />
-      <el-select v-model="search.enable" size="small" style="width: 150px;" placeholder="status">
-        <el-option :label="$t('table.all')" value="" />
-        <el-option :label="$t('table.open')" value="1" />
-        <el-option :label="$t('table.close')" value="0" />
-      </el-select>
-      <el-select v-model="search.margin_type" size="small" style="width: 150px;" placeholder="margin_type">
-        <el-option :label="$t('table.all')" value="" />
-        <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
-        <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
-      </el-select>
-      <el-button
-        type="success"
-        size="mini"
-        @click="fetchData"
-      >
-        {{ $t('table.search') }}
-      </el-button>
+    <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
+      <div style="display: flex;flex-flow: row wrap;gap: 10px;">
+        <el-input
+          v-model="search.symbol"
+          :placeholder="$t('trade.coin')"
+          style="width: 150px;"
+          class="filter-item"
+          size="small"
+        />
+        <el-select v-model="search.enable" size="small" style="width: 150px;" placeholder="status">
+          <el-option :label="$t('table.all')" value="" />
+          <el-option :label="$t('table.open')" value="1" />
+          <el-option :label="$t('table.close')" value="0" />
+        </el-select>
+        <el-select v-model="search.margin_type" size="small" style="width: 150px;" placeholder="margin_type">
+          <el-option :label="$t('table.all')" value="" />
+          <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
+          <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
+        </el-select>
+        <el-button
+          type="success"
+          size="mini"
+          @click="fetchData"
+        >
+          {{ $t('table.search') }}
+        </el-button>
+      </div>
+      <div style="display: flex;flex-flow: row wrap;gap: 10px;align-items: center;">
+        <el-select v-model="interval" size="small" style="width: 80px;" @change="changeRefreshInterval">
+          <el-option v-for="n in 30" :key="n" :label="n + 's'" :value="n" />
+        </el-select>
+        <span>{{ $t('table.refreshInterval') }}</span>
+      </div>
     </div>
     <el-table
       v-loading="listLoading"
@@ -123,7 +123,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ round(scope.row.close, 4) }}
+          {{ round(scope.row.close, 10) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -321,7 +321,6 @@ export default {
       listLoading: false,
       serviceLoading: false,
       enableLoading: false,
-      timeId: null,
       buyAll: true,
       sellAll: true,
       search: {
@@ -346,7 +345,9 @@ export default {
       rowKey(row) {
         return row.symbol
       },
-      expandKeys: []
+      expandKeys: [],
+      timeId: null,
+      interval: 30
     }
   },
   computed: {
@@ -360,12 +361,16 @@ export default {
   },
   async created() {
     await this.fetchData()
-    this.$timeId = setInterval(() => this.fetchData(), 30 * 1000)
+    this.timeId = setInterval(() => this.fetchData(), this.interval * 1000)
   },
   beforeDestroy() {
-    clearInterval(this.$timeId)
+    clearInterval(this.timeId)
   },
   methods: {
+    changeRefreshInterval(val) {
+      clearInterval(this.timeId)
+      this.timeId = setInterval(() => this.fetchData(), val * 1000)
+    },
     round(data, num = 2) {
       return round(data, num)
     },
