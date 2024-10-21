@@ -360,6 +360,7 @@ export default {
     }
   },
   async created() {
+    this.interval = localStorage.getItem('refreshInterval') || 30
     await this.fetchData()
     this.timeId = setInterval(() => this.fetchData(), this.interval * 1000)
   },
@@ -368,6 +369,7 @@ export default {
   },
   methods: {
     changeRefreshInterval(val) {
+      localStorage.setItem('refreshInterval', val)
       clearInterval(this.timeId)
       this.timeId = setInterval(() => this.fetchData(), val * 1000)
     },
