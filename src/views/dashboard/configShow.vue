@@ -1,85 +1,121 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">
-      <span>{{ $t('route.futuresTrade') }}: </span>
-      <span v-if="config.tradeFutureEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-      <span v-else class="red">{{ $t('showPage.close') }}</span>
-      <div style="margin-left:20px;">
+    <el-collapse :value="['1', '2', '6']">
+      <el-collapse-item name="1">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.futuresTrade') }}: </span>
+            <span v-if="config.tradeFutureEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
+            <span v-else class="red">{{ $t('showPage.close') }}</span>
+          </div>
+        </template>
         <div class="dashboard-text">
-          <span>{{ $t('showPage.allowLong') }}: </span>
-          <span v-if="config.coinAllowLong" class="green">{{ $t('showPage.open') }}</span>
-          <span v-else class="red">{{ $t('showPage.close') }}</span>
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.allowLong') }}: </span>
+              <span v-if="config.coinAllowLong" class="green">{{ $t('showPage.open') }}</span>
+              <span v-else class="red">{{ $t('showPage.close') }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.allowShort') }}: </span>
+              <span v-if="config.coinAllowShort" class="green">{{ $t('showPage.open') }}</span>
+              <span v-else class="red">{{ $t('showPage.close') }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.strategyTrade') }}: </span>
+              <span class="green">{{ config.tradeStrategyTrade }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.strategyCoin') }}: </span>
+              <span class="green">{{ config.tradeStrategyCoin }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.positionMaxCount') }}: </span>
+              <span class="green">{{ config.coinMaxCount }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.excludeSymbols') }}: </span>
+              <span class="green">{{ config.coinExcludeSymbols }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.orderType') }}: </span>
+              <span class="green">{{ config.coinOrderType === 'LIMIT' ? $t('showPage.limitOrderType') : $t('showPage.marketOrderType') }}</span>
+            </div>
+          </div>
         </div>
+      </el-collapse-item>
+      <el-collapse-item name="2">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.newCoinRush') }}: </span>
+          </div>
+        </template>
         <div class="dashboard-text">
-          <span>{{ $t('showPage.allowShort') }}: </span>
-          <span v-if="config.coinAllowShort" class="green">{{ $t('showPage.open') }}</span>
-          <span v-else class="red">{{ $t('showPage.close') }}</span>
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <span>{{ $t('route.newSpotRush') }}: </span>
+              <span v-if="config.spotNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
+              <span v-else class="red">{{ $t('showPage.close') }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('route.newFuturesRush') }}: </span>
+              <span v-if="config.tradeNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
+              <span v-else class="red">{{ $t('showPage.close') }}</span>
+            </div>
+          </div>
         </div>
+      </el-collapse-item>
+      <el-collapse-item name="3">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.coinNotice') }}: </span>
+            <span v-if="config.noticeCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
+            <span v-else class="red">{{ $t('showPage.close') }}</span>
+          </div>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="4">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.marketListen') }}: </span>
+            <span v-if="config.listenCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
+            <span v-else class="red">{{ $t('showPage.close') }}</span>
+          </div>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="5">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.fundingRate') }}: </span>
+            <span v-if="config.listenFundingRate === '1'" class="green">{{ $t('showPage.open') }}</span>
+            <span v-else class="red">{{ $t('showPage.close') }}</span>
+          </div>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="5">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>debug: </span>
+            <span v-if="config.debug === '1'" class="red" />
+            <span v-else class="green">{{ $t('showPage.close') }}</span>
+          </div>
+        </template>
+      </el-collapse-item>
+      <el-collapse-item name="6">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('showPage.externalLinks') }}: </span>
+          </div>
+        </template>
         <div class="dashboard-text">
-          <span>{{ $t('showPage.strategyTrade') }}: </span>
-          <span class="green">{{ config.tradeStrategyTrade }}</span>
+          <div style="margin-left:20px;display:flex;gap: 20px;">
+            <el-link v-for="link in config.externalLinks" :key="link.title" type="primary" :underline="false" :href="link.url" target="_blank" style="font-size:30px;">
+              {{ link.title }}
+            </el-link>
+          </div>
         </div>
-        <div class="dashboard-text">
-          <span>{{ $t('showPage.strategyCoin') }}: </span>
-          <span class="green">{{ config.tradeStrategyCoin }}</span>
-        </div>
-        <div class="dashboard-text">
-          <span>{{ $t('showPage.positionMaxCount') }}: </span>
-          <span class="green">{{ config.coinMaxCount }}</span>
-        </div>
-        <div class="dashboard-text">
-          <span>{{ $t('showPage.excludeSymbols') }}: </span>
-          <span class="green">{{ config.coinExcludeSymbols }}</span>
-        </div>
-        <div class="dashboard-text">
-          <span>{{ $t('showPage.orderType') }}: </span>
-          <span class="green">{{ config.coinOrderType === 'LIMIT' ? $t('showPage.limitOrderType') : $t('showPage.marketOrderType') }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="dashboard-text">
-      <span>{{ $t('route.newCoinRush') }}: </span>
-      <div style="margin-left:20px;">
-        <div class="dashboard-text">
-          <span>{{ $t('route.newSpotRush') }}: </span>
-          <span v-if="config.spotNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-          <span v-else class="red">{{ $t('showPage.close') }}</span>
-        </div>
-        <div class="dashboard-text">
-          <span>{{ $t('route.newFuturesRush') }}: </span>
-          <span v-if="config.tradeNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-          <span v-else class="red">{{ $t('showPage.close') }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="dashboard-text">
-      <span>{{ $t('route.coinNotice') }}: </span>
-      <span v-if="config.noticeCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-      <span v-else class="red">{{ $t('showPage.close') }}</span>
-    </div>
-    <div class="dashboard-text">
-      <span>{{ $t('route.marketListen') }}: </span>
-      <span v-if="config.listenCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-      <span v-else class="red">{{ $t('showPage.close') }}</span>
-    </div>
-    <div class="dashboard-text">
-      <span>{{ $t('route.fundingRate') }}: </span>
-      <span v-if="config.listenFundingRate === '1'" class="green">{{ $t('showPage.open') }}</span>
-      <span v-else class="red">{{ $t('showPage.close') }}</span>
-    </div>
-    <div class="dashboard-text">
-      <span>debug: </span>
-      <span v-if="config.debug === '1'" class="red" />
-      <span v-else class="green">{{ $t('showPage.close') }}</span>
-    </div>
-    <div class="dashboard-text">
-      <span>{{ $t('showPage.externalLinks') }}: </span>
-      <div style="margin-left:20px;display:flex;gap: 20px;">
-        <el-link v-for="link in config.externalLinks" :key="link.title" type="primary" :underline="false" :href="link.url" target="_blank" style="font-size:30px;">
-          {{ link.title }}
-        </el-link>
-      </div>
-    </div>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 
@@ -96,6 +132,8 @@ export default {
   async created() {
     await this.fetchConfig()
   },
+  activated() {
+  },
   methods: {
     async fetchConfig() {
       const { data } = await getServiceConfig()
@@ -104,7 +142,6 @@ export default {
       } catch (error) {
         data.externalLinks = []
       }
-      console.log(data)
       this.config = data
     }
   }
@@ -114,11 +151,12 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   &-container {
-    margin: 30px;
+    margin-left: 20px;
   }
   &-text {
-    font-size: 30px;
-    line-height: 46px;
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 18px;
   }
 }
 .red {

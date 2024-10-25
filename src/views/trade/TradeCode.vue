@@ -1,9 +1,28 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" style="position: relative; height: 40px">
+    <div style="margin-bottom: 10px; display: flex;justify-content: space-between;align-items: center;">
+      <div
+        style="display: flex;flex-flow: row wrap;gap: 10px; width:75%"
+      >
+        <el-button
+          type="success"
+          size="mini"
+          :loading="serviceLoading"
+          @click="start()"
+        >
+          {{ $t('table.restartService') }}
+        </el-button>
+        <el-button
+          type="danger"
+          size="mini"
+          :loading="serviceLoading"
+          @click="stop()"
+        >
+          {{ $t('table.stopService') }}
+        </el-button>
+      </div>
       <el-button
         type="primary"
-        style="position: absolute; right: 0; top: -5px"
         @click="save"
       >{{ $t('table.save') }}
       </el-button>
@@ -21,7 +40,7 @@
 </template>
 
 <script>
-import { getConfig, setConfig } from '@/api/trade'
+import { getConfig, setConfig, startService, stopService } from '@/api/trade'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/javascript/javascript.js' // 支持JavaScript语言
@@ -55,7 +74,7 @@ export default {
   },
   data() {
     return {
-      listLoading: true,
+      serviceLoading: true,
       code: null,
       cmOptions: {
         tabSize: 2,
@@ -88,10 +107,10 @@ export default {
   },
   methods: {
     async fetchData() {
-      this.listLoading = true
+      this.serviceLoading = true
       const { data } = await getConfig()
       this.code = data.content
-      this.listLoading = false
+      this.serviceLoading = false
     },
     onCmReady(cm) {
       // console.log('the editor is readied!', cm)
@@ -112,6 +131,26 @@ export default {
           } catch (e) {
             this.$message({ message: this.$t('table.editFail'), type: 'error' })
           }
+        })
+        .catch(() => {})
+    },
+    start() {
+      this.$confirm(this.$t('table.confirmRestartService'))
+        .then(async() => {
+          this.serviceLoading = true
+          await startService()
+          this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+          this.serviceLoading = false
+        })
+        .catch(() => {})
+    },
+    stop() {
+      this.$confirm(this.$t('table.confirmStopService'))
+        .then(async() => {
+          this.serviceLoading = true
+          await stopService()
+          this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+          this.serviceLoading = false
         })
         .catch(() => {})
     }

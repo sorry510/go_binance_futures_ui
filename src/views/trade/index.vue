@@ -15,22 +15,6 @@
           type="success"
           size="mini"
           :loading="serviceLoading"
-          @click="start()"
-        >
-          {{ $t('table.restartService') }}
-        </el-button>
-        <el-button
-          type="danger"
-          size="mini"
-          :loading="serviceLoading"
-          @click="stop()"
-        >
-          {{ $t('table.stopService') }}
-        </el-button>
-        <el-button
-          type="success"
-          size="mini"
-          :loading="serviceLoading"
           @click="enableAll(1)"
         >
           {{ $t('table.enableAllCoins') }}
@@ -310,7 +294,7 @@
 </template>
 
 <script>
-import { getFeatures, setFeature, addFeature, delFeature, startService, stopService, enableFeature, batchEdit } from '@/api/trade'
+import { getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit } from '@/api/trade'
 import { round } from 'mathjs'
 
 export default {
@@ -462,26 +446,6 @@ export default {
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'success' })
       }
-    },
-    start() {
-      this.$confirm(this.$t('table.confirmRestartService'))
-        .then(async() => {
-          this.serviceLoading = true
-          await startService()
-          this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
-          this.serviceLoading = false
-        })
-        .catch(() => {})
-    },
-    stop() {
-      this.$confirm(this.$t('table.confirmStopService'))
-        .then(async() => {
-          this.serviceLoading = true
-          await stopService()
-          this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
-          this.serviceLoading = false
-        })
-        .catch(() => {})
     }
   }
 }
