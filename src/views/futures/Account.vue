@@ -344,7 +344,6 @@ export default {
     parseTime,
     changeRefreshInterval(val) {
       localStorage.setItem('accountRefreshInterval', val)
-      clearInterval(this.timeId)
       this.fetchData()
     },
     round(data, num = 2) {
@@ -359,6 +358,9 @@ export default {
       this.fetchData()
     },
     async fetchData(type = null) {
+      if (this.timeId) {
+        clearInterval(this.timeId)
+      }
       if (!type) {
         type = this.tabName
       }
