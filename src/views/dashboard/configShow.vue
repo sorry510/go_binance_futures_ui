@@ -13,12 +13,12 @@
           <div style="margin-left:20px;">
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowLong') }}: </span>
-              <span v-if="config.coinAllowLong" class="green">{{ $t('showPage.open') }}</span>
+              <span v-if="config.coinAllowLong === '1'" class="green">{{ $t('showPage.open') }}</span>
               <span v-else class="red">{{ $t('showPage.close') }}</span>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowShort') }}: </span>
-              <span v-if="config.coinAllowShort" class="green">{{ $t('showPage.open') }}</span>
+              <span v-if="config.coinAllowShort === '1'" class="green">{{ $t('showPage.open') }}</span>
               <span v-else class="red">{{ $t('showPage.close') }}</span>
             </div>
             <div class="dashboard-text">
@@ -126,7 +126,23 @@ export default {
   name: 'Dashboard',
   data() {
     return {
-      config: {}
+      config: {
+        'coinAllowLong': '0',
+        'coinAllowShort': '0',
+        'coinExcludeSymbols': '',
+        'coinMaxCount': '3',
+        'coinOrderType': '',
+        'debug': '0',
+        'externalLinks': [],
+        'listenCoinEnable': '0',
+        'listenFundingRate': '0',
+        'noticeCoinEnable': '0',
+        'spotNewEnable': '0',
+        'tradeFutureEnable': '0',
+        'tradeNewEnable': '0',
+        'tradeStrategyCoin': '',
+        'tradeStrategyTrade': ''
+      }
     }
   },
   async created() {

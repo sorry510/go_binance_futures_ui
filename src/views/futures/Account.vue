@@ -470,8 +470,8 @@ export default {
         const positionAmtFloatAbs = Math.abs(position.positionAmt) // 空单为负数,纠正为绝对值
         const unRealizedProfit = Number(position.unRealizedProfit)
         const leverage = Number(position.leverage)
-        const entryPrice = Number(position.entryPrice)
-        const nowProfit = (unRealizedProfit / (positionAmtFloatAbs * entryPrice)) * leverage * 100 // 当前收益率(正为盈利，负为亏损)
+        const markPrice = Number(position.markPrice)
+        const nowProfit = (unRealizedProfit / (positionAmtFloatAbs * markPrice)) * leverage * 100 // 当前收益率(正为盈利，负为亏损)
 
         return {
           ...position,
