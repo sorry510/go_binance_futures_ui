@@ -34,6 +34,13 @@
         >
           {{ $t('table.editBatch') }}
         </el-button>
+        <el-button
+          type="success"
+          size="mini"
+          @click="$router.push({ name: 'futuresAccount' })"
+        >
+          {{ $t('route.futuresAccount') }}
+        </el-button>
       </div>
       <div style="width:25%;text-align:right;">
         {{ $t('table.totalCount') }}: {{ list.length }}

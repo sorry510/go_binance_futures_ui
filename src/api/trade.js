@@ -73,3 +73,27 @@ export function stopService() {
     method: 'post'
   })
 }
+
+export function getFuturesAccount(query = {}) {
+  return request({
+    url: '/futures/positions',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getFuturesPositions(query = {}) {
+  return request({
+    url: '/futures/account',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getFuturesOpenOrders(query = {}) {
+  return request({
+    url: '/futures/open-orders',
+    method: 'get',
+    params: query
+  })
+}

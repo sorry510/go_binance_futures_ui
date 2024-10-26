@@ -4,15 +4,23 @@ import Layout from '@/layout'
 
 const tradeRouter = [
   {
-    path: '/symbols',
+    path: '/futures',
     component: Layout,
-    redirect: '/symbols/symbols',
+    redirect: '/futures/symbols',
+    meta: { title: 'futuresTrade', icon: 'table' },
     children: [
       {
         path: 'symbols',
         name: 'Symbols',
-        component: () => import('@/views/trade/index'),
+        component: () => import('@/views/futures/index'),
         meta: { title: 'futuresTrade', icon: 'table', affix: false, noCache: true }
+      },
+      {
+        path: 'account',
+        name: 'futuresAccount',
+        component: () => import('@/views/futures/Account'),
+        meta: { title: 'futuresAccount', icon: 'table', affix: false, noCache: true },
+        hidden: true
       }
     ]
   },

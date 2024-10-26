@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -48,7 +48,7 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200) {
       Message({
-        message: res.message || 'Error',
+        message: res.msg || res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
@@ -66,15 +66,28 @@ service.interceptors.response.use(
       //     })
       //   })
       // }
-      return Promise.reject(new Error(res.message || 'Error'))
+      // return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
     }
   },
   error => {
+    const statusCode = error.response.status
+    if (statusCode === 401) {
+      MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+        confirmButtonText: 'Re-Login',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+        })
+      })
+      return
+    }
     console.log('err' + error) // for debug
     // Message({
-    //   message: error.message,
+    //   message: error.msg,
     //   type: 'error',
     //   duration: 5 * 1000
     // })
