@@ -323,6 +323,7 @@ export default {
     isAutoAddMargin: '自动追加保证金',
     liquidationPrice: '强平价格',
     markPrice: '标记价格',
+    nowProfit: '收益率(%)',
     updateTime: '更新时间'
   },
   positionSide: {

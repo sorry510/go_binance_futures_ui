@@ -165,7 +165,18 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              {{ scope.row.unrealizedProfit }}
+              <span v-if="scope.row.nowProfit < 0" style="color: red;">{{ scope.row.unRealizedProfit }}</span>
+              <span v-else style="color: green;">{{ scope.row.unRealizedProfit }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('position.nowProfit')"
+            align="center"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.nowProfit < 0" style="color: red;">{{ scope.row.nowProfit }}</span>
+              <span v-else style="color: green;">{{ scope.row.nowProfit }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -193,15 +204,6 @@
           >
             <template slot-scope="scope">
               {{ scope.row.isolated ? $t('position.isolated') : $t('position.crossed') }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('assets.updateTime')"
-            align="center"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              {{ parseTime(scope.row.updateTime) }}
             </template>
           </el-table-column>
         </el-table>
@@ -461,8 +463,20 @@ export default {
       this.positions = positions
     },
     async getFuturesPositions() {
-      const { data: { positions }} = await getFuturesPositions()
-      this.positions = positions || []
+      const { data: { positions = null }} = await getFuturesPositions()
+      this.positions = positions.map(position => {
+        const positionAmtFloatAbs = Math.Abs(position.positionAmt) // 空单为负数,纠正为绝对值
+        const unRealizedProfit = Number(position.unRealizedProfit)
+        const leverage = Number(position.leverage)
+        const entryPrice = Number(position.entryPrice)
+        const nowProfit = (unRealizedProfit / (positionAmtFloatAbs * entryPrice)) * leverage * 100 // 当前收益率(正为盈利，负为亏损)
+
+        return {
+          ...position,
+          unRealizedProfit: this.round(unRealizedProfit, 2),
+          nowProfit: this.round(nowProfit, 6)
+        }
+      })
       this.search = {
         symbol: ''
       }

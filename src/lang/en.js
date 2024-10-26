@@ -324,6 +324,7 @@ export default {
     isAutoAddMargin: 'Is Auto Add Margin',
     liquidationPrice: 'Liquidation Price',
     markPrice: 'Mark Price',
+    nowProfit: 'Now Profit(%)',
     updateTime: 'Update Time'
   },
   positionSide: {
