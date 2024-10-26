@@ -76,7 +76,7 @@ export function stopService() {
 
 export function getFuturesAccount(query = {}) {
   return request({
-    url: '/futures/positions',
+    url: '/futures/account',
     method: 'get',
     params: query
   })
@@ -84,7 +84,7 @@ export function getFuturesAccount(query = {}) {
 
 export function getFuturesPositions(query = {}) {
   return request({
-    url: '/futures/account',
+    url: '/futures/positions',
     method: 'get',
     params: query
   })
