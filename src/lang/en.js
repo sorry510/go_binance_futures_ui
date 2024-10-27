@@ -271,8 +271,8 @@ export default {
     changePercent: 'change percent(%)',
     noticeLimitMin: 'notice limit(min)',
     lastNotice: 'last notice',
-    up: '上涨',
-    down: '下跌',
+    up: 'up',
+    down: 'down',
     kcChannels: 'kc channels',
     listenType: 'listen type',
     klineBase: 'kline base',
@@ -287,7 +287,11 @@ export default {
     assets: 'assets',
     account: 'account',
     position: 'position',
-    openOrder: 'openOrder'
+    openOrder: 'openOrder',
+    technology: 'technology',
+    period: 'period',
+    std_dev_multiplier: 'std_dev_multiplier',
+    multiplier: 'multiplier'
   },
   assets: {
     'asset': 'asset',

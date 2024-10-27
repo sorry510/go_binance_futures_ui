@@ -237,7 +237,7 @@ export default {
     klineInterval: 'K线类型',
     marginType: '模式',
     usdt: 'USDT',
-    leverage: '倍率',
+    leverage: '杠杆',
     profitRate: '止盈%',
     lossRate: '止损%',
     enable: '启用',
@@ -286,7 +286,11 @@ export default {
     assets: '资产',
     account: '账户信息',
     position: '仓位',
-    openOrder: '当前委托'
+    openOrder: '当前委托',
+    technology: '技术指标',
+    period: '周期',
+    std_dev_multiplier: '带宽',
+    multiplier: '多元'
   },
   assets: {
     'asset': '资产',
@@ -310,7 +314,7 @@ export default {
     unrealizedProfit: '持仓未实现盈亏',
     positionInitialMargin: '持仓所需起始保证金',
     openOrderInitialMargin: '当前挂单所需起始保证金',
-    leverage: '杠杆倍率',
+    leverage: '杠杆',
     isolated: '逐仓',
     crossed: '全仓',
     entryPrice: '开仓价格',

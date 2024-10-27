@@ -40,6 +40,19 @@
         </template>
       </el-table-column>
       <el-table-column
+        :label="$t('trade.technology')"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <el-button
+            type="success"
+            size="mini"
+            @click="openTechnologyDialog(scope.row)"
+          > {{ $t('trade.technology') }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
         :label="$t('trade.keltnerChannels')"
         align="center"
         show-overflow-tooltip
@@ -184,6 +197,289 @@
         <apexchart type="line" height="450" :options="chartOptions" :series="series" />
       </div>
     </el-dialog>
+    <!-- 技术指标 -->
+    <el-dialog :title="dialogTechnologyTitle" :visible.sync="dialogTechnologyVisible">
+      <el-tabs value="ma">
+        <el-tab-pane label="ma" name="ma">
+          <div>
+            <el-button type="primary" @click="addMa">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.ma"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('trade.klineInterval')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.period')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delMa(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="ema" name="ema">
+          <div>
+            <el-button type="primary" @click="addEma">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.ema"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('trade.klineInterval')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.period')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delEma(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="rsi" name="rsi">
+          <div>
+            <el-button type="primary" @click="addRsi">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.rsi"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('trade.klineInterval')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.period')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delRsi(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="kc" name="kc">
+          <div>
+            <el-button type="primary" @click="addKc">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.kc"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('trade.klineInterval')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.period')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.multiplier')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.multiplier"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delKc(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="boll" name="boll">
+          <div>
+            <el-button type="primary" @click="addBoll">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.boll"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('trade.klineInterval')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.period')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('trade.std_dev_multiplier')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.std_dev_multiplier"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delBoll(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogTechnologyVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" :loading="dialogLoading" @click="confirmTechnology()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -199,6 +495,10 @@ export default {
   },
   data() {
     return {
+      klineInterval: [
+        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
+      ],
+
       list: [],
       tickets: {},
       sort: '+',
@@ -283,6 +583,16 @@ export default {
           offsetY: -25,
           offsetX: -5
         }
+      },
+      dialogTechnologyTitle: '',
+      dialogTechnologyVisible: false,
+      technologySymbolId: 0,
+      technology: {
+        ma: [],
+        ema: [],
+        rsi: [],
+        kc: [],
+        boll: []
       }
     }
   },
@@ -392,6 +702,32 @@ export default {
       // this.series.push(high)
       // this.series.push(low)
     },
+    async openTechnologyDialog(row) {
+      this.technologySymbolId = row.id
+      if (row.technology) {
+        try {
+          this.technology = JSON.parse(row.technology)
+        } catch (e) {
+          this.technology = {
+            ma: [],
+            ema: [],
+            rsi: [],
+            kc: [],
+            boll: []
+          }
+        }
+      } else {
+        this.technology = {
+          ma: [],
+          ema: [],
+          rsi: [],
+          kc: [],
+          boll: []
+        }
+      }
+      this.dialogTechnologyTitle = `${row.symbol}`
+      this.dialogTechnologyVisible = true
+    },
     async openKlineDialog(row) {
       try {
         await this.getKcLineChart(row)
@@ -436,6 +772,78 @@ export default {
       } else {
         return round(price, 6)
       }
+    },
+    async confirmTechnology() {
+      try {
+        await setListenCoin(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'success' })
+      }
+      this.dialogTechnologyVisible = false
+    },
+    addMa() {
+      this.technology.ma = [
+        ...this.technology.ma,
+        {
+          kline_interval: '',
+          period: 14
+        }
+      ]
+    },
+    delMa(scope) {
+      this.technology.ma = this.technology.ma.filter((item, index) => index !== scope.$index)
+    },
+    addEma() {
+      this.technology.ema = [
+        ...this.technology.ema,
+        {
+          kline_interval: '',
+          period: 14
+        }
+      ]
+    },
+    delEma(scope) {
+      this.technology.ema = this.technology.ema.filter((item, index) => index !== scope.$index)
+    },
+    addRsi() {
+      this.technology.rsi = [
+        ...this.technology.rsi,
+        {
+          kline_interval: '',
+          period: 14
+        }
+      ]
+    },
+    delRsi(scope) {
+      this.technology.rsi = this.technology.rsi.filter((item, index) => index !== scope.$index)
+    },
+    addKc() {
+      this.technology.kc = [
+        ...this.technology.kc,
+        {
+          kline_interval: '',
+          period: 50,
+          multiplier: 2.75
+        }
+      ]
+    },
+    delKc(scope) {
+      this.technology.kc = this.technology.kc.filter((item, index) => index !== scope.$index)
+    },
+    addBoll() {
+      this.technology.boll = [
+        ...this.technology.boll,
+        {
+          kline_interval: '',
+          period: 21,
+          std_dev_multiplier: 2
+        }
+      ]
+    },
+    delBoll(scope) {
+      this.technology.boll = this.technology.boll.filter((item, index) => index !== scope.$index)
     }
   }
 }
