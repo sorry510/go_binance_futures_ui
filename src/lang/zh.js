@@ -275,7 +275,7 @@ export default {
     down: '下跌',
     listenType: '监听类型',
     klineBase: 'k线变化',
-    keltnerChannels: '肯纳特通道',
+    keltnerChannels: 'kc通道',
     fundingRateListenTips: 'tips: 合约资金费率变化 30 秒更新一次, 历史费率查询 api 限制 5min 中内最多查询 500 次',
     fundRate: '资金费率(%)',
     price: '价格',
@@ -287,10 +287,10 @@ export default {
     account: '账户信息',
     position: '仓位',
     openOrder: '当前委托',
+
     technology: '技术指标',
-    period: '周期',
-    std_dev_multiplier: '带宽',
-    multiplier: '多元'
+    strategy: '策略',
+    custom: '自定义'
   },
   assets: {
     'asset': '资产',
@@ -380,5 +380,19 @@ export default {
     cancelAllOrders: '取消所有订单',
     cancelAllOrdersSuccess: '取消所有订单成功',
     cancelAllOrdersFail: '取消所有订单失败'
+  },
+  strategy: {
+    name: '名称',
+    code: '代码',
+    type: '类型',
+    enable: '启用'
+  },
+  technology: {
+    name: '名称',
+    klineInterval: 'K线类型',
+    period: '周期',
+    std_dev_multiplier: '带宽',
+    multiplier: '多元',
+    enable: '启用'
   }
 }

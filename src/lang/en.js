@@ -268,7 +268,7 @@ export default {
     close: 'close',
     profitPrice: 'profit price',
     lossPrice: 'loss price',
-    changePercent: 'change percent(%)',
+    changePercent: 'change(%)',
     noticeLimitMin: 'notice limit(min)',
     lastNotice: 'last notice',
     up: 'up',
@@ -276,7 +276,7 @@ export default {
     kcChannels: 'kc channels',
     listenType: 'listen type',
     klineBase: 'kline base',
-    keltnerChannels: 'keltner channels',
+    keltnerChannels: 'kc chart',
     fundingRateListenTips: 'tips: The futures fund rate changes every 30 seconds, and the historical rate query API is limited to a maximum of 500 queries within 5 minutes',
     fundRate: 'fund rate(%)',
     price: 'price',
@@ -288,10 +288,10 @@ export default {
     account: 'account',
     position: 'position',
     openOrder: 'openOrder',
+
     technology: 'technology',
-    period: 'period',
-    std_dev_multiplier: 'std_dev_multiplier',
-    multiplier: 'multiplier'
+    strategy: 'strategy',
+    custom: 'custom'
   },
   assets: {
     'asset': 'asset',
@@ -381,5 +381,19 @@ export default {
     cancelAllOrders: 'Cancel All Orders',
     cancelAllOrdersSuccess: 'Cancel All Orders Success',
     cancelAllOrdersFail: 'Cancel All Orders Fail'
+  },
+  strategy: {
+    name: 'name',
+    code: 'code',
+    type: 'type',
+    enable: 'enable'
+  },
+  technology: {
+    name: 'name',
+    klineInterval: 'kline interval',
+    period: 'period',
+    std_dev_multiplier: 'std dev multiplier',
+    multiplier: 'multiplier',
+    enable: 'enable'
   }
 }
