@@ -746,7 +746,6 @@ export default {
       klineInterval: [
         '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
       ],
-      cssVisible: false,
 
       list: [],
       tickets: {},
@@ -1043,6 +1042,19 @@ export default {
     },
     async confirmTechnology() {
       try {
+        Object.keys(this.technology).forEach(key => {
+          this.technology[key].forEach(item => {
+            if (item.period) {
+              item.period = Number(item.period)
+            }
+            if (item.multiplier) {
+              item.multiplier = Number(item.multiplier)
+            }
+            if (item.std_dev_multiplier) {
+              item.std_dev_multiplier = Number(item.std_dev_multiplier)
+            }
+          })
+        })
         await setListenCoin(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()

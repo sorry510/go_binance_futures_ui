@@ -290,6 +290,7 @@ export default {
 
     technology: '技术指标',
     strategy: '策略',
+    strategyType: '策略类型',
     custom: '自定义'
   },
   assets: {
@@ -386,6 +387,17 @@ export default {
     code: '代码',
     type: '类型',
     enable: '启用'
+  },
+  strategyType: {
+    global: '全局',
+    custom: '自定义',
+    line1: 'line1',
+    line2: 'line2',
+    line3: 'line3',
+    line4: 'line4',
+    line5: 'line5',
+    line6: 'line6',
+    line7: 'line7'
   },
   technology: {
     name: '名称',

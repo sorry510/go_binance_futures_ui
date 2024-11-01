@@ -93,12 +93,6 @@
       @sort-change="sortChange"
       @expand-change="expandChange"
     >
-      <!-- <el-table-column align="center" label="ID" width="65">
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column> -->
-
       <el-table-column
         :label="$t('trade.coin')"
         align="center"
@@ -106,6 +100,53 @@
       >
         <template slot-scope="scope">
           {{ scope.row.symbol }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.strategyType')"
+        align="center"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.strategy_type" size="small" @change="edit(scope.row)">
+            <el-option :label="$t('strategyType.global')" value="global" />
+            <el-option :label="$t('strategyType.custom')" value="custom" />
+            <el-option :label="$t('strategyType.line1')" value="line1" />
+            <el-option :label="$t('strategyType.line2')" value="line2" />
+            <el-option :label="$t('strategyType.line3')" value="line3" />
+            <el-option :label="$t('strategyType.line4')" value="line4" />
+            <el-option :label="$t('strategyType.line5')" value="line5" />
+            <el-option :label="$t('strategyType.line6')" value="line6" />
+            <el-option :label="$t('strategyType.line7')" value="line7" />
+          </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.technology')"
+        align="center"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <el-button
+            type="success"
+            size="mini"
+            @click="openTechnologyDialog(scope.row)"
+          > {{ $t('trade.technology') }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.strategy')"
+        align="center"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-button
+            type="success"
+            size="mini"
+            @click="openStrategyDialog(scope.row)"
+          > {{ $t('trade.strategy') }}
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -128,7 +169,7 @@
           <span v-else style="color: green;">{{ scope.row.percentChange }}%↑ </span>
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         :label="$t('trade.klineInterval')"
         align="center"
         width="110"
@@ -152,7 +193,7 @@
             <el-option label="1M" value="1M" />
           </el-select>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         :label="$t('trade.marginType')"
         align="center"
@@ -247,6 +288,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- add coin -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
@@ -264,7 +306,7 @@
         <el-button type="primary" :loading="dialogLoading" @click="addCoin(info)">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-
+    <!--  batch edit -->
     <el-dialog :title="dialogTitle2" :visible.sync="dialogFormVisible2">
       <el-form
         ref="dataForm2"
@@ -273,6 +315,19 @@
         label-width="100px"
         style="width: 400px; margin-left:50px;"
       >
+        <el-form-item :label="$t('trade.strategyType')" prop="strategyType">
+          <el-select v-model="batchInfo.strategyType" size="small">
+            <el-option :label="$t('strategyType.global')" value="global" />
+            <el-option :label="$t('strategyType.custom')" value="custom" />
+            <el-option :label="$t('strategyType.line1')" value="line1" />
+            <el-option :label="$t('strategyType.line2')" value="line2" />
+            <el-option :label="$t('strategyType.line3')" value="line3" />
+            <el-option :label="$t('strategyType.line4')" value="line4" />
+            <el-option :label="$t('strategyType.line5')" value="line5" />
+            <el-option :label="$t('strategyType.line6')" value="line6" />
+            <el-option :label="$t('strategyType.line7')" value="line7" />
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('trade.marginType')" prop="marginType">
           <el-select v-model="batchInfo.marginType" size="small">
             <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
@@ -297,6 +352,524 @@
         <el-button type="primary" :loading="dialogLoading2" @click="batchEdit(batchInfo)">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <!-- 技术指标 -->
+    <el-dialog :title="dialogTechnologyTitle" :visible.sync="dialogTechnologyVisible">
+      <el-tabs value="ma">
+        <el-tab-pane label="ma" name="ma">
+          <div>
+            <el-button type="primary" @click="addMa">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.ma"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delMa(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="ema" name="ema">
+          <div>
+            <el-button type="primary" @click="addEma">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.ema"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delEma(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="rsi" name="rsi">
+          <div>
+            <el-button type="primary" @click="addRsi">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.rsi"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delRsi(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="kc" name="kc">
+          <div>
+            <el-button type="primary" @click="addKc">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.kc"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.multiplier')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.multiplier"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delKc(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="boll" name="boll">
+          <div>
+            <el-button type="primary" @click="addBoll">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.boll"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.std_dev_multiplier')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.std_dev_multiplier"
+                  type="number"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delBoll(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogTechnologyVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" :loading="dialogLoading" @click="confirmTechnology()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+    <!-- 策略方法 -->
+    <el-dialog :title="dialogStrategyTitle" :visible.sync="dialogStrategyVisible" width="75%">
+      <div>
+        <el-button type="primary" @click="addStrategy">{{ $t('table.add') }}</el-button>
+      </div>
+      <el-table
+        :data="strategy"
+        border
+        fit
+        size="mini"
+        highlight-current-row
+        style="margin-top: 10px"
+      >
+        <el-table-column
+          :label="$t('strategy.name')"
+          align="center"
+          width="300"
+        >
+          <template slot-scope="scope">
+            <el-input
+              v-model="scope.row.name"
+              class="edit-input"
+              size="small"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('strategy.code')"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <el-input
+              v-model="scope.row.code"
+              type="textarea"
+              :rows="6"
+              size="small"
+              class="edit-input"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('strategy.type')"
+          align="center"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.type" size="small">
+              <el-option :label="$t('trade.long')" value="long" />
+              <el-option :label="$t('trade.short')" value="short" />
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('strategy.enable')"
+          align="center"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.enable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.actions')"
+          align="center"
+          width="100"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="scope">
+            <el-button
+              type="danger"
+              size="mini"
+              @click="delStrategy(scope)"
+            >{{ $t('table.delete') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogStrategyVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" :loading="dialogLoading" @click="confirmStrategy()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -307,6 +880,9 @@ import { round } from 'mathjs'
 export default {
   data() {
     return {
+      klineInterval: [
+        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
+      ],
       list: [],
       sort: '+',
       listLoading: false,
@@ -331,14 +907,33 @@ export default {
       batchInfo: {
         usdt: undefined,
         profit: undefined,
-        loss: undefined
+        loss: undefined,
+        marginType: undefined,
+        leverage: undefined,
+        strategyType: undefined
       },
       rowKey(row) {
-        return row.symbol
+        return row.symbol + row.id
       },
       expandKeys: [],
       timeId: null,
-      interval: 30
+      interval: 30,
+
+      dialogTechnologyTitle: '',
+      dialogTechnologyVisible: false,
+      technologySymbolId: 0,
+      technology: {
+        ma: [],
+        ema: [],
+        rsi: [],
+        kc: [],
+        boll: []
+      },
+
+      dialogStrategyTitle: '',
+      dialogStrategyVisible: false,
+      strategySymbolId: 0,
+      strategy: []
     }
   },
   computed: {
@@ -350,12 +945,24 @@ export default {
       return round(profit, 2)
     }
   },
+  activated() {
+    console.log('activated')
+    this.interval = localStorage.getItem('refreshInterval') || 30
+    this.fetchData()
+  },
+  deactivated() {
+    clearInterval(this.timeId)
+  },
   async created() {
+    const search = localStorage.getItem('futures_search')
+    if (search) {
+      this.search = JSON.parse(search)
+    }
     this.interval = localStorage.getItem('refreshInterval') || 30
     await this.fetchData()
-    this.timeId = setInterval(() => this.fetchData(), this.interval * 1000)
   },
   beforeDestroy() {
+    localStorage.setItem('futures_search', JSON.stringify(this.search))
     clearInterval(this.timeId)
   },
   methods: {
@@ -376,11 +983,16 @@ export default {
       this.fetchData()
     },
     async fetchData() {
+      clearInterval(this.timeId)
       // this.listLoading = true
+      this.getFutures()
+      this.timeId = setInterval(() => this.getFutures(), this.interval * 1000)
+      // this.listLoading = false
+    },
+    async getFutures() {
       const search = this.search
       const { data } = await getFeatures({ sort: this.sort, ...search })
       this.list = data.map(item => ({ ...item, enable: item.enable > 0 }))
-      // this.listLoading = false
     },
     async edit(row) {
       const { id, enable, leverage, usdt, ...data } = row
@@ -446,13 +1058,186 @@ export default {
         this.batchInfo = {
           usdt: undefined,
           profit: undefined,
-          loss: undefined
+          loss: undefined,
+          marginType: undefined,
+          leverage: undefined,
+          strategyType: undefined
         }
         this.dialogFormVisible2 = false
         await this.fetchData()
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'success' })
       }
+    },
+    async openTechnologyDialog(row) {
+      this.technologySymbolId = row.id
+      if (row.technology) {
+        try {
+          this.technology = JSON.parse(row.technology)
+        } catch (e) {
+          this.technology = {
+            ma: [],
+            ema: [],
+            rsi: [],
+            kc: [],
+            boll: []
+          }
+        }
+      } else {
+        this.technology = {
+          ma: [],
+          ema: [],
+          rsi: [],
+          kc: [],
+          boll: []
+        }
+      }
+      this.dialogTechnologyTitle = `${row.symbol} ${this.$t('trade.technology')}`
+      this.dialogTechnologyVisible = true
+    },
+    async openStrategyDialog(row) {
+      this.strategySymbolId = row.id
+      if (row.strategy) {
+        try {
+          this.strategy = JSON.parse(row.strategy)
+        } catch (e) {
+          this.strategy = []
+        }
+      } else {
+        this.strategy = []
+      }
+      this.dialogStrategyTitle = `${row.symbol} ${this.$t('trade.strategy')}`
+      this.dialogStrategyVisible = true
+    },
+    async openKlineDialog(row) {
+      try {
+        await this.getKcLineChart(row)
+      } catch (e) {
+        console.log(e)
+        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+        return
+      }
+      this.dialogTitleKline = `${row.symbol}(${row.kline_interval})`
+      this.dialogKlineVisible = true
+    },
+    async confirmTechnology() {
+      try {
+        Object.keys(this.technology).forEach(key => {
+          this.technology[key].forEach(item => {
+            if (item.period) {
+              item.period = Number(item.period)
+            }
+            if (item.multiplier) {
+              item.multiplier = Number(item.multiplier)
+            }
+            if (item.std_dev_multiplier) {
+              item.std_dev_multiplier = Number(item.std_dev_multiplier)
+            }
+          })
+        })
+        await setFeature(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'success' })
+      }
+      // this.dialogTechnologyVisible = false
+    },
+    async confirmStrategy() {
+      try {
+        await setFeature(this.strategySymbolId, { strategy: JSON.stringify(this.strategy) })
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'success' })
+      }
+      // this.dialogStrategyVisible = false
+    },
+    addMa() {
+      this.technology.ma = [
+        ...this.technology.ma,
+        {
+          name: '',
+          kline_interval: '',
+          period: 14,
+          enable: false
+        }
+      ]
+    },
+    delMa(scope) {
+      this.technology.ma = this.technology.ma.filter((item, index) => index !== scope.$index)
+    },
+    addEma() {
+      this.technology.ema = [
+        ...this.technology.ema,
+        {
+          name: '',
+          kline_interval: '',
+          period: 14,
+          enable: false
+        }
+      ]
+    },
+    delEma(scope) {
+      this.technology.ema = this.technology.ema.filter((item, index) => index !== scope.$index)
+    },
+    addRsi() {
+      this.technology.rsi = [
+        ...this.technology.rsi,
+        {
+          name: '',
+          kline_interval: '',
+          period: 14,
+          enable: false
+        }
+      ]
+    },
+    delRsi(scope) {
+      this.technology.rsi = this.technology.rsi.filter((item, index) => index !== scope.$index)
+    },
+    addKc() {
+      this.technology.kc = [
+        ...this.technology.kc,
+        {
+          name: '',
+          kline_interval: '',
+          period: 50,
+          multiplier: 2.75,
+          enable: false
+        }
+      ]
+    },
+    delKc(scope) {
+      this.technology.kc = this.technology.kc.filter((item, index) => index !== scope.$index)
+    },
+    addBoll() {
+      this.technology.boll = [
+        ...this.technology.boll,
+        {
+          name: '',
+          kline_interval: '',
+          period: 21,
+          std_dev_multiplier: 2,
+          enable: false
+        }
+      ]
+    },
+    delBoll(scope) {
+      this.technology.boll = this.technology.boll.filter((item, index) => index !== scope.$index)
+    },
+    addStrategy() {
+      this.strategy = [
+        ...this.strategy,
+        {
+          name: '',
+          type: '',
+          code: '',
+          enable: false
+        }
+      ]
+    },
+    delStrategy(scope) {
+      this.strategy = this.strategy.filter((item, index) => index !== scope.$index)
     }
   }
 }

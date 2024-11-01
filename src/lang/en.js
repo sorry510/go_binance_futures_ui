@@ -291,6 +291,7 @@ export default {
 
     technology: 'technology',
     strategy: 'strategy',
+    strategyType: 'strategy type',
     custom: 'custom'
   },
   assets: {
@@ -387,6 +388,17 @@ export default {
     code: 'code',
     type: 'type',
     enable: 'enable'
+  },
+  strategyType: {
+    global: 'global',
+    custom: 'custom',
+    line1: 'line1',
+    line2: 'line2',
+    line3: 'line3',
+    line4: 'line4',
+    line5: 'line5',
+    line6: 'line6',
+    line7: 'line7'
   },
   technology: {
     name: 'name',

@@ -13,7 +13,7 @@ const tradeRouter = [
         path: 'symbols',
         name: 'Symbols',
         component: () => import('@/views/futures/index'),
-        meta: { title: 'futuresTrade', icon: 'table', affix: false, noCache: true }
+        meta: { title: 'futuresTrade', icon: 'table', affix: false, noCache: false }
       },
       {
         path: 'account',
