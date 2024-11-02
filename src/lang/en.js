@@ -228,6 +228,7 @@ export default {
     orderType: 'Order Type',
     marketOrderType: 'MARKET',
     limitOrderType: 'LIMIT: (Based on the depth of the price, the average price is taken as the average for placing orders, and it may not be possible to buy)',
+    testPusher: 'test pusher',
     externalLinks: 'external links'
   },
   trade: {

@@ -8,3 +8,11 @@ export function getServiceConfig(query = {}) {
   })
 }
 
+export function testPusher(query = {}) {
+  return request({
+    url: '/test-pusher',
+    method: 'post',
+    params: query
+  })
+}
+

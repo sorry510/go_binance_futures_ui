@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-collapse :value="['1', '2', '6']">
+    <el-collapse :value="['1', '2', '5', '6']">
       <el-collapse-item name="1">
         <template slot="title">
           <div class="dashboard-text">
@@ -100,6 +100,13 @@
             <span v-else class="green">{{ $t('showPage.close') }}</span>
           </div>
         </template>
+        <div class="dashboard-text">
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <el-button size="mini" type="primary" @click="testPusher">{{ $t('showPage.testPusher') }}</el-button>
+            </div>
+          </div>
+        </div>
       </el-collapse-item>
       <el-collapse-item name="6">
         <template slot="title">
@@ -120,7 +127,7 @@
 </template>
 
 <script>
-import { getServiceConfig } from '@/api/service'
+import { getServiceConfig, testPusher } from '@/api/service'
 
 export default {
   name: 'Dashboard',
@@ -159,6 +166,14 @@ export default {
         data.externalLinks = []
       }
       this.config = data
+    },
+    async testPusher() {
+      try {
+        await testPusher()
+        this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
+      } catch (e) {
+        this.$message({ message: this.$t('table.editFail'), type: 'error' })
+      }
     }
   }
 }

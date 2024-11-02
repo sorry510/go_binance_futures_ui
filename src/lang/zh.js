@@ -228,6 +228,7 @@ export default {
     orderType: '自动下单类型',
     marketOrderType: '市价',
     limitOrderType: '限价(根据价格深度取平均价挂单，有可能无法买入)',
+    testPusher: '测试推送',
     externalLinks: '外部链接'
   },
   trade: {
