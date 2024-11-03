@@ -97,3 +97,11 @@ export function getFuturesOpenOrders(query = {}) {
     params: query
   })
 }
+
+export function testStrategyRule(id, data) {
+  return request({
+    url: `/features/strategy-rule/test/${id}`,
+    method: 'post',
+    data
+  })
+}

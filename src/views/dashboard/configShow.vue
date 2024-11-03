@@ -170,9 +170,9 @@ export default {
     async testPusher() {
       try {
         await testPusher()
-        this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
       } catch (e) {
-        this.$message({ message: this.$t('table.editFail'), type: 'error' })
+        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
       }
     }
   }

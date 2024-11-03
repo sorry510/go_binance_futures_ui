@@ -160,6 +160,7 @@ export default {
     all: '全部',
     open: '开启',
     close: '关闭',
+    test: '测试',
     editSuccess: '修改成功',
     editFail: '修改失败',
     deleteSuccess: '删除成功',
@@ -387,7 +388,8 @@ export default {
     name: '名称',
     code: '代码',
     type: '类型',
-    enable: '启用'
+    enable: '启用',
+    fullScreen: '全屏'
   },
   strategyType: {
     global: '全局',

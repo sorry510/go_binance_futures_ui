@@ -636,6 +636,84 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane label="atr" name="atr">
+          <div>
+            <el-button type="primary" @click="addAtr">{{ $t('table.add') }}</el-button>
+          </div>
+          <el-table
+            :data="technology.atr"
+            border
+            fit
+            size="mini"
+            highlight-current-row
+            style="margin-top: 10px"
+          >
+            <el-table-column
+              :label="$t('technology.name')"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.name"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.klineInterval')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-select v-model="scope.row.kline_interval" size="small">
+                  <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.period')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-input
+                  v-model="scope.row.period"
+                  class="edit-input"
+                  size="small"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('technology.enable')"
+              align="center"
+              width="100"
+            >
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#dcdfe6"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('table.actions')"
+              align="center"
+              width="100"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="delAtr(scope)"
+                >{{ $t('table.delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogTechnologyVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -679,6 +757,20 @@
               :rows="6"
               size="small"
               class="edit-input"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('strategy.fullScreen')"
+          align="center"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.fullScreen"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              @change="fullCodeScreenChange(scope.row, scope.$index)"
             />
           </template>
         </el-table-column>
@@ -728,18 +820,106 @@
         <el-button type="primary" :loading="dialogLoading" @click="confirmStrategy()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+    <!-- coding -->
+    <el-dialog :title="dialogCodeTitle" :visible.sync="dialogCodeVisible" fullscreen @closed="codeScreenClose">
+      <div class="code-full" style="width: 100%;">
+        <div style="margin-bottom: 10px; display: flex;justify-content: space-between;align-items: center;">
+          <div
+            style="display: flex;flex-flow: row wrap;gap: 10px; width:75%"
+          >
+            <el-link href="https://expr-lang.org/docs/language-definition" type="success" target="_blank">code rule</el-link>
+          </div>
+          <el-button
+            type="primary"
+            @click="testStrategyRule"
+          >{{ $t('table.test') }}
+          </el-button>
+        </div>
+        <codemirror
+          ref="cmEditor"
+          :value="code"
+          :options="cmOptions"
+          @ready="onCmReady"
+          @focus="onCmFocus"
+          @input="onCmCodeChange"
+        />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
+<style lang="scss">
+.code-full .CodeMirror.cm-s-monokai.CodeMirror-wrap {
+  min-height: 600px;
+}
+// 补全弹层
+.CodeMirror-hints {
+  z-index: 9999;
+}
+</style>
+
 <script>
-import { getListenCoins, setListenCoin, addListenCoin, delListenCoin, getKcLineChart } from '@/api/listenCoin'
+import { getListenCoins, setListenCoin, addListenCoin, delListenCoin, getKcLineChart, testStrategyRule } from '@/api/listenCoin'
 import { round } from 'mathjs'
 import VueApexCharts from 'vue-apexcharts'
 import { parseTime } from '@/utils'
 
+import CodeMirror from 'codemirror'
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/javascript/javascript.js' // 支持JavaScript语言
+import 'codemirror/mode/go/go.js' // 支持go语言
+
+import 'codemirror/addon/selection/active-line' // 光标行背景高亮，配置里面也需要styleActiveLine设置为true
+import 'codemirror/keymap/sublime' // sublime编辑器效果
+import 'codemirror/mode/css/css'
+import 'codemirror/theme/monokai.css' // 编辑器主题样式，配置里面theme需要设置monokai
+import 'codemirror/theme/base16-dark.css'
+
+// 搜索
+import 'codemirror/addon/scroll/annotatescrollbar.js'
+import 'codemirror/addon/search/matchesonscrollbar.js'
+import 'codemirror/addon/search/match-highlighter.js'
+import 'codemirror/addon/search/jump-to-line.js'
+import 'codemirror/addon/dialog/dialog.js'
+import 'codemirror/addon/dialog/dialog.css'
+import 'codemirror/addon/search/searchcursor.js'
+import 'codemirror/addon/search/search.js'
+
+// 折叠
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
+
+// 括号匹配
+import 'codemirror/addon/edit/matchbrackets'
+import 'codemirror/addon/edit/closebrackets'
+
+// 自动补全
+import 'codemirror/addon/hint/show-hint.css'
+import 'codemirror/addon/hint/show-hint.js'
+import 'codemirror/addon/hint/javascript-hint.js'
+import 'codemirror/addon/hint/anyword-hint.js'
+
+// // 全屏功能 由于项目复杂，自带的全屏功能一般不好使
+// import 'codemirror/addon/display/fullscreen.css'
+// import 'codemirror/addon/display/fullscreen'
+
+const initTechnology = {
+  ma: [],
+  ema: [],
+  rsi: [],
+  kc: [],
+  boll: [],
+  atr: []
+}
+
 export default {
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    codemirror
   },
   data() {
     return {
@@ -835,28 +1015,203 @@ export default {
       dialogTechnologyTitle: '',
       dialogTechnologyVisible: false,
       technologySymbolId: 0,
-      technology: {
-        ma: [],
-        ema: [],
-        rsi: [],
-        kc: [],
-        boll: []
-      },
+      technology: JSON.parse(JSON.stringify(initTechnology)),
 
       dialogStrategyTitle: '',
       dialogStrategyVisible: false,
       strategySymbolId: 0,
-      strategy: []
+      strategy: [],
+
+      code: '',
+      cmOptions: {
+        tabSize: 2,
+        mode: 'text/x-go',
+        theme: 'monokai',
+        lineNumbers: true,
+        line: true,
+        foldGutter: true,
+        lineWrapping: true,
+        autoFormatJson: true,
+        jsonIndentation: true,
+        gutters: [
+          'CodeMirror-linenumbers',
+          'CodeMirror-foldgutter',
+          'CodeMirror-lint-markers'
+        ],
+        extraKeys: { 'Tab': 'autocomplete' },
+        hintOptions: {
+          completeSingle: false, // 当只有一个补全项时，不自动补全
+          hint: this.customHint
+        }
+      },
+      dialogCodeTitle: '',
+      dialogCodeVisible: false,
+      strategyIndex: undefined
     }
   },
   async created() {
     await this.fetchData()
-    // this.timeId = setInterval(() => this.fetchData(), 5 * 1000)
   },
   beforeDestroy() {
-    // clearInterval(this.timeId)
+    clearInterval(this.timeId)
   },
   methods: {
+    customHint(cm) {
+      const cur = cm.getCursor()
+      const token = cm.getTokenAt(cur)
+      const start = token.start
+      const end = token.end
+      const word = token.string
+
+      const hints = this.getHints(word)
+
+      const hintObj = {
+        list: hints.map(hint => ({ text: hint })),
+        from: CodeMirror.Pos(cur.line, start),
+        to: CodeMirror.Pos(cur.line, end)
+      }
+
+      return hintObj
+    },
+    getHints(word) {
+      const keywords = [
+        'let', 'trim', 'upper', 'lower', 'split', 'replace', 'repeat', 'indexOf', 'hasPrefix', 'now()',
+        'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
+        'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
+        'keys', 'values', 'len',
+        'NowPrice', 'NowTime'
+      ]
+      if (this.strategyIndex !== undefined) {
+        const find = this.list.find((_, index) => index === this.strategyIndex)
+        if (find) {
+          let technology = {}
+          try {
+            technology = JSON.parse(find.technology)
+          } catch (e) {
+            technology = {}
+          }
+          const klineIntervalMap = new Set()
+          Object.keys(technology).forEach(key => {
+            technology[key].forEach(item => {
+              if (item.enable) {
+                keywords.push(item.name)
+              }
+              if (item.kline_interval) {
+                klineIntervalMap.add(item.kline_interval)
+              }
+              switch (key) {
+                case 'ma':
+                case 'ema':
+                case 'rsi':
+                case 'atr':
+                  keywords.push(`${item.name}.KlineInterval`)
+                  keywords.push(`${item.name}.KlineInterval[]`)
+                  keywords.push(`${item.name}.Period`)
+                  keywords.push(`${item.name}.Period[]`)
+                  keywords.push(`${item.name}.Data`)
+                  keywords.push(`${item.name}.Data[]`)
+                  break
+                case 'kc':
+                  keywords.push(`${item.name}.KlineInterval`)
+                  keywords.push(`${item.name}.Period`)
+                  keywords.push(`${item.name}.Multiplier`)
+                  keywords.push(`${item.name}.High`)
+                  keywords.push(`${item.name}.High[]`)
+                  keywords.push(`${item.name}.Low`)
+                  keywords.push(`${item.name}.Low[]`)
+                  keywords.push(`${item.name}.Mid`)
+                  keywords.push(`${item.name}.Mid[]`)
+                  break
+                case 'boll':
+                  keywords.push(`${item.name}.KlineInterval`)
+                  keywords.push(`${item.name}.Period`)
+                  keywords.push(`${item.name}.StdDevMultiplier`)
+                  keywords.push(`${item.name}.High`)
+                  keywords.push(`${item.name}.High[]`)
+                  keywords.push(`${item.name}.Low`)
+                  keywords.push(`${item.name}.Low[]`)
+                  keywords.push(`${item.name}.Mid`)
+                  keywords.push(`${item.name}.Mid[]`)
+                  break
+              }
+            })
+          })
+          klineIntervalMap.forEach(item => {
+            keywords.push(`kline_${item}`)
+            keywords.push(`kline_${item}.High`)
+            keywords.push(`kline_${item}.High[]`)
+            keywords.push(`kline_${item}.Low`)
+            keywords.push(`kline_${item}.Low[]`)
+            keywords.push(`kline_${item}.Close`)
+            keywords.push(`kline_${item}.Close[]`)
+            keywords.push(`kline_${item}.Open`)
+            keywords.push(`kline_${item}.Open[]`)
+          })
+        }
+      }
+      const suggestions = []
+
+      for (const keyword of keywords) {
+        if (keyword.startsWith(word)) {
+          suggestions.push(keyword)
+        }
+      }
+
+      return suggestions
+    },
+    fullCodeScreenChange(row, index) {
+      if (row.fullScreen) {
+        this.dialogCodeTitle = `${row.name} code`
+        this.code = row.code
+        this.strategyIndex = index
+        this.dialogCodeVisible = true
+      } else {
+        this.code = ''
+        this.strategyIndex = undefined
+        this.dialogCodeVisible = false
+      }
+    },
+    codeScreenClose() {
+      if (this.strategyIndex !== undefined) {
+        this.strategy[this.strategyIndex].fullScreen = false
+        this.strategy = [...this.strategy]
+        this.code = ''
+        this.strategyIndex = undefined
+        this.dialogCodeVisible = false
+      }
+    },
+    async testStrategyRule() {
+      try {
+        const res = await testStrategyRule(this.strategySymbolId, { strategy: JSON.stringify([
+          {
+            name: 'test_strategy',
+            type: 'long',
+            code: this.code,
+            fullScreen: false,
+            enable: true
+          }
+        ]) })
+        if (res.code === 200) {
+          this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
+        }
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+      }
+    },
+    onCmReady(cm) {
+      // console.log('the editor is readied!', cm)
+    },
+    onCmFocus(cm) {
+      // console.log('the editor is focused!', cm)
+    },
+    onCmCodeChange(newCode) {
+      // console.log('this is new code', newCode)
+      this.code = newCode
+      if (this.strategyIndex !== undefined) {
+        this.strategy[this.strategyIndex].code = newCode
+        this.strategy = [...this.strategy]
+      }
+    },
     typeText(type) {
       return {
         'up': this.$t('trade.up'),
@@ -959,24 +1314,15 @@ export default {
       this.technologySymbolId = row.id
       if (row.technology) {
         try {
-          this.technology = JSON.parse(row.technology)
-        } catch (e) {
           this.technology = {
-            ma: [],
-            ema: [],
-            rsi: [],
-            kc: [],
-            boll: []
+            ...JSON.parse(JSON.stringify(initTechnology)),
+            ...JSON.parse(row.technology)
           }
+        } catch (e) {
+          this.technology = JSON.parse(JSON.stringify(initTechnology))
         }
       } else {
-        this.technology = {
-          ma: [],
-          ema: [],
-          rsi: [],
-          kc: [],
-          boll: []
-        }
+        this.technology = JSON.parse(JSON.stringify(initTechnology))
       }
       this.dialogTechnologyTitle = `${row.symbol} ${this.$t('trade.technology')}`
       this.dialogTechnologyVisible = true
@@ -1145,6 +1491,21 @@ export default {
     delBoll(scope) {
       this.technology.boll = this.technology.boll.filter((item, index) => index !== scope.$index)
     },
+    addAtr() {
+      this.technology.atr = [
+        ...this.technology.atr,
+        {
+          name: '',
+          kline_interval: '',
+          period: 14,
+          enable: false
+        }
+      ]
+    },
+    delAtr(scope) {
+      this.technology.atr = this.technology.atr.filter((item, index) => index !== scope.$index)
+    },
+
     addStrategy() {
       this.strategy = [
         ...this.strategy,
@@ -1152,6 +1513,7 @@ export default {
           name: '',
           type: '',
           code: '',
+          fullScreen: false,
           enable: false
         }
       ]

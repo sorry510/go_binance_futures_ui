@@ -61,3 +61,12 @@ export function getFundingRateHistory(query = {}) {
     params: query
   })
 }
+
+export function testStrategyRule(id, data) {
+  return request({
+    url: `/listen/strategy-rule/test/${id}`,
+    method: 'post',
+    data
+  })
+}
+

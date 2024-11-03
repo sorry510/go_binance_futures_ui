@@ -188,7 +188,7 @@ export default {
       },
       listLoading: false,
       rowKey(row) {
-        return row.symbol
+        return row.symbol + row.id
       },
       expandKeys: []
     }

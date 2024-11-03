@@ -41,9 +41,13 @@
 
 <script>
 import { getConfig, setConfig, startService, stopService } from '@/api/trade'
+
+import CodeMirror from 'codemirror'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/javascript/javascript.js' // 支持JavaScript语言
+import 'codemirror/mode/ttcn-cfg/ttcn-cfg.js' // 支持cfg语言
+import 'codemirror/mode/go/go.js' // 支持go语言
 
 import 'codemirror/addon/selection/active-line' // 光标行背景高亮，配置里面也需要styleActiveLine设置为true
 import 'codemirror/keymap/sublime' // sublime编辑器效果
@@ -68,6 +72,14 @@ import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/comment-fold'
 
+// 括号匹配
+import 'codemirror/addon/edit/matchbrackets'
+import 'codemirror/addon/edit/closebrackets'
+
+// 自动补全
+import 'codemirror/addon/hint/show-hint.css'
+import 'codemirror/addon/hint/show-hint.js'
+
 export default {
   components: {
     codemirror
@@ -78,10 +90,7 @@ export default {
       code: null,
       cmOptions: {
         tabSize: 2,
-        mode: {
-          name: 'javascript',
-          json: true
-        },
+        mode: 'text/x-ttcn-cfg',
         theme: 'monokai',
         lineNumbers: true,
         line: true,
@@ -93,7 +102,12 @@ export default {
           'CodeMirror-linenumbers',
           'CodeMirror-foldgutter',
           'CodeMirror-lint-markers'
-        ]
+        ],
+        extraKeys: { 'Tab': 'autocomplete' },
+        hintOptions: {
+          completeSingle: false, // 当只有一个补全项时，不自动补全
+          hint: this.customHint
+        }
       }
     }
   },
@@ -106,6 +120,40 @@ export default {
     this.fetchData()
   },
   methods: {
+    customHint(cm) {
+      const cur = cm.getCursor()
+      const token = cm.getTokenAt(cur)
+      const start = token.start
+      const end = token.end
+      const word = token.string
+
+      const hints = this.getHints(word)
+
+      const hintObj = {
+        list: hints.map(hint => ({ text: hint })),
+        from: CodeMirror.Pos(cur.line, start),
+        to: CodeMirror.Pos(cur.line, end)
+      }
+      return hintObj
+    },
+    getHints(word) {
+      const keywords = [
+        'let', 'trim', 'upper', 'lower', 'split', 'replace', 'repeat', 'indexOf', 'hasPrefix', 'now()',
+        'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
+        'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
+        'keys', 'values', 'len',
+        'nowPrice'
+      ]
+      const suggestions = []
+
+      for (const keyword of keywords) {
+        if (keyword.startsWith(word)) {
+          suggestions.push(keyword)
+        }
+      }
+
+      return suggestions
+    },
     async fetchData() {
       this.serviceLoading = true
       const { data } = await getConfig()

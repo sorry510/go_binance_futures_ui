@@ -160,6 +160,7 @@ export default {
     all: 'all',
     open: 'open',
     close: 'close',
+    test: 'test',
     editSuccess: 'edit success',
     editFail: 'edit fail',
     deleteSuccess: 'delete success',
@@ -388,7 +389,8 @@ export default {
     name: 'name',
     code: 'code',
     type: 'type',
-    enable: 'enable'
+    enable: 'enable',
+    fullScreen: 'full screen'
   },
   strategyType: {
     global: 'global',
