@@ -1200,44 +1200,42 @@ export default {
             technology[key].forEach(item => {
               if (item.enable) {
                 keywords.push(item.name)
-              }
-              if (item.kline_interval) {
-                klineIntervalMap.add(item.kline_interval)
-              }
-              switch (key) {
-                case 'ma':
-                case 'ema':
-                case 'rsi':
-                case 'atr':
-                  keywords.push(`${item.name}.KlineInterval`)
-                  keywords.push(`${item.name}.KlineInterval[]`)
-                  keywords.push(`${item.name}.Period`)
-                  keywords.push(`${item.name}.Period[]`)
-                  keywords.push(`${item.name}.Data`)
-                  keywords.push(`${item.name}.Data[]`)
-                  break
-                case 'kc':
-                  keywords.push(`${item.name}.KlineInterval`)
-                  keywords.push(`${item.name}.Period`)
-                  keywords.push(`${item.name}.Multiplier`)
-                  keywords.push(`${item.name}.High`)
-                  keywords.push(`${item.name}.High[]`)
-                  keywords.push(`${item.name}.Low`)
-                  keywords.push(`${item.name}.Low[]`)
-                  keywords.push(`${item.name}.Mid`)
-                  keywords.push(`${item.name}.Mid[]`)
-                  break
-                case 'boll':
-                  keywords.push(`${item.name}.KlineInterval`)
-                  keywords.push(`${item.name}.Period`)
-                  keywords.push(`${item.name}.StdDevMultiplier`)
-                  keywords.push(`${item.name}.High`)
-                  keywords.push(`${item.name}.High[]`)
-                  keywords.push(`${item.name}.Low`)
-                  keywords.push(`${item.name}.Low[]`)
-                  keywords.push(`${item.name}.Mid`)
-                  keywords.push(`${item.name}.Mid[]`)
-                  break
+                if (item.kline_interval) {
+                  klineIntervalMap.add(item.kline_interval)
+                }
+                switch (key) {
+                  case 'ma':
+                  case 'ema':
+                  case 'rsi':
+                  case 'atr':
+                    keywords.push(`${item.name}.KlineInterval`)
+                    keywords.push(`${item.name}.Period`)
+                    keywords.push(`${item.name}.Data`)
+                    keywords.push(`${item.name}.Data[]`)
+                    break
+                  case 'kc':
+                    keywords.push(`${item.name}.KlineInterval`)
+                    keywords.push(`${item.name}.Period`)
+                    keywords.push(`${item.name}.Multiplier`)
+                    keywords.push(`${item.name}.High`)
+                    keywords.push(`${item.name}.High[]`)
+                    keywords.push(`${item.name}.Low`)
+                    keywords.push(`${item.name}.Low[]`)
+                    keywords.push(`${item.name}.Mid`)
+                    keywords.push(`${item.name}.Mid[]`)
+                    break
+                  case 'boll':
+                    keywords.push(`${item.name}.KlineInterval`)
+                    keywords.push(`${item.name}.Period`)
+                    keywords.push(`${item.name}.StdDevMultiplier`)
+                    keywords.push(`${item.name}.High`)
+                    keywords.push(`${item.name}.High[]`)
+                    keywords.push(`${item.name}.Low`)
+                    keywords.push(`${item.name}.Low[]`)
+                    keywords.push(`${item.name}.Mid`)
+                    keywords.push(`${item.name}.Mid[]`)
+                    break
+                }
               }
             })
           })
