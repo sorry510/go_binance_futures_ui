@@ -1184,10 +1184,11 @@ export default {
         'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
+        'Kdj', 'IsDesc', 'IsAsc', // function
         'NowPrice', 'NowTime'
       ]
-      if (this.strategyIndex !== undefined) {
-        const find = this.list.find((_, index) => index === this.strategyIndex)
+      if (this.strategySymbolId !== undefined) {
+        const find = this.list.find(item => item.id === this.strategySymbolId)
         if (find) {
           let technology = {}
           try {
