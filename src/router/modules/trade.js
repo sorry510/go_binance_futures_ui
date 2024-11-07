@@ -21,6 +21,13 @@ const tradeRouter = [
         component: () => import('@/views/futures/Account'),
         meta: { title: 'futuresAccount', icon: 'table', affix: false, noCache: true },
         hidden: true
+      },
+      {
+        path: 'strategy-template',
+        name: 'strategyTemplate',
+        component: () => import('@/views/futures/StrategyTemplate'),
+        meta: { title: 'strategyTemplate', icon: 'table', affix: false, noCache: true },
+        hidden: true
       }
     ]
   },
@@ -94,6 +101,7 @@ const tradeRouter = [
     path: '/funding-rate',
     component: Layout,
     redirect: '/funding-rate',
+    meta: { title: 'fundingRate', icon: 'table' },
     children: [
       {
         path: 'funding-rate',
@@ -101,6 +109,12 @@ const tradeRouter = [
         component: () => import('@/views/listen/fundingRate'),
         meta: { title: 'fundingRate', icon: 'table', affix: false, noCache: true }
       }
+      // {
+      //   path: 'eat',
+      //   name: 'fundingRateEat',
+      //   component: () => import('@/views/fund-rate/Eat'),
+      //   meta: { title: 'fundingRateEat', icon: 'table', affix: false, noCache: true }
+      // }
     ]
   },
   {

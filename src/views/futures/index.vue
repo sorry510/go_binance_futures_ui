@@ -41,6 +41,13 @@
         >
           {{ $t('route.futuresAccount') }}
         </el-button>
+        <el-button
+          type="success"
+          size="mini"
+          @click="$router.push({ name: 'strategyTemplate' })"
+        >
+          {{ $t('route.strategyTemplate') }}
+        </el-button>
       </div>
       <div style="width:25%;text-align:right;">
         {{ $t('table.totalCount') }}: {{ list.length }}
@@ -288,7 +295,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- add coin -->
+    <!-- add data -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
@@ -312,11 +319,11 @@
         ref="dataForm2"
         :model="batchInfo"
         label-position="left"
-        label-width="100px"
-        style="width: 400px; margin-left:50px;"
+        label-width="130px"
+        style="width: 500px; margin-left:50px;"
       >
         <el-form-item :label="$t('trade.strategyType')" prop="strategyType">
-          <el-select v-model="batchInfo.strategyType" size="small">
+          <el-select v-model="batchInfo.strategyType" clearable size="small">
             <el-option :label="$t('strategyType.global')" value="global" />
             <el-option :label="$t('strategyType.custom')" value="custom" />
             <el-option :label="$t('strategyType.line1')" value="line1" />
@@ -328,8 +335,13 @@
             <el-option :label="$t('strategyType.line7')" value="line7" />
           </el-select>
         </el-form-item>
+        <el-form-item :label="$t('trade.strategyTemplate')" prop="strategyTemplates">
+          <el-select v-model="batchInfo.strategyTemplateId" clearable size="small">
+            <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('trade.marginType')" prop="marginType">
-          <el-select v-model="batchInfo.marginType" size="small">
+          <el-select v-model="batchInfo.marginType" clearable size="small">
             <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
             <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
           </el-select>
@@ -995,6 +1007,7 @@
 
 <script>
 import { getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit, testStrategyRule } from '@/api/trade'
+import { getList } from '@/api/strategy_template'
 import { round } from 'mathjs'
 
 import CodeMirror from 'codemirror'
@@ -1085,7 +1098,8 @@ export default {
         loss: undefined,
         marginType: undefined,
         leverage: undefined,
-        strategyType: undefined
+        strategyType: undefined,
+        strategyTemplateId: undefined
       },
       rowKey(row) {
         return row.symbol + row.id
@@ -1128,7 +1142,8 @@ export default {
       },
       dialogCodeTitle: '',
       dialogCodeVisible: false,
-      strategyIndex: undefined
+      strategyIndex: undefined,
+      strategyTemplates: []
     }
   },
   computed: {
@@ -1149,6 +1164,7 @@ export default {
     clearInterval(this.timeId)
   },
   async created() {
+    this.getStrategyTemplates()
     const search = localStorage.getItem('futures_search')
     if (search) {
       this.search = JSON.parse(search)
@@ -1161,6 +1177,10 @@ export default {
     clearInterval(this.timeId)
   },
   methods: {
+    async getStrategyTemplates() {
+      const { data } = await getList()
+      this.strategyTemplates = data
+    },
     customHint(cm) {
       const cur = cm.getCursor()
       const token = cm.getTokenAt(cur)
@@ -1253,14 +1273,21 @@ export default {
           })
         }
       }
-      const suggestions = []
 
+      for (const keyword of ['BTCUSDT', 'ETHUSDT']) {
+        keywords.push(`${keyword}.PercentChange`)
+        keywords.push(`${keyword}.Close`)
+        keywords.push(`${keyword}.Open`)
+        keywords.push(`${keyword}.Low`)
+        keywords.push(`${keyword}.High`)
+      }
+
+      const suggestions = []
       for (const keyword of keywords) {
         if (keyword.startsWith(word)) {
           suggestions.push(keyword)
         }
       }
-
       return suggestions
     },
     fullCodeScreenChange(row, index) {
@@ -1411,7 +1438,8 @@ export default {
           loss: undefined,
           marginType: undefined,
           leverage: undefined,
-          strategyType: undefined
+          strategyType: undefined,
+          strategyTemplateId: undefined
         }
         this.dialogFormVisible2 = false
         await this.fetchData()

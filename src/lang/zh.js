@@ -77,7 +77,9 @@ export default {
     spotListen: '现货监听',
     futuresListen: '合约监听',
     fundingRate: '资金费率',
-    systemConfig: '系统设置'
+    fundingRateEat: '资金费率套利',
+    systemConfig: '系统设置',
+    strategyTemplate: '策略模板'
   },
   navbar: {
     dashboard: '首页',
@@ -177,7 +179,9 @@ export default {
     today: '今天',
     yesterday: '昨天',
     lastWeek: '最近一周',
-    refreshInterval: '刷新间隔'
+    refreshInterval: '刷新间隔',
+    startBot: '机器人开启',
+    end: '机器人结束'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
@@ -233,6 +237,7 @@ export default {
     externalLinks: '外部链接'
   },
   trade: {
+    name: '名称',
     coin: '币种',
     coinType: '币种类型',
     nowPrice: '当前价格',
@@ -293,7 +298,10 @@ export default {
     technology: '技术指标',
     strategy: '策略',
     strategyType: '策略类型',
-    custom: '自定义'
+    custom: '自定义',
+    startTime: '开始时间',
+    endTime: '结束时间',
+    strategyTemplate: '策略模板'
   },
   assets: {
     'asset': '资产',

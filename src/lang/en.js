@@ -77,7 +77,9 @@ export default {
     spotListen: 'Spot Listen',
     futuresListen: 'Futures Listen',
     fundingRate: 'Funding Rate',
-    systemConfig: 'System Config'
+    fundingRateEat: 'Arbitrage',
+    systemConfig: 'System Config',
+    strategyTemplate: 'Strategy Template'
   },
   navbar: {
     dashboard: 'Dashboard',
@@ -177,7 +179,9 @@ export default {
     today: 'today',
     yesterday: 'yesterday',
     lastWeek: 'last week',
-    refreshInterval: 'refresh interval'
+    refreshInterval: 'refresh interval',
+    startBot: 'start bot',
+    end: 'end bot'
   },
   example: {
     warning: 'Creating and editing pages cannot be cached by keep-alive because keep-alive include does not currently support caching based on routes, so it is currently cached based on component name. If you want to achieve a similar caching effect, you can use a browser caching scheme such as localStorage. Or do not use keep-alive include to cache all pages directly. See details'
@@ -233,6 +237,7 @@ export default {
     externalLinks: 'external links'
   },
   trade: {
+    name: 'name',
     coin: 'coin',
     coinType: 'coin type',
     nowPrice: 'now price',
@@ -294,7 +299,10 @@ export default {
     technology: 'technology',
     strategy: 'strategy',
     strategyType: 'strategy type',
-    custom: 'custom'
+    custom: 'custom',
+    startTime: 'start time',
+    endTime: 'end time',
+    strategyTemplate: 'strategy template'
   },
   assets: {
     'asset': 'asset',

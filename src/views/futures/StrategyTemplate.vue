@@ -27,16 +27,14 @@
       :row-key="rowKey"
       :expand-row-keys="expandKeys"
       highlight-current-row
-      @sort-change="sortChange"
-      @expand-change="expandChange"
     >
       <el-table-column
-        :label="$t('trade.coin')"
+        :label="$t('trade.name')"
         align="center"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ scope.row.symbol }}
+          {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column
@@ -68,116 +66,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('trade.keltnerChannels')"
-        align="center"
-        width="100"
-      >
-        <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.listen_type === 'kline_kc'"
-            type="success"
-            size="mini"
-            @click="openKlineDialog(scope.row)"
-          >chart
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.listenType')"
-        align="center"
-        width="130"
-      >
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.listen_type" size="small" @change="edit(scope.row)">
-            <el-option :label="$t('trade.klineBase')" value="kline_base" />
-            <el-option :label="$t('trade.keltnerChannels')" value="kline_kc" />
-            <el-option :label="$t('trade.custom')" value="custom" />
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.klineInterval')"
-        align="center"
-        width="100"
-      >
-        <template slot-scope="scope">
-          <el-select v-if="scope.row.listen_type === 'kline_base'" v-model="scope.row.kline_interval" size="small" @change="edit(scope.row)">
-            <el-option label="1m" value="1m" />
-            <el-option label="3m" value="3m" />
-            <el-option label="5m" value="5m" />
-            <el-option label="15m" value="15m" />
-            <el-option label="30m" value="30m" />
-            <el-option label="1h" value="1h" />
-            <el-option label="2h" value="2h" />
-            <el-option label="4h" value="4h" />
-            <el-option label="6h" value="6h" />
-            <el-option label="8h" value="8h" />
-            <el-option label="12h" value="12h" />
-            <el-option label="1d" value="1d" />
-            <el-option label="3d" value="3d" />
-            <el-option label="1w" value="1w" />
-            <el-option label="1M" value="1M" />
-          </el-select>
-          <el-select v-if="scope.row.listen_type === 'kline_kc'" v-model="scope.row.kline_interval" size="small" @change="edit(scope.row)">
-            <el-option label="15m" value="15m" />
-            <el-option label="1h" value="1h" />
-            <el-option label="4h" value="4h" />
-            <el-option label="1d" value="1d" />
-            <el-option label="3d" value="3d" />
-            <el-option label="1w" value="1w" />
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.changePercent')"
-        align="center"
-        width="110"
-      >
-        <template slot-scope="scope">
-          <el-input
-            v-if="scope.row.listen_type === 'kline_base'"
-            v-model="scope.row.change_percent"
-            class="edit-input"
-            size="small"
-            @blur="edit(scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.noticeLimitMin')"
-        align="center"
-        width="120"
-      >
-        <template slot-scope="scope">
-          <el-input
-            v-model="scope.row.notice_limit_min"
-            class="edit-input"
-            size="small"
-            @blur="edit(scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.lastNotice')"
-        align="center"
-        width="200"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.last_notice_time !== 0 ? parseTime(scope.row.last_notice_time) : '' }}
-          {{ typeText(scope.row.last_notice_type) }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('trade.enable')" align="center" width="80">
-        <template slot-scope="{ row }">
-          <el-switch
-            v-model="row.enable"
-            active-color="#13ce66"
-            inactive-color="#dcdfe6"
-            @change="isChangeBuy($event, row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
         :label="$t('table.actions')"
         align="center"
         width="80"
@@ -202,19 +90,13 @@
         label-width="100px"
         style="width: 400px; margin-left:50px;"
       >
-        <el-form-item :label="$t('trade.coin')" prop="symbol">
-          <el-input v-model="info.symbol" />
+        <el-form-item :label="$t('trade.name')" prop="name">
+          <el-input v-model="info.name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" :loading="dialogLoading" @click="addCoin(info)">{{ $t('table.confirm') }}</el-button>
-      </div>
-    </el-dialog>
-    <!-- kc 图 -->
-    <el-dialog :title="dialogTitleKline" :visible.sync="dialogKlineVisible" width="75%" center>
-      <div id="chart">
-        <apexchart type="line" height="450" :options="chartOptions" :series="series" />
+        <el-button type="primary" :loading="dialogLoading" @click="addData(info)">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
     <!-- 技术指标 -->
@@ -859,9 +741,8 @@
 </style>
 
 <script>
-import { getListenCoins, setListenCoin, addListenCoin, delListenCoin, getKcLineChart, testStrategyRule } from '@/api/listenCoin'
+import { getList, editData, addData, delData, testStrategyRule } from '@/api/strategy_template'
 import { round } from 'mathjs'
-import VueApexCharts from 'vue-apexcharts'
 import { parseTime } from '@/utils'
 
 import CodeMirror from 'codemirror'
@@ -918,7 +799,6 @@ const initTechnology = {
 
 export default {
   components: {
-    apexchart: VueApexCharts,
     codemirror
   },
   data() {
@@ -928,90 +808,16 @@ export default {
       ],
 
       list: [],
-      tickets: {},
-      sort: '+',
       listLoading: false,
-      enableLoading: false,
       dialogFormVisible: false,
       dialogLoading: false,
-      dialogTitle: '新增币种信息',
-      dialogTitleKline: '', // k线图
-      dialogKlineVisible: false,
+      dialogTitle: 'add template',
       info: {},
       rowKey(row) {
-        return row.symbol
+        return row.id
       },
       expandKeys: [],
 
-      series: [
-        // {
-        //   name: 'High - 2013',
-        //   data: [28, 29, 33, 36, 32, 32, 33]
-        // },
-        // {
-        //   name: 'Low - 2013',
-        //   data: [12, 11, 14, 18, 17, 13, 13]
-        // }
-      ],
-      chartOptions: {
-        chart: {
-          height: 450,
-          type: 'line',
-          dropShadow: {
-            enabled: true,
-            color: '#000',
-            top: 18,
-            left: 7,
-            blur: 10,
-            opacity: 0.2
-          },
-          zoom: {
-            enabled: false
-          },
-          toolbar: {
-            show: false
-          }
-        },
-        colors: ['#77B6EA', '#545454', '#545454', '#545454', '#77B6EA', '#F56c6c', '#F56c6c', '#F56c6c'],
-        dataLabels: {
-          enabled: false
-        },
-        // stroke: {
-        //   curve: 'smooth'
-        // },
-        title: {
-          text: 'kc channels',
-          align: 'left'
-        },
-        grid: {
-          borderColor: '#e7e7e7',
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        markers: {
-          size: 1
-        },
-        // xaxis: {
-        //   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        //   // title: {
-        //   //   text: '4h'
-        //   // }
-        // },
-        yaxis: {
-          title: {
-            text: 'price'
-          }
-        },
-        legend: {
-          position: 'top',
-          horizontalAlign: 'right',
-          floating: true,
-          offsetY: -25,
-          offsetX: -5
-        }
-      },
       dialogTechnologyTitle: '',
       dialogTechnologyVisible: false,
       technologySymbolId: 0,
@@ -1051,9 +857,6 @@ export default {
   },
   async created() {
     await this.fetchData()
-  },
-  beforeDestroy() {
-    clearInterval(this.timeId)
   },
   methods: {
     customHint(cm) {
@@ -1158,11 +961,13 @@ export default {
       }
 
       const suggestions = []
+
       for (const keyword of keywords) {
         if (keyword.startsWith(word)) {
           suggestions.push(keyword)
         }
       }
+
       return suggestions
     },
     fullCodeScreenChange(row, index) {
@@ -1188,7 +993,7 @@ export default {
     },
     async testStrategyRule() {
       try {
-        const res = await testStrategyRule(this.strategySymbolId, { strategy: JSON.stringify([
+        const res = await testStrategyRule('BTCUSDT', { strategy: JSON.stringify([
           {
             name: 'test_strategy',
             type: 'long',
@@ -1218,42 +1023,18 @@ export default {
         this.strategy = [...this.strategy]
       }
     },
-    typeText(type) {
-      return {
-        'up': this.$t('trade.up'),
-        'down': this.$t('trade.down')
-      }[type] || ''
-    },
     parseTime,
-    expandChange(row, expandedRows) {
-      this.expandKeys = expandedRows.map(item => item.symbol)
-    },
-    sortChange(data) {
-      const { order } = data
-      this.sort = order === 'ascending' ? '+' : '-'
-      this.fetchData()
-    },
     async fetchData() {
       // this.listLoading = true
-      const { data } = await getListenCoins({ sort: this.sort, type: 2 })
-      this.list = data.map(item => ({ ...item, enable: item.enable > 0 }))
+      const { data } = await getList()
+      this.list = data
       // this.listLoading = false
     },
-    async edit(row) {
-      const { id, enable, notice_limit_min, ...other } = row
-      try {
-        await setListenCoin(id, { notice_limit_min: Number(notice_limit_min), enable: enable ? 1 : 0, ...other })
-        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
-        await this.fetchData()
-      } catch (e) {
-        this.$message({ message: this.$t('table.actionFail'), type: 'success' })
-      }
-    },
     del(row) {
-      this.$confirm(this.$t('table.deleteConfirm') + ` ${row.symbol} ？`)
+      this.$confirm(this.$t('table.deleteConfirm') + ` ${row.name} ？`)
         .then(async() => {
           try {
-            await delListenCoin(row.id)
+            await delData(row.id)
             this.$message({ message: this.$t('table.deleteSuccess'), type: 'success' })
             await this.fetchData()
           } catch (e) {
@@ -1262,59 +1043,9 @@ export default {
         })
         .catch(() => {})
     },
-    async isChangeBuy(event, row) {
-      await this.edit(row)
-    },
     openDialog() {
       this.dialogTitle = this.$t('table.add')
       this.dialogFormVisible = true
-    },
-    async getKcLineChart(row) {
-      const { data } = await getKcLineChart(row.id)
-      console.log(data)
-      const limit = 50
-      const kcWideHigh = {
-        name: 'kc3.75-high',
-        data: data.upper2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      const kcNarrowHigh = {
-        name: 'kc2.75-high',
-        data: data.upper1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      const kcNarrowMa = {
-        name: 'kc2.75-ma',
-        data: data.ma1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      const kcNarrowLow = {
-        name: 'kc2.75-low',
-        data: data.lower1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      const kcWideLow = {
-        name: 'kc3.75-low',
-        data: data.lower2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      const close = {
-        name: 'close',
-        data: data.close1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      }
-      // const high = {
-      //   name: 'high',
-      //   data: data.high1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      // }
-      // const low = {
-      //   name: 'low',
-      //   data: data.low1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
-      // }
-      this.series = []
-      this.series.push(kcWideHigh)
-      this.series.push(kcWideLow)
-      this.series.push(kcNarrowHigh)
-      this.series.push(kcNarrowMa)
-      this.series.push(kcNarrowLow)
-
-      this.series.push(close)
-      // this.series.push(high)
-      // this.series.push(low)
     },
     async openTechnologyDialog(row) {
       this.technologySymbolId = row.id
@@ -1330,7 +1061,7 @@ export default {
       } else {
         this.technology = JSON.parse(JSON.stringify(initTechnology))
       }
-      this.dialogTechnologyTitle = `${row.symbol} ${this.$t('trade.technology')}`
+      this.dialogTechnologyTitle = `${row.name} ${this.$t('trade.technology')}`
       this.dialogTechnologyVisible = true
     },
     async openStrategyDialog(row) {
@@ -1344,28 +1075,14 @@ export default {
       } else {
         this.strategy = []
       }
-      this.dialogStrategyTitle = `${row.symbol} ${this.$t('trade.strategy')}`
+      this.dialogStrategyTitle = `${row.name} ${this.$t('trade.strategy')}`
       this.dialogStrategyVisible = true
     },
-    async openKlineDialog(row) {
-      try {
-        await this.getKcLineChart(row)
-      } catch (e) {
-        console.log(e)
-        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
-        return
-      }
-      this.dialogTitleKline = `${row.symbol}(${row.kline_interval})`
-      this.dialogKlineVisible = true
-    },
-    async addCoin(row) {
+    async addData(row) {
       const data = {
-        ...row,
-        'type': 2, // 合约交易
-        'createTime': +new Date(),
-        'updateTime': +new Date()
+        ...row
       }
-      await addListenCoin(data)
+      await addData(data)
       await this.fetchData()
       this.dialogFormVisible = false
     },
@@ -1407,7 +1124,7 @@ export default {
             }
           })
         })
-        await setListenCoin(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
+        await editData(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
@@ -1417,7 +1134,7 @@ export default {
     },
     async confirmStrategy() {
       try {
-        await setListenCoin(this.strategySymbolId, { strategy: JSON.stringify(this.strategy) })
+        await editData(this.strategySymbolId, { strategy: JSON.stringify(this.strategy) })
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
