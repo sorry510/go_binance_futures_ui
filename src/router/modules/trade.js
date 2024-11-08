@@ -13,23 +13,23 @@ const tradeRouter = [
         path: 'symbols',
         name: 'Symbols',
         component: () => import('@/views/futures/index'),
-        meta: { title: 'futuresTrade', icon: 'table', affix: false, noCache: false }
+        meta: { title: 'futuresTrade', icon: 'table', affix: false, noCache: false },
       },
       {
         path: 'account',
         name: 'futuresAccount',
         component: () => import('@/views/futures/Account'),
         meta: { title: 'futuresAccount', icon: 'table', affix: false, noCache: true },
-        hidden: true
+        hidden: true,
       },
       {
         path: 'strategy-template',
         name: 'strategyTemplate',
         component: () => import('@/views/futures/StrategyTemplate'),
         meta: { title: 'strategyTemplate', icon: 'table', affix: false, noCache: true },
-        hidden: true
-      }
-    ]
+        hidden: true,
+      },
+    ],
   },
   {
     path: '/order',
@@ -40,9 +40,9 @@ const tradeRouter = [
         path: 'list',
         name: 'OrderList',
         component: () => import('@/views/order/index'),
-        meta: { title: 'futuresTradeOrder', icon: 'table', affix: false, noCache: true }
-      }
-    ]
+        meta: { title: 'futuresTradeOrder', icon: 'table', affix: false, noCache: true },
+      },
+    ],
   },
   {
     path: '/rush',
@@ -53,9 +53,9 @@ const tradeRouter = [
         path: 'new-coin',
         name: 'RushNewCoin',
         component: () => import('@/views/trade/NewCoin'),
-        meta: { title: 'newCoinRush', icon: 'table', affix: false, noCache: true }
-      }
-    ]
+        meta: { title: 'newCoinRush', icon: 'table', affix: false, noCache: true },
+      },
+    ],
   },
   {
     path: '/notice',
@@ -67,15 +67,15 @@ const tradeRouter = [
         path: 'spot',
         name: 'noticeSpot',
         component: () => import('@/views/notice/spot'),
-        meta: { title: 'spotNotice', affix: false, noCache: true }
+        meta: { title: 'spotNotice', affix: false, noCache: true },
       },
       {
         path: 'feature',
         name: 'noticeFeature',
         component: () => import('@/views/notice/feature'),
-        meta: { title: 'futuresNotice', affix: false, noCache: true }
-      }
-    ]
+        meta: { title: 'futuresNotice', affix: false, noCache: true },
+      },
+    ],
   },
   {
     path: '/listen',
@@ -87,15 +87,15 @@ const tradeRouter = [
         path: 'spot',
         name: 'listenSpot',
         component: () => import('@/views/listen/spot'),
-        meta: { title: 'spotListen', affix: false, noCache: true }
+        meta: { title: 'spotListen', affix: false, noCache: true },
       },
       {
         path: 'feature',
         name: 'listenFeature',
         component: () => import('@/views/listen/feature'),
-        meta: { title: 'futuresListen', affix: false, noCache: true }
-      }
-    ]
+        meta: { title: 'futuresListen', affix: false, noCache: true },
+      },
+    ],
   },
   {
     path: '/funding-rate',
@@ -107,15 +107,15 @@ const tradeRouter = [
         path: 'funding-rate',
         name: 'fundingRates',
         component: () => import('@/views/listen/fundingRate'),
-        meta: { title: 'fundingRate', icon: 'table', affix: false, noCache: true }
-      }
+        meta: { title: 'fundingRate', icon: 'table', affix: false, noCache: true },
+      },
       // {
       //   path: 'eat',
       //   name: 'fundingRateEat',
       //   component: () => import('@/views/fund-rate/Eat'),
-      //   meta: { title: 'fundingRateEat', icon: 'table', affix: false, noCache: true }
-      // }
-    ]
+      //   meta: { title: 'fundingRateEat', icon: 'table', affix: false, noCache: true },
+      // },
+    ],
   },
   {
     path: '/trade',
@@ -126,9 +126,9 @@ const tradeRouter = [
         path: 'code',
         name: 'TradeCode',
         component: () => import('@/views/trade/TradeCode'),
-        meta: { title: 'systemConfig', icon: 'form', affix: true, noCache: true }
-      }
-    ]
-  }
+        meta: { title: 'systemConfig', icon: 'form', affix: true, noCache: true },
+      },
+    ],
+  },
 ]
 export default tradeRouter

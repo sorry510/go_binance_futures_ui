@@ -5,41 +5,77 @@
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.futuresTrade') }}: </span>
-            <span v-if="config.tradeFutureEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-            <span v-else class="red">{{ $t('showPage.close') }}</span>
+            <el-switch
+              v-model="config.tradeFutureEnable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'future_enable')"
+            />
           </div>
         </template>
         <div class="dashboard-text">
           <div style="margin-left:20px;">
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowLong') }}: </span>
-              <span v-if="config.coinAllowLong === '1'" class="green">{{ $t('showPage.open') }}</span>
-              <span v-else class="red">{{ $t('showPage.close') }}</span>
+              <el-switch
+                :value="config.coinAllowLong"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'future_allow_long')"
+              />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowShort') }}: </span>
-              <span v-if="config.coinAllowShort === '1'" class="green">{{ $t('showPage.open') }}</span>
-              <span v-else class="red">{{ $t('showPage.close') }}</span>
+              <el-switch
+                v-model="config.coinAllowShort"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'future_allow_short')"
+              />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.strategyTrade') }}: </span>
-              <span class="green">{{ config.tradeStrategyTrade }}</span>
+              <el-select v-model="config.tradeStrategyTrade" style="width:100px;" size="small" @change="editConfig($event, 'future_strategy_trade')">
+                <el-option :label="$t('strategyType.line1')" value="line1" />
+                <el-option :label="$t('strategyType.line2')" value="line2" />
+                <el-option :label="$t('strategyType.line3')" value="line3" />
+                <el-option :label="$t('strategyType.line4')" value="line4" />
+                <el-option :label="$t('strategyType.line5')" value="line5" />
+                <el-option :label="$t('strategyType.line6')" value="line6" />
+                <el-option :label="$t('strategyType.line7')" value="line7" />
+              </el-select>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.strategyCoin') }}: </span>
-              <span class="green">{{ config.tradeStrategyCoin }}</span>
+              <el-select v-model="config.tradeStrategyCoin" style="width:100px;" size="small" @change="editConfig($event, 'future_strategy_coin')">
+                <el-option :label="$t('coin1')" value="coin1" />
+                <el-option :label="$t('coin2')" value="coin2" />
+                <el-option :label="$t('coin3')" value="coin3" />
+                <el-option :label="$t('coin4')" value="coin4" />
+                <el-option :label="$t('coin5')" value="coin5" />
+              </el-select>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.positionMaxCount') }}: </span>
-              <span class="green">{{ config.coinMaxCount }}</span>
+              <el-input v-model="config.coinMaxCount" type="number" style="width:75px;" @change="editConfig($event, 'future_max_count')" />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.excludeSymbols') }}: </span>
-              <span class="green">{{ config.coinExcludeSymbols }}</span>
+              <el-input v-model="config.coinExcludeSymbols" type="textarea" :rows="2" style="width:75%;" @change="editConfig($event, 'future_exclude_symbols')" />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.orderType') }}: </span>
-              <span class="green">{{ config.coinOrderType === 'LIMIT' ? $t('showPage.limitOrderType') : $t('showPage.marketOrderType') }}</span>
+              <el-select v-model="config.coinOrderType" style="width:100px;" size="small" @change="editConfig($event, 'future_order_type')">
+                <el-option :label="$t('MARKET')" value="MARKET" />
+                <el-option :label="$t('LIMIT')" value="LIMIT" />
+              </el-select>
+              <span class="green" style="margin-left: 20px;">{{ config.coinOrderType === 'LIMIT' ? $t('showPage.limitOrderType') : $t('showPage.marketOrderType') }}</span>
             </div>
           </div>
         </div>
@@ -54,13 +90,25 @@
           <div style="margin-left:20px;">
             <div class="dashboard-text">
               <span>{{ $t('route.newSpotRush') }}: </span>
-              <span v-if="config.spotNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-              <span v-else class="red">{{ $t('showPage.close') }}</span>
+              <el-switch
+                v-model="config.spotNewEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'spot_new_enable')"
+              />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('route.newFuturesRush') }}: </span>
-              <span v-if="config.tradeNewEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-              <span v-else class="red">{{ $t('showPage.close') }}</span>
+              <el-switch
+                v-model="config.tradeNewEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'future_new_enable')"
+              />
             </div>
           </div>
         </div>
@@ -69,8 +117,14 @@
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.coinNotice') }}: </span>
-            <span v-if="config.noticeCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-            <span v-else class="red">{{ $t('showPage.close') }}</span>
+            <el-switch
+              v-model="config.noticeCoinEnable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'notice_coin_enable')"
+            />
           </div>
         </template>
       </el-collapse-item>
@@ -78,17 +132,28 @@
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.marketListen') }}: </span>
-            <span v-if="config.listenCoinEnable === '1'" class="green">{{ $t('showPage.open') }}</span>
-            <span v-else class="red">{{ $t('showPage.close') }}</span>
-          </div>
-        </template>
+            <el-switch
+              v-model="config.listenCoinEnable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'listen_coin_enable')"
+            />
+          </div></template>
       </el-collapse-item>
       <el-collapse-item name="5">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.fundingRate') }}: </span>
-            <span v-if="config.listenFundingRate === '1'" class="green">{{ $t('showPage.open') }}</span>
-            <span v-else class="red">{{ $t('showPage.close') }}</span>
+            <el-switch
+              v-model="config.listenFundingRate"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'listen_funding_rate_enable')"
+            />
           </div>
         </template>
       </el-collapse-item>
@@ -127,35 +192,33 @@
 </template>
 
 <script>
-import { getServiceConfig, testPusher } from '@/api/service'
+import { getServiceConfig, editData, testPusher } from '@/api/service'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       config: {
-        'coinAllowLong': '0',
-        'coinAllowShort': '0',
-        'coinExcludeSymbols': '',
-        'coinMaxCount': '3',
-        'coinOrderType': '',
         'debug': '0',
+        'coinAllowLong': 1,
+        'coinAllowShort': 0,
+        'coinExcludeSymbols': '',
+        'coinMaxCount': 0,
+        'coinOrderType': '',
         'externalLinks': [],
-        'listenCoinEnable': '0',
-        'listenFundingRate': '0',
-        'noticeCoinEnable': '0',
-        'spotNewEnable': '0',
-        'tradeFutureEnable': '0',
-        'tradeNewEnable': '0',
+        'listenCoinEnable': 0,
+        'listenFundingRate': 0,
+        'noticeCoinEnable': 0,
+        'spotNewEnable': 0,
+        'tradeFutureEnable': 0,
+        'tradeNewEnable': 0,
         'tradeStrategyCoin': '',
-        'tradeStrategyTrade': ''
-      }
+        'tradeStrategyTrade': '',
+      },
     }
   },
   async created() {
     await this.fetchConfig()
-  },
-  activated() {
   },
   methods: {
     async fetchConfig() {
@@ -167,6 +230,20 @@ export default {
       }
       this.config = data
     },
+    async editConfig(value, field) {
+      if (field === 'future_max_count') {
+        value = Number(value)
+      }
+      try {
+        await editData({
+          [field]: value,
+        })
+        await this.fetchConfig()
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+      }
+    },
     async testPusher() {
       try {
         await testPusher()
@@ -174,8 +251,8 @@ export default {
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'error' })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -185,9 +262,9 @@ export default {
     margin-left: 20px;
   }
   &-text {
-    margin-top: 2px;
+    margin-bottom: 5px;
     font-size: 14px;
-    line-height: 18px;
+    line-height: 20px;
   }
 }
 .red {

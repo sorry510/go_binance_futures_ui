@@ -211,7 +211,7 @@ export default {
       rowKey(row) {
         return row.symbol
       },
-      expandKeys: []
+      expandKeys: [],
     }
   },
   async created() {
@@ -264,17 +264,16 @@ export default {
         .catch(() => {})
     },
     async changeSwitch(enable, row) {
-      console.log(row)
       this.$confirm(this.$t(enable ? 'table.startBot' : 'table.endBot') + `: ${row.symbol} ？`)
         .then(async() => {
           try {
-            // if (enable) {
-            //   await start(row.id)
-            // } else {
-            //   await end(row.id)
-            // }
-            // this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
-            // await this.fetchData()
+            if (enable) {
+              await start(row.id)
+            } else {
+              await end(row.id)
+            }
+            this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+            await this.fetchData()
           } catch (e) {
             this.$message({ message: this.$t('table.actionFail'), type: 'error' })
           }
@@ -289,12 +288,12 @@ export default {
     },
     async addCoin(row) {
       const data = {
-        ...row
+        ...row,
       }
       await addData(data)
       await this.fetchData()
       this.dialogFormVisible = false
-    }
-  }
+    },
+  },
 }
 </script>
