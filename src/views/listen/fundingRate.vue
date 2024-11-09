@@ -82,7 +82,7 @@
           {{ scope.row.now_price }}
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         :label="$t('trade.lastNotice')"
         align="center"
         width="200"
@@ -90,7 +90,7 @@
         <template slot-scope="scope">
           {{ scope.row.last_notice_funding_time !== 0 ? parseTime(scope.row.last_notice_time) : '' }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         :label="$t('table.actions')"
         align="center"
@@ -162,14 +162,14 @@ export default {
       sort: '+',
       listLoading: false,
       search: {
-        symbol: ''
+        symbol: '',
       },
       rowKey(row) {
         return row.symbol
       },
       expandKeys: [],
       dialogTitle: '资金费率历史',
-      dialogHistoryVisible: false
+      dialogHistoryVisible: false,
     }
   },
   async created() {
@@ -203,10 +203,10 @@ export default {
       this.dialogTitle = `${row.symbol} ` + this.$t('trade.fundRateHistory')
       this.dialogHistoryVisible = true
       const { data } = await getFundingRateHistory({
-        symbol: row.symbol
+        symbol: row.symbol,
       })
       this.history = data.reverse() // 数据从最新到最旧
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,5 +1,10 @@
 <template>
   <div class="app-container">
+    <div style="margin-bottom: 10px; display: flex;justify-content: space-between;align-items: center;">
+      <div style="color:red;">
+        {{ $t('trade.fundRateEatTips') }}
+      </div>
+    </div>
     <div style="margin-bottom: 10px">
       <el-button
         type="success"

@@ -109,12 +109,12 @@ const tradeRouter = [
         component: () => import('@/views/listen/fundingRate'),
         meta: { title: 'fundingRate', icon: 'table', affix: false, noCache: true },
       },
-      // {
-      //   path: 'eat',
-      //   name: 'fundingRateEat',
-      //   component: () => import('@/views/fund-rate/Eat'),
-      //   meta: { title: 'fundingRateEat', icon: 'table', affix: false, noCache: true },
-      // },
+      {
+        path: 'eat',
+        name: 'fundingRateEat',
+        component: () => import('@/views/fund-rate/Eat'),
+        meta: { title: 'fundingRateEat', icon: 'table', affix: false, noCache: true },
+      },
     ],
   },
   {

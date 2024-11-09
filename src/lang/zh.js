@@ -79,7 +79,7 @@ export default {
     fundingRate: '资金费率',
     fundingRateEat: '资金费率套利',
     systemConfig: '系统设置',
-    strategyTemplate: '策略模板'
+    strategyTemplate: '策略模板',
   },
   navbar: {
     dashboard: '首页',
@@ -87,7 +87,7 @@ export default {
     logOut: '退出登录',
     profile: '个人中心',
     theme: '换肤',
-    size: '布局大小'
+    size: '布局大小',
   },
   login: {
     title: '系统登录',
@@ -96,11 +96,11 @@ export default {
     password: '密码',
     any: '随便填',
     thirdparty: '第三方登录',
-    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
+    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！',
   },
   documentation: {
     documentation: '文档',
-    github: 'Github 地址'
+    github: 'Github 地址',
   },
   permission: {
     addRole: '新增角色',
@@ -110,11 +110,11 @@ export default {
     tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 el-tab 或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。',
     delete: '删除',
     confirm: '确定',
-    cancel: '取消'
+    cancel: '取消',
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
-    button: '打开引导'
+    button: '打开引导',
   },
   components: {
     documentation: '文档',
@@ -123,7 +123,7 @@ export default {
     stickyTips: '当页面滚动到预设的位置会吸附在顶部',
     backToTopTips1: '页面滚动到指定位置会在右下角出现返回顶部按钮',
     backToTopTips2: '可自定义按钮的样式、show/hide、出现的高度、返回的位置 如需文字提示，可在外部使用Element的el-tooltip元素',
-    imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
+    imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。',
   },
   table: {
     dynamicTips1: '固定表头, 按照表头顺序排序',
@@ -181,45 +181,45 @@ export default {
     lastWeek: '最近一周',
     refreshInterval: '刷新间隔',
     startBot: '机器人开启',
-    end: '机器人结束'
+    end: '机器人结束',
   },
   example: {
-    warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
+    warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见',
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
     description: '现在的管理后台基本都是spa的形式了，它增强了用户体验，但同时也会增加页面出问题的可能性，可能一个小小的疏忽就导致整个页面的死锁。好在 Vue 官网提供了一个方法来捕获处理异常，你可以在其中进行错误处理或者异常上报。',
-    documentation: '文档介绍'
+    documentation: '文档介绍',
   },
   excel: {
     export: '导出',
     selectedExport: '导出已选择项',
-    placeholder: '请输入文件名(默认excel-list)'
+    placeholder: '请输入文件名(默认excel-list)',
   },
   zip: {
     export: '导出',
-    placeholder: '请输入文件名(默认file)'
+    placeholder: '请输入文件名(默认file)',
   },
   pdf: {
-    tips: '这里使用   window.print() 来实现下载pdf的功能'
+    tips: '这里使用   window.print() 来实现下载pdf的功能',
   },
   theme: {
     change: '换肤',
     documentation: '换肤文档',
-    tips: 'Tips: 它区别于 navbar 上的 theme-pick, 是两种不同的换肤方法，各自有不同的应用场景，具体请参考文档。'
+    tips: 'Tips: 它区别于 navbar 上的 theme-pick, 是两种不同的换肤方法，各自有不同的应用场景，具体请参考文档。',
   },
   tagsView: {
     refresh: '刷新',
     close: '关闭',
     closeOthers: '关闭其它',
-    closeAll: '关闭所有'
+    closeAll: '关闭所有',
   },
   settings: {
     title: '系统布局配置',
     theme: '主题色',
     tagsView: '开启 Tags-View',
     fixedHeader: '固定 Header',
-    sidebarLogo: '币安自动化交易'
+    sidebarLogo: '币安自动化交易',
   },
   showPage: {
     open: '开启',
@@ -234,7 +234,7 @@ export default {
     marketOrderType: '市价',
     limitOrderType: '限价(根据价格深度取平均价挂单，有可能无法买入)',
     testPusher: '测试推送',
-    externalLinks: '外部链接'
+    externalLinks: '外部链接',
   },
   trade: {
     name: '名称',
@@ -289,6 +289,7 @@ export default {
     nowFundRate: '当前费率(%)',
     history: '历史',
     fundRateHistory: '资金费率历史',
+    fundRateEatTips: '!!! 这是一个实验性功能，尚未完善，不保证能够稳定运行，盈亏自负 !!!',
 
     assets: '资产',
     account: '账户信息',
@@ -301,7 +302,7 @@ export default {
     custom: '自定义',
     startTime: '开始时间',
     endTime: '结束时间',
-    strategyTemplate: '策略模板'
+    strategyTemplate: '策略模板',
   },
   assets: {
     'asset': '资产',
@@ -316,7 +317,7 @@ export default {
     'crossUnPnl': '全仓持仓未实现盈亏',
     'availableBalance': '可用余额',
     'maxWithdrawAmount': '最大可转出余额',
-    'updateTime': '更新时间'
+    'updateTime': '更新时间',
   },
   position: {
     symbol: '交易对',
@@ -339,16 +340,16 @@ export default {
     liquidationPrice: '强平价格',
     markPrice: '标记价格',
     nowProfit: '收益率(%)',
-    updateTime: '更新时间'
+    updateTime: '更新时间',
   },
   positionSide: {
     BOTH: '双向',
     LONG: '做多',
-    SHORT: '做空'
+    SHORT: '做空',
   },
   side: {
     BUY: '买入',
-    SELL: '卖出'
+    SELL: '卖出',
   },
   order: {
     symbol: '交易对',
@@ -390,14 +391,14 @@ export default {
     cancelAllFail: '全部取消失败',
     cancelAllOrders: '取消所有订单',
     cancelAllOrdersSuccess: '取消所有订单成功',
-    cancelAllOrdersFail: '取消所有订单失败'
+    cancelAllOrdersFail: '取消所有订单失败',
   },
   strategy: {
     name: '名称',
     code: '代码',
     type: '类型',
     enable: '启用',
-    fullScreen: '全屏'
+    fullScreen: '全屏',
   },
   strategyType: {
     global: '全局',
@@ -408,7 +409,7 @@ export default {
     line4: 'line4',
     line5: 'line5',
     line6: 'line6',
-    line7: 'line7'
+    line7: 'line7',
   },
   technology: {
     name: '名称',
@@ -416,6 +417,6 @@ export default {
     period: '周期',
     std_dev_multiplier: '带宽',
     multiplier: '多元',
-    enable: '启用'
-  }
+    enable: '启用',
+  },
 }

@@ -79,7 +79,7 @@ export default {
     fundingRate: 'Funding Rate',
     fundingRateEat: 'Arbitrage',
     systemConfig: 'System Config',
-    strategyTemplate: 'Strategy Template'
+    strategyTemplate: 'Strategy Template',
   },
   navbar: {
     dashboard: 'Dashboard',
@@ -87,7 +87,7 @@ export default {
     logOut: 'Log Out',
     profile: 'Profile',
     theme: 'Theme',
-    size: 'Global Size'
+    size: 'Global Size',
   },
   login: {
     title: 'Login Form',
@@ -96,11 +96,11 @@ export default {
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !',
   },
   documentation: {
     documentation: 'Documentation',
-    github: 'Github Repository'
+    github: 'Github Repository',
   },
   permission: {
     addRole: 'New Role',
@@ -110,11 +110,11 @@ export default {
     tips: 'In some cases, using v-permission will have no effect. For example: Element-UI  el-tab or el-table-column and other scenes that dynamically render dom. You can only do this with v-if.',
     delete: 'Delete',
     confirm: 'Confirm',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
   },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
-    button: 'Show Guide'
+    button: 'Show Guide',
   },
   components: {
     documentation: 'Documentation',
@@ -123,7 +123,7 @@ export default {
     stickyTips: 'when the page is scrolled to the preset position will be sticky on the top.',
     backToTopTips1: 'When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner',
     backToTopTips2: 'You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally',
-    imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.'
+    imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.',
   },
   table: {
     dynamicTips1: 'Fixed header, sorted by header order',
@@ -181,45 +181,45 @@ export default {
     lastWeek: 'last week',
     refreshInterval: 'refresh interval',
     startBot: 'start bot',
-    end: 'end bot'
+    end: 'end bot',
   },
   example: {
-    warning: 'Creating and editing pages cannot be cached by keep-alive because keep-alive include does not currently support caching based on routes, so it is currently cached based on component name. If you want to achieve a similar caching effect, you can use a browser caching scheme such as localStorage. Or do not use keep-alive include to cache all pages directly. See details'
+    warning: 'Creating and editing pages cannot be cached by keep-alive because keep-alive include does not currently support caching based on routes, so it is currently cached based on component name. If you want to achieve a similar caching effect, you can use a browser caching scheme such as localStorage. Or do not use keep-alive include to cache all pages directly. See details',
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
     description: 'Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.',
-    documentation: 'Document introduction'
+    documentation: 'Document introduction',
   },
   excel: {
     export: 'Export',
     selectedExport: 'Export Selected Items',
-    placeholder: 'Please enter the file name (default excel-list)'
+    placeholder: 'Please enter the file name (default excel-list)',
   },
   zip: {
     export: 'Export',
-    placeholder: 'Please enter the file name (default file)'
+    placeholder: 'Please enter the file name (default file)',
   },
   pdf: {
-    tips: 'Here we use window.print() to implement the feature of downloading PDF.'
+    tips: 'Here we use window.print() to implement the feature of downloading PDF.',
   },
   theme: {
     change: 'Change Theme',
     documentation: 'Theme documentation',
-    tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
+    tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.',
   },
   tagsView: {
     refresh: 'Refresh',
     close: 'Close',
     closeOthers: 'Close Others',
-    closeAll: 'Close All'
+    closeAll: 'Close All',
   },
   settings: {
     title: 'Page style setting',
     theme: 'Theme Color',
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
-    sidebarLogo: 'binance trade bot'
+    sidebarLogo: 'binance trade bot',
   },
   showPage: {
     open: 'open',
@@ -234,7 +234,7 @@ export default {
     marketOrderType: 'MARKET',
     limitOrderType: 'LIMIT: (Based on the depth of the price, the average price is taken as the average for placing orders, and it may not be possible to buy)',
     testPusher: 'test pusher',
-    externalLinks: 'external links'
+    externalLinks: 'external links',
   },
   trade: {
     name: 'name',
@@ -290,6 +290,7 @@ export default {
     nowFundRate: 'now fund rate(%)',
     history: 'history',
     fundRateHistory: 'fund rate history',
+    fundRateEatTips: '!!! This is an experimental feature and cannot guarantee stable operation. The profit or loss will be borne by the user !!!',
 
     assets: 'assets',
     account: 'account',
@@ -302,7 +303,7 @@ export default {
     custom: 'custom',
     startTime: 'start time',
     endTime: 'end time',
-    strategyTemplate: 'strategy template'
+    strategyTemplate: 'strategy template',
   },
   assets: {
     'asset': 'asset',
@@ -317,7 +318,7 @@ export default {
     'crossUnPnl': 'Cross Un Pnl',
     'availableBalance': 'Available Balance',
     'maxWithdrawAmount': 'Max Withdraw Amount',
-    updateTime: 'Update Time'
+    updateTime: 'Update Time',
   },
   position: {
     symbol: 'Symbol',
@@ -340,16 +341,16 @@ export default {
     liquidationPrice: 'Liquidation Price',
     markPrice: 'Mark Price',
     nowProfit: 'Now Profit(%)',
-    updateTime: 'Update Time'
+    updateTime: 'Update Time',
   },
   positionSide: {
     BOTH: 'both',
     LONG: 'long',
-    SHORT: 'short'
+    SHORT: 'short',
   },
   side: {
     BUY: 'buy',
-    SELL: 'sell'
+    SELL: 'sell',
   },
   order: {
     symbol: 'Symbol',
@@ -391,14 +392,14 @@ export default {
     cancelAllFail: 'Cancel All Fail',
     cancelAllOrders: 'Cancel All Orders',
     cancelAllOrdersSuccess: 'Cancel All Orders Success',
-    cancelAllOrdersFail: 'Cancel All Orders Fail'
+    cancelAllOrdersFail: 'Cancel All Orders Fail',
   },
   strategy: {
     name: 'name',
     code: 'code',
     type: 'type',
     enable: 'enable',
-    fullScreen: 'full screen'
+    fullScreen: 'full screen',
   },
   strategyType: {
     global: 'global',
@@ -409,7 +410,7 @@ export default {
     line4: 'line4',
     line5: 'line5',
     line6: 'line6',
-    line7: 'line7'
+    line7: 'line7',
   },
   technology: {
     name: 'name',
@@ -417,6 +418,6 @@ export default {
     period: 'period',
     std_dev_multiplier: 'std dev multiplier',
     multiplier: 'multiplier',
-    enable: 'enable'
-  }
+    enable: 'enable',
+  },
 }
