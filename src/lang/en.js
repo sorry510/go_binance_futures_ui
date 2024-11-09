@@ -154,7 +154,7 @@ export default {
     confirm: 'Confirm',
     refresh: 'Refresh',
     restartService: 'restart service',
-    stopService: 'stop futures service',
+    stopService: 'stop service',
     enableAllCoins: 'enable all coins',
     disableAllCoins: 'disable all coins',
     editBatch: 'edit batch',

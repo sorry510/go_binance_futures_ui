@@ -154,7 +154,7 @@ export default {
     confirm: '确 定',
     refresh: '刷新',
     restartService: '重启服务',
-    stopService: '停止合约服务',
+    stopService: '停止服务',
     enableAllCoins: '启用所有币种',
     disableAllCoins: '停用所有币种',
     editBatch: '批量修改',
