@@ -913,18 +913,18 @@ const initTechnology = {
   rsi: [],
   kc: [],
   boll: [],
-  atr: []
+  atr: [],
 }
 
 export default {
   components: {
     apexchart: VueApexCharts,
-    codemirror
+    codemirror,
   },
   data() {
     return {
       klineInterval: [
-        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
+        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
 
       list: [],
@@ -963,35 +963,35 @@ export default {
             top: 18,
             left: 7,
             blur: 10,
-            opacity: 0.2
+            opacity: 0.2,
           },
           zoom: {
-            enabled: false
+            enabled: false,
           },
           toolbar: {
-            show: false
-          }
+            show: false,
+          },
         },
         colors: ['#77B6EA', '#545454', '#545454', '#545454', '#77B6EA', '#F56c6c', '#F56c6c', '#F56c6c'],
         dataLabels: {
-          enabled: false
+          enabled: false,
         },
         // stroke: {
         //   curve: 'smooth'
         // },
         title: {
           text: 'kc channels',
-          align: 'left'
+          align: 'left',
         },
         grid: {
           borderColor: '#e7e7e7',
           row: {
             colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
+            opacity: 0.5,
+          },
         },
         markers: {
-          size: 1
+          size: 1,
         },
         // xaxis: {
         //   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
@@ -1001,16 +1001,16 @@ export default {
         // },
         yaxis: {
           title: {
-            text: 'price'
-          }
+            text: 'price',
+          },
         },
         legend: {
           position: 'top',
           horizontalAlign: 'right',
           floating: true,
           offsetY: -25,
-          offsetX: -5
-        }
+          offsetX: -5,
+        },
       },
       dialogTechnologyTitle: '',
       dialogTechnologyVisible: false,
@@ -1036,17 +1036,17 @@ export default {
         gutters: [
           'CodeMirror-linenumbers',
           'CodeMirror-foldgutter',
-          'CodeMirror-lint-markers'
+          'CodeMirror-lint-markers',
         ],
         extraKeys: { 'Tab': 'autocomplete' },
         hintOptions: {
           completeSingle: false, // 当只有一个补全项时，不自动补全
-          hint: this.customHint
-        }
+          hint: this.customHint,
+        },
       },
       dialogCodeTitle: '',
       dialogCodeVisible: false,
-      strategyIndex: undefined
+      strategyIndex: undefined,
     }
   },
   async created() {
@@ -1068,7 +1068,7 @@ export default {
       const hintObj = {
         list: hints.map(hint => ({ text: hint })),
         from: CodeMirror.Pos(cur.line, start),
-        to: CodeMirror.Pos(cur.line, end)
+        to: CodeMirror.Pos(cur.line, end),
       }
 
       return hintObj
@@ -1080,7 +1080,7 @@ export default {
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
-        'NowPrice', 'NowTime'
+        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', // symbol
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)
@@ -1194,8 +1194,8 @@ export default {
             type: 'long',
             code: this.code,
             fullScreen: false,
-            enable: true
-          }
+            enable: true,
+          },
         ]) })
         if (res.code === 200) {
           this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
@@ -1221,7 +1221,7 @@ export default {
     typeText(type) {
       return {
         'up': this.$t('trade.up'),
-        'down': this.$t('trade.down')
+        'down': this.$t('trade.down'),
       }[type] || ''
     },
     parseTime,
@@ -1275,27 +1275,27 @@ export default {
       const limit = 50
       const kcWideHigh = {
         name: 'kc3.75-high',
-        data: data.upper2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.upper2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       const kcNarrowHigh = {
         name: 'kc2.75-high',
-        data: data.upper1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.upper1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       const kcNarrowMa = {
         name: 'kc2.75-ma',
-        data: data.ma1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.ma1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       const kcNarrowLow = {
         name: 'kc2.75-low',
-        data: data.lower1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.lower1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       const kcWideLow = {
         name: 'kc3.75-low',
-        data: data.lower2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.lower2.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       const close = {
         name: 'close',
-        data: data.close1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item))
+        data: data.close1.slice(0, limit).reverse().map(item => this.roundOrderPrice(item)),
       }
       // const high = {
       //   name: 'high',
@@ -1322,7 +1322,7 @@ export default {
         try {
           this.technology = {
             ...JSON.parse(JSON.stringify(initTechnology)),
-            ...JSON.parse(row.technology)
+            ...JSON.parse(row.technology),
           }
         } catch (e) {
           this.technology = JSON.parse(JSON.stringify(initTechnology))
@@ -1363,7 +1363,7 @@ export default {
         ...row,
         'type': 2, // 合约交易
         'createTime': +new Date(),
-        'updateTime': +new Date()
+        'updateTime': +new Date(),
       }
       await addListenCoin(data)
       await this.fetchData()
@@ -1373,7 +1373,7 @@ export default {
       const whiteSymbols = {
         'MKRUSDT': 1,
         'CRVUSDT': 3,
-        'XTZUSDT': 3
+        'XTZUSDT': 3,
       }
       if (whiteSymbols[symbol]) {
         return round(price, whiteSymbols[symbol])
@@ -1432,8 +1432,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delMa(scope) {
@@ -1446,8 +1446,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delEma(scope) {
@@ -1460,8 +1460,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delRsi(scope) {
@@ -1475,8 +1475,8 @@ export default {
           kline_interval: '',
           period: 50,
           multiplier: 2.75,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delKc(scope) {
@@ -1490,8 +1490,8 @@ export default {
           kline_interval: '',
           period: 21,
           std_dev_multiplier: 2,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delBoll(scope) {
@@ -1504,8 +1504,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delAtr(scope) {
@@ -1520,13 +1520,13 @@ export default {
           type: '',
           code: '',
           fullScreen: false,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delStrategy(scope) {
       this.strategy = this.strategy.filter((item, index) => index !== scope.$index)
-    }
-  }
+    },
+  },
 }
 </script>
