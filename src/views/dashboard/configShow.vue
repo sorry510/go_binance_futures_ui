@@ -77,6 +77,17 @@
               </el-select>
               <span class="green" style="margin-left: 20px;">{{ config.coinOrderType === 'LIMIT' ? $t('showPage.limitOrderType') : $t('showPage.marketOrderType') }}</span>
             </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.testStrategy') }}: </span>
+              <el-switch
+                :value="config.tradeFutureTest"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'future_test')"
+              />
+            </div>
           </div>
         </div>
       </el-collapse-item>
@@ -210,6 +221,7 @@ export default {
         'listenFundingRate': 0,
         'noticeCoinEnable': 0,
         'spotNewEnable': 0,
+        'tradeFutureTest': 0,
         'tradeFutureEnable': 0,
         'tradeNewEnable': 0,
         'tradeStrategyCoin': '',

@@ -794,17 +794,17 @@ const initTechnology = {
   rsi: [],
   kc: [],
   boll: [],
-  atr: []
+  atr: [],
 }
 
 export default {
   components: {
-    codemirror
+    codemirror,
   },
   data() {
     return {
       klineInterval: [
-        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
+        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
 
       list: [],
@@ -842,17 +842,17 @@ export default {
         gutters: [
           'CodeMirror-linenumbers',
           'CodeMirror-foldgutter',
-          'CodeMirror-lint-markers'
+          'CodeMirror-lint-markers',
         ],
         extraKeys: { 'Tab': 'autocomplete' },
         hintOptions: {
           completeSingle: false, // 当只有一个补全项时，不自动补全
-          hint: this.customHint
-        }
+          hint: this.customHint,
+        },
       },
       dialogCodeTitle: '',
       dialogCodeVisible: false,
-      strategyIndex: undefined
+      strategyIndex: undefined,
     }
   },
   async created() {
@@ -871,7 +871,7 @@ export default {
       const hintObj = {
         list: hints.map(hint => ({ text: hint })),
         from: CodeMirror.Pos(cur.line, start),
-        to: CodeMirror.Pos(cur.line, end)
+        to: CodeMirror.Pos(cur.line, end),
       }
 
       return hintObj
@@ -883,7 +883,7 @@ export default {
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
-        'NowPrice', 'NowTime'
+        'NowPrice', 'NowTime',
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)
@@ -993,17 +993,24 @@ export default {
     },
     async testStrategyRule() {
       try {
-        const res = await testStrategyRule('BTCUSDT', { strategy: JSON.stringify([
-          {
-            name: 'test_strategy',
-            type: 'long',
-            code: this.code,
-            fullScreen: false,
-            enable: true
+        if (this.strategySymbolId !== undefined) {
+          const strategy = JSON.stringify([
+            {
+              name: 'test_strategy',
+              type: 'long',
+              code: this.code,
+              fullScreen: false,
+              enable: true,
+            },
+          ])
+          const find = this.list.find(item => item.id === this.strategySymbolId)
+          const technology = find.technology
+          const res = await testStrategyRule('BTCUSDT', { strategy, technology })
+          if (res.code === 200) {
+            this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
           }
-        ]) })
-        if (res.code === 200) {
-          this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
+        } else {
+          this.$message({ message: this.$t('table.actionFail'), type: 'error' })
         }
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'error' })
@@ -1053,7 +1060,7 @@ export default {
         try {
           this.technology = {
             ...JSON.parse(JSON.stringify(initTechnology)),
-            ...JSON.parse(row.technology)
+            ...JSON.parse(row.technology),
           }
         } catch (e) {
           this.technology = JSON.parse(JSON.stringify(initTechnology))
@@ -1080,7 +1087,7 @@ export default {
     },
     async addData(row) {
       const data = {
-        ...row
+        ...row,
       }
       await addData(data)
       await this.fetchData()
@@ -1090,7 +1097,7 @@ export default {
       const whiteSymbols = {
         'MKRUSDT': 1,
         'CRVUSDT': 3,
-        'XTZUSDT': 3
+        'XTZUSDT': 3,
       }
       if (whiteSymbols[symbol]) {
         return round(price, whiteSymbols[symbol])
@@ -1149,8 +1156,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delMa(scope) {
@@ -1163,8 +1170,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delEma(scope) {
@@ -1177,8 +1184,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delRsi(scope) {
@@ -1192,8 +1199,8 @@ export default {
           kline_interval: '',
           period: 50,
           multiplier: 2.75,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delKc(scope) {
@@ -1207,8 +1214,8 @@ export default {
           kline_interval: '',
           period: 21,
           std_dev_multiplier: 2,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delBoll(scope) {
@@ -1221,8 +1228,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delAtr(scope) {
@@ -1237,13 +1244,13 @@ export default {
           type: '',
           code: '',
           fullScreen: false,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delStrategy(scope) {
       this.strategy = this.strategy.filter((item, index) => index !== scope.$index)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -869,8 +869,11 @@
     </el-dialog>
     <!-- 策略方法 -->
     <el-dialog :title="dialogStrategyTitle" :visible.sync="dialogStrategyVisible" width="75%">
-      <div>
+      <div style="display:flex; gap: 10px;">
         <el-button type="primary" @click="addStrategy">{{ $t('table.add') }}</el-button>
+        <el-select v-model="batchInfo.strategyTemplateId" clearable size="small" placeholder="template" @change="selectStrategyTemplate">
+          <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </div>
       <el-table
         :data="strategy"
@@ -1059,17 +1062,17 @@ const initTechnology = {
   rsi: [],
   kc: [],
   boll: [],
-  atr: []
+  atr: [],
 }
 
 export default {
   components: {
-    codemirror
+    codemirror,
   },
   data() {
     return {
       klineInterval: [
-        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'
+        '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
       list: [],
       sort: '+',
@@ -1081,7 +1084,7 @@ export default {
       search: {
         symbol: '',
         enable: '',
-        margin_type: ''
+        margin_type: '',
       },
 
       dialogFormVisible: false,
@@ -1099,7 +1102,7 @@ export default {
         marginType: undefined,
         leverage: undefined,
         strategyType: undefined,
-        strategyTemplateId: undefined
+        strategyTemplateId: undefined,
       },
       rowKey(row) {
         return row.symbol + row.id
@@ -1110,12 +1113,12 @@ export default {
 
       dialogTechnologyTitle: '',
       dialogTechnologyVisible: false,
-      technologySymbolId: 0,
+      technologySymbolId: 0, // 当前编辑的技术指标对应symbol行的 ID
       technology: JSON.parse(JSON.stringify(initTechnology)),
 
       dialogStrategyTitle: '',
       dialogStrategyVisible: false,
-      strategySymbolId: 0,
+      strategySymbolId: 0, // 当前编辑的策略对应symbol行的 ID
       strategy: [],
 
       code: '',
@@ -1132,28 +1135,29 @@ export default {
         gutters: [
           'CodeMirror-linenumbers',
           'CodeMirror-foldgutter',
-          'CodeMirror-lint-markers'
+          'CodeMirror-lint-markers',
         ],
         extraKeys: { 'Tab': 'autocomplete' },
         hintOptions: {
           completeSingle: false, // 当只有一个补全项时，不自动补全
-          hint: this.customHint
-        }
+          hint: this.customHint,
+        },
       },
       dialogCodeTitle: '',
       dialogCodeVisible: false,
-      strategyIndex: undefined,
-      strategyTemplates: []
+      strategyIndex: undefined, // 当前编辑的策略索引
+      strategyTemplates: [], // 策略模板 {id: 1, name: 'name', 'strategy': '', 'technology': ''}
+      copyTechnology: '', // 模板复制的技术指标
     }
   },
   computed: {
     allProfit() {
       const profit = this.list.reduce(
         (carry, row) => carry + row.nowProfit,
-        0
+        0,
       )
       return round(profit, 2)
-    }
+    },
   },
   activated() {
     console.log('activated')
@@ -1193,7 +1197,7 @@ export default {
       const hintObj = {
         list: hints.map(hint => ({ text: hint })),
         from: CodeMirror.Pos(cur.line, start),
-        to: CodeMirror.Pos(cur.line, end)
+        to: CodeMirror.Pos(cur.line, end),
       }
 
       return hintObj
@@ -1205,7 +1209,7 @@ export default {
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
-        'NowPrice', 'NowTime'
+        'NowPrice', 'NowTime',
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)
@@ -1319,8 +1323,8 @@ export default {
             type: 'long',
             code: this.code,
             fullScreen: false,
-            enable: true
-          }
+            enable: true,
+          },
         ]) })
         if (res.code === 200) {
           this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
@@ -1424,7 +1428,7 @@ export default {
         'open': 0,
         'low': 0,
         'enable': 1,
-        'updateTime': +new Date()
+        'updateTime': +new Date(),
       }
       await addFeature(data)
       this.dialogFormVisible = false
@@ -1439,7 +1443,7 @@ export default {
           marginType: undefined,
           leverage: undefined,
           strategyType: undefined,
-          strategyTemplateId: undefined
+          strategyTemplateId: undefined,
         }
         this.dialogFormVisible2 = false
         await this.fetchData()
@@ -1448,12 +1452,13 @@ export default {
       }
     },
     async openTechnologyDialog(row) {
+      this.copyTechnology = ''
       this.technologySymbolId = row.id
       if (row.technology) {
         try {
           this.technology = {
             ...JSON.parse(JSON.stringify(initTechnology)),
-            ...JSON.parse(row.technology)
+            ...JSON.parse(row.technology),
           }
         } catch (e) {
           this.technology = JSON.parse(JSON.stringify(initTechnology))
@@ -1465,6 +1470,7 @@ export default {
       this.dialogTechnologyVisible = true
     },
     async openStrategyDialog(row) {
+      this.copyTechnology = ''
       this.strategySymbolId = row.id
       if (row.strategy) {
         try {
@@ -1514,7 +1520,15 @@ export default {
     },
     async confirmStrategy() {
       try {
-        await setFeature(this.strategySymbolId, { strategy: JSON.stringify(this.strategy) })
+        const data = {
+          strategy: JSON.stringify(this.strategy),
+        }
+        console.log(this.copyTechnology)
+        if (this.copyTechnology) {
+          data.technology = this.copyTechnology
+        }
+        await setFeature(this.strategySymbolId, data)
+        this.copyTechnology = ''
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
@@ -1529,8 +1543,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delMa(scope) {
@@ -1543,8 +1557,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delEma(scope) {
@@ -1557,8 +1571,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delRsi(scope) {
@@ -1572,8 +1586,8 @@ export default {
           kline_interval: '',
           period: 50,
           multiplier: 2.75,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delKc(scope) {
@@ -1587,8 +1601,8 @@ export default {
           kline_interval: '',
           period: 21,
           std_dev_multiplier: 2,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delBoll(scope) {
@@ -1601,8 +1615,8 @@ export default {
           name: '',
           kline_interval: '',
           period: 14,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delAtr(scope) {
@@ -1617,13 +1631,24 @@ export default {
           type: '',
           code: '',
           fullScreen: false,
-          enable: false
-        }
+          enable: false,
+        },
       ]
     },
     delStrategy(scope) {
       this.strategy = this.strategy.filter((item, index) => index !== scope.$index)
-    }
-  }
+    },
+    selectStrategyTemplate(id) {
+      const find = this.strategyTemplates.find(item => item.id === id)
+      if (find) {
+        try {
+          this.strategy = JSON.parse(find.strategy)
+          this.copyTechnology = find.technology
+        } catch (e) {
+          this.$message({ message: 'template error', type: 'error' })
+        }
+      }
+    },
+  },
 }
 </script>
