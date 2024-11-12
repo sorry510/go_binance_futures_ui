@@ -235,6 +235,7 @@ export default {
     limitOrderType: '限价(根据价格深度取平均价挂单，有可能无法买入)',
     testPusher: '测试推送',
     testStrategy: '测试策略',
+    testStrategyNoticeLimitMin: '测试策略通知限制(min)',
     externalLinks: '外部链接',
   },
   trade: {
@@ -259,6 +260,8 @@ export default {
     positionSide: '持仓方向',
     short: '做空',
     long: '做多',
+    close_long: '平仓(多)',
+    close_short: '平仓(空)',
     buy: '买入',
     sell: '卖出',
     spot: '现货',

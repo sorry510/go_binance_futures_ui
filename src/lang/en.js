@@ -235,6 +235,7 @@ export default {
     limitOrderType: 'LIMIT: (Based on the depth of the price, the average price is taken as the average for placing orders, and it may not be possible to buy)',
     testPusher: 'test pusher',
     testStrategy: 'test strategy',
+    testStrategyNoticeLimitMin: 'test strategy notice limit min',
     externalLinks: 'external links',
   },
   trade: {
@@ -259,6 +260,8 @@ export default {
     positionSide: 'position side',
     short: 'short',
     long: 'long',
+    close_long: 'close(long)',
+    close_short: 'close(short)',
     buy: 'buy',
     sell: 'sell',
     spot: 'spot',

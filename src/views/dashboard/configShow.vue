@@ -88,6 +88,10 @@
                 @change="editConfig($event, 'future_test')"
               />
             </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.testStrategyNoticeLimitMin') }}: </span>
+              <el-input v-model="config.tradeFutureTestNoticeLimitMin" type="number" style="width:75px;" @change="editConfig($event, 'future_test_notice_limit_min')" />
+            </div>
           </div>
         </div>
       </el-collapse-item>
@@ -222,6 +226,7 @@ export default {
         'noticeCoinEnable': 0,
         'spotNewEnable': 0,
         'tradeFutureTest': 0,
+        'tradeFutureTestNoticeLimitMin': 0,
         'tradeFutureEnable': 0,
         'tradeNewEnable': 0,
         'tradeStrategyCoin': '',
@@ -243,7 +248,7 @@ export default {
       this.config = data
     },
     async editConfig(value, field) {
-      if (field === 'future_max_count') {
+      if (field === 'future_max_count' || field === 'future_test_notice_limit_min') {
         value = Number(value)
       }
       try {

@@ -871,7 +871,7 @@
     <el-dialog :title="dialogStrategyTitle" :visible.sync="dialogStrategyVisible" width="75%">
       <div style="display:flex; gap: 10px;">
         <el-button type="primary" @click="addStrategy">{{ $t('table.add') }}</el-button>
-        <el-select v-model="batchInfo.strategyTemplateId" clearable size="small" placeholder="template" @change="selectStrategyTemplate">
+        <el-select v-model="batchInfo.strategyTemplateId" clearable size="small" placeholder="select template" @change="selectStrategyTemplate">
           <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </div>
@@ -927,12 +927,14 @@
         <el-table-column
           :label="$t('strategy.type')"
           align="center"
-          width="100"
+          width="140"
         >
           <template slot-scope="scope">
             <el-select v-model="scope.row.type" size="small">
               <el-option :label="$t('trade.long')" value="long" />
               <el-option :label="$t('trade.short')" value="short" />
+              <el-option :label="$t('trade.close_long')" value="close_long" />
+              <el-option :label="$t('trade.close_short')" value="close_short" />
             </el-select>
           </template>
         </el-table-column>

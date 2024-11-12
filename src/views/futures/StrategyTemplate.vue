@@ -659,12 +659,14 @@
         <el-table-column
           :label="$t('strategy.type')"
           align="center"
-          width="100"
+          width="140"
         >
           <template slot-scope="scope">
             <el-select v-model="scope.row.type" size="small">
               <el-option :label="$t('trade.long')" value="long" />
               <el-option :label="$t('trade.short')" value="short" />
+              <el-option :label="$t('trade.close_long')" value="close_long" />
+              <el-option :label="$t('trade.close_short')" value="close_short" />
             </el-select>
           </template>
         </el-table-column>
