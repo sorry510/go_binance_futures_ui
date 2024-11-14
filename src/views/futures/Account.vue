@@ -203,7 +203,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              {{ scope.row.isolated ? $t('position.isolated') : $t('position.crossed') }}
+              {{ scope.row.isolatedWallet == 0 ? $t('position.isolated') : $t('position.crossed') }}
             </template>
           </el-table-column>
         </el-table>
@@ -299,13 +299,13 @@ export default {
       tabName: 'position', // account, position, openOrder
       account: {
         assets: [],
-        positions: []
+        positions: [],
       },
       positions: [],
       openOrders: [],
 
       search: {
-        symbol: ''
+        symbol: '',
       },
       sort: '+',
       rowKey(row) {
@@ -316,22 +316,22 @@ export default {
       },
       expandKeys: [],
       timeId: null,
-      interval: 30
+      interval: 30,
     }
   },
   computed: {
     allProfit() {
       const profit = this.list.reduce(
         (carry, row) => carry + row.nowProfit,
-        0
+        0,
       )
       return round(profit, 2)
-    }
+    },
   },
   watch: {
     tabName(val) {
       this.fetchData(val)
-    }
+    },
   },
   async created() {
     this.interval = localStorage.getItem('accountRefreshInterval') || 30
@@ -385,7 +385,7 @@ export default {
       const { data: { assets = [], positions = [] }} = await getFuturesAccount()
       this.account = {
         assets,
-        positions
+        positions,
       }
       // this.account = {
       //   'assets': [
@@ -476,11 +476,11 @@ export default {
         return {
           ...position,
           unRealizedProfit: this.round(unRealizedProfit, 2),
-          nowProfit: this.round(nowProfit, 6)
+          nowProfit: this.round(nowProfit, 6),
         }
       })
       this.search = {
-        symbol: ''
+        symbol: '',
       }
       // this.positions = [
       //   {
@@ -568,7 +568,7 @@ export default {
       //     'goodTillDate': 0 // 订单TIF为GTD时的自动取消时间
       //   }
       // ]
-    }
-  }
+    },
+  },
 }
 </script>
