@@ -1075,6 +1075,7 @@ export default {
     },
     getHints(word) {
       const keywords = [
+        'type', 'float', 'int', 'string', // type
         'let', 'trim', 'upper', 'lower', 'split', 'replace', 'repeat', 'indexOf', 'hasPrefix', 'now()',
         'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array

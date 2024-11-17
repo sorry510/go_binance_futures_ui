@@ -1206,12 +1206,14 @@ export default {
     },
     getHints(word) {
       const keywords = [
+        'type', 'float', 'int', 'string', // type
         'let', 'trim', 'upper', 'lower', 'split', 'replace', 'repeat', 'indexOf', 'hasPrefix', 'now()',
         'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
-        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', // symbol
+        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'ROI', // symbol
+        'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.PositionAmt', 'Position.UnRealizedProfit', 'Position.MarginType', 'Position.Leverage', 'Position.PositionSide', // position
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)

@@ -82,7 +82,7 @@ import 'codemirror/addon/hint/show-hint.js'
 
 export default {
   components: {
-    codemirror
+    codemirror,
   },
   data() {
     return {
@@ -101,20 +101,20 @@ export default {
         gutters: [
           'CodeMirror-linenumbers',
           'CodeMirror-foldgutter',
-          'CodeMirror-lint-markers'
+          'CodeMirror-lint-markers',
         ],
         extraKeys: { 'Tab': 'autocomplete' },
         hintOptions: {
           completeSingle: false, // 当只有一个补全项时，不自动补全
-          hint: this.customHint
-        }
-      }
+          hint: this.customHint,
+        },
+      },
     }
   },
   computed: {
     codemirror() {
       return this.$refs.cmEditor.codemirror
-    }
+    },
   },
   created() {
     this.fetchData()
@@ -132,7 +132,7 @@ export default {
       const hintObj = {
         list: hints.map(hint => ({ text: hint })),
         from: CodeMirror.Pos(cur.line, start),
-        to: CodeMirror.Pos(cur.line, end)
+        to: CodeMirror.Pos(cur.line, end),
       }
       return hintObj
     },
@@ -142,7 +142,6 @@ export default {
         'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
-        'nowPrice'
       ]
       const suggestions = []
 
@@ -201,8 +200,8 @@ export default {
           this.serviceLoading = false
         })
         .catch(() => {})
-    }
-  }
+    },
+  },
 }
 </script>
 
