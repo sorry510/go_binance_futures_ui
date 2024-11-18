@@ -886,8 +886,8 @@ export default {
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len', // object
         'Kdj', 'IsDesc', 'IsAsc', // custom function
-        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'ROI', // symbol
-        'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.PositionAmt', 'Position.UnRealizedProfit', 'Position.MarginType', 'Position.Leverage', 'Position.PositionSide', // position
+        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend',
+        'ROI', 'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.PositionAmt', 'Position.UnRealizedProfit', 'Position.MarginType', 'Position.Leverage', 'Position.PositionSide', // position
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)
@@ -956,7 +956,7 @@ export default {
         }
       }
 
-      for (const keyword of ['BTCUSDT', 'ETHUSDT']) {
+      for (const keyword of ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT']) {
         keywords.push(`${keyword}.PercentChange`)
         keywords.push(`${keyword}.Close`)
         keywords.push(`${keyword}.Open`)
