@@ -59,6 +59,7 @@
                 <el-option :label="$t('coin3')" value="coin3" />
                 <el-option :label="$t('coin4')" value="coin4" />
                 <el-option :label="$t('coin5')" value="coin5" />
+                <el-option :label="$t('coin6')" value="coin6" />
               </el-select>
             </div>
             <div class="dashboard-text">
