@@ -80,6 +80,7 @@ export default {
     fundingRateEat: '资金费率套利',
     systemConfig: '系统设置',
     strategyTemplate: '策略模板',
+    testStrategyResult: '测试策略结果',
   },
   navbar: {
     dashboard: '首页',
@@ -290,6 +291,7 @@ export default {
     fundingRateListenTips: 'tips: 合约资金费率变化 30 秒更新一次, 历史费率查询 api 限制 5min 中内最多查询 500 次',
     fundRate: '资金费率(%)',
     price: '价格',
+    close_price: '平仓价格',
     nowFundRate: '当前费率(%)',
     history: '历史',
     fundRateHistory: '资金费率历史',
@@ -302,6 +304,8 @@ export default {
 
     technology: '技术指标',
     strategy: '策略',
+    open_strategy: '开仓策略',
+    close_strategy: '平仓策略',
     strategyType: '策略类型',
     custom: '自定义',
     startTime: '开始时间',

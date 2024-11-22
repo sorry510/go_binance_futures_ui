@@ -88,6 +88,15 @@
                 :inactive-value="0"
                 @change="editConfig($event, 'future_test')"
               />
+              <el-button
+                v-if="config.tradeFutureTest"
+                style="margin-left:10px;"
+                type="success"
+                size="mini"
+                @click="$router.push({ name: 'testStrategyResult' })"
+              >
+                {{ $t('route.testStrategyResult') }}
+              </el-button>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.testStrategyNoticeLimitMin') }}: </span>

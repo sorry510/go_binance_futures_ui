@@ -80,6 +80,7 @@ export default {
     fundingRateEat: 'Arbitrage',
     systemConfig: 'System Config',
     strategyTemplate: 'Strategy Template',
+    testStrategyResult: 'Test Strategy Result',
   },
   navbar: {
     dashboard: 'Dashboard',
@@ -291,6 +292,7 @@ export default {
     fundingRateListenTips: 'tips: The futures fund rate changes every 30 seconds, and the historical rate query API is limited to a maximum of 500 queries within 5 minutes',
     fundRate: 'fund rate(%)',
     price: 'price',
+    close_price: 'close price',
     nowFundRate: 'now fund rate(%)',
     history: 'history',
     fundRateHistory: 'fund rate history',

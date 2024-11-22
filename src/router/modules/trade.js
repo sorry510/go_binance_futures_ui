@@ -29,6 +29,13 @@ const tradeRouter = [
         meta: { title: 'strategyTemplate', icon: 'table', affix: false, noCache: true },
         hidden: true,
       },
+      {
+        path: 'test-strategy-results',
+        name: 'testStrategyResult',
+        component: () => import('@/views/order/testOrder'),
+        meta: { title: 'testStrategyResult', icon: 'table', affix: false, noCache: true },
+        hidden: true,
+      },
     ],
   },
   {
