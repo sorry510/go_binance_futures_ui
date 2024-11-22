@@ -56,12 +56,6 @@
       highlight-current-row
       @sort-change="sortChange"
     >
-      <el-table-column align="center" label="ID" width="65">
-        <template slot-scope="scope">
-          {{ scope.$index + 1 }}
-        </template>
-      </el-table-column>
-
       <el-table-column
         :label="$t('trade.coin')"
         align="center"
@@ -134,6 +128,17 @@
           <span v-if="scope.row.close_profit == '0'">-</span>
           <span v-else-if="scope.row.close_profit < 0" style="color: red;">{{ scope.row.close_profit }}</span>
           <span v-else style="color: green;">{{ scope.row.close_profit }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('position.nowProfit')"
+        align="center"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          <span v-if="scope.row.profit_percent == 0">-</span>
+          <span v-else-if="scope.row.profit_percent < 0" style="color: red;">{{ scope.row.profit_percent }}</span>
+          <span v-else style="color: green;">{{ scope.row.profit_percent }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -274,7 +279,7 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 20,
         sort: '+',
         start_time: undefined,
         end_time: undefined,
@@ -303,8 +308,18 @@ export default {
   },
   methods: {
     parseTime,
-    round(data, num = 2) {
+    round(data, num = 3) {
       return round(data, num)
+    },
+    profitPercent(row) {
+      if (row.close_price === '0') {
+        return 0
+      }
+      if (row.position_side === 'LONG') {
+        return (row.close_price - row.price) / row.close_price * row.leverage * 100
+      } else if (row.position_side === 'SHORT') {
+        return -(row.close_price - row.price) / row.close_price * row.leverage * 100
+      }
     },
     expandChange(row, expandedRows) {
       this.expandKeys = expandedRows.map(item => item.symbol)
@@ -321,7 +336,10 @@ export default {
         start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
         end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
       })
-      this.list = data.list ?? []
+      this.list = (data.list ?? []).map(item => {
+        item.profit_percent = this.round(this.profitPercent(item))
+        return item
+      })
       this.total = data.total
       this.listLoading = false
     },
