@@ -311,6 +311,7 @@ export default {
     endTime: 'end time',
     strategyTemplate: 'strategy template',
     period: 'period',
+    pin: 'pin',
   },
   assets: {
     'asset': 'asset',

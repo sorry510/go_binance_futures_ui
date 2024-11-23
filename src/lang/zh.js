@@ -312,6 +312,7 @@ export default {
     endTime: '结束时间',
     strategyTemplate: '策略模板',
     period: '周期',
+    pin: '置顶',
   },
   assets: {
     'asset': '资产',

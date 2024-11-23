@@ -12,6 +12,13 @@
           {{ $t('table.add') }}
         </el-button>
         <el-button
+          type="info"
+          size="mini"
+          @click="$router.push({ name: 'futuresAccount' })"
+        >
+          {{ $t('route.futuresAccount') }}
+        </el-button>
+        <el-button
           type="success"
           size="mini"
           :loading="serviceLoading"
@@ -28,21 +35,14 @@
           {{ $t('table.disableAllCoins') }}
         </el-button>
         <el-button
-          type="success"
+          type="primary"
           size="mini"
           @click="dialogFormVisible2 = true"
         >
           {{ $t('table.editBatch') }}
         </el-button>
         <el-button
-          type="success"
-          size="mini"
-          @click="$router.push({ name: 'futuresAccount' })"
-        >
-          {{ $t('route.futuresAccount') }}
-        </el-button>
-        <el-button
-          type="success"
+          type="primary"
           size="mini"
           @click="$router.push({ name: 'strategyTemplate' })"
         >
@@ -60,15 +60,16 @@
           :placeholder="$t('trade.coin')"
           style="width: 150px;"
           class="filter-item"
-          size="small"
+          size="mini"
         />
-        <el-select v-model="search.enable" size="small" style="width: 150px;" placeholder="status">
-          <el-option :label="$t('table.all')" value="" />
+        <el-select v-model="search.pin" size="mini" style="width: 100px;" clearable placeholder="pin">
+          <el-option :label="$t('trade.pin')" value="1" />
+        </el-select>
+        <el-select v-model="search.enable" size="mini" style="width: 100px;" clearable placeholder="status">
           <el-option :label="$t('table.open')" value="1" />
           <el-option :label="$t('table.close')" value="0" />
         </el-select>
-        <el-select v-model="search.margin_type" size="small" style="width: 150px;" placeholder="margin_type">
-          <el-option :label="$t('table.all')" value="" />
+        <el-select v-model="search.margin_type" size="mini" style="width: 120px;" clearable placeholder="margin_type">
           <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
           <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
         </el-select>
@@ -81,7 +82,7 @@
         </el-button>
       </div>
       <div style="display: flex;flex-flow: row wrap;gap: 10px;align-items: center;">
-        <el-select v-model="interval" size="small" style="width: 80px;" @change="changeRefreshInterval">
+        <el-select v-model="interval" size="mini" style="width: 80px;" @change="changeRefreshInterval">
           <el-option v-for="n in 30" :key="n" :label="n + 's'" :value="n" />
         </el-select>
         <span>{{ $t('table.refreshInterval') }}</span>
@@ -101,6 +102,15 @@
       @expand-change="expandChange"
     >
       <el-table-column
+        :label="$t('trade.pin')"
+        width="50"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <el-rate v-model="row.pin_read" :max="1" @change="editPin(row)" />
+        </template>
+      </el-table-column>
+      <el-table-column
         :label="$t('trade.coin')"
         align="center"
         show-overflow-tooltip
@@ -112,10 +122,10 @@
       <el-table-column
         :label="$t('trade.strategyType')"
         align="center"
-        width="120"
+        width="115"
       >
         <template slot-scope="scope">
-          <el-select v-model="scope.row.strategy_type" size="small" @change="edit(scope.row)">
+          <el-select v-model="scope.row.strategy_type" size="mini" @change="edit(scope.row)">
             <el-option :label="$t('strategyType.global')" value="global" />
             <el-option :label="$t('strategyType.custom')" value="custom" />
             <el-option :label="$t('strategyType.line1')" value="line1" />
@@ -131,7 +141,7 @@
       <el-table-column
         :label="$t('trade.technology')"
         align="center"
-        width="120"
+        width="115"
       >
         <template slot-scope="scope">
           <el-button
@@ -168,7 +178,9 @@
       <el-table-column
         label="24h↑↓"
         align="center"
+        width="90"
         show-overflow-tooltip
+        prop="percent_change"
         sortable="custom"
       >
         <template slot-scope="scope">
@@ -182,7 +194,7 @@
         width="110"
       >
         <template slot-scope="scope">
-          <el-select v-model="scope.row.kline_interval" size="small" @change="edit(scope.row)">
+          <el-select v-model="scope.row.kline_interval" size="mini" @change="edit(scope.row)">
             <el-option label="1m" value="1m" />
             <el-option label="3m" value="3m" />
             <el-option label="5m" value="5m" />
@@ -204,10 +216,10 @@
       <el-table-column
         :label="$t('trade.marginType')"
         align="center"
-        width="130"
+        width="125"
       >
         <template slot-scope="scope">
-          <el-select v-model="scope.row.marginType" size="small" @change="edit(scope.row)">
+          <el-select v-model="scope.row.marginType" size="mini" @change="edit(scope.row)">
             <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
             <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
           </el-select>
@@ -216,13 +228,13 @@
       <el-table-column
         :label="$t('trade.usdt')"
         align="center"
-        width="80"
+        width="75"
       >
         <template slot-scope="scope">
           <el-input
             v-model="scope.row.usdt"
             class="edit-input"
-            size="small"
+            size="mini"
             @blur="edit(scope.row)"
           />
         </template>
@@ -230,13 +242,13 @@
       <el-table-column
         :label="$t('trade.leverage')"
         align="center"
-        width="80"
+        width="75"
       >
         <template slot-scope="scope">
           <el-input
             v-model="scope.row.leverage"
             class="edit-input"
-            size="small"
+            size="mini"
             @blur="edit(scope.row)"
           />
         </template>
@@ -244,13 +256,13 @@
       <el-table-column
         :label="$t('trade.profitRate')"
         align="center"
-        width="80"
+        width="75"
       >
         <template slot-scope="scope">
           <el-input
             v-model="scope.row.profit"
             class="edit-input"
-            size="small"
+            size="mini"
             @blur="edit(scope.row)"
           />
         </template>
@@ -258,18 +270,18 @@
       <el-table-column
         :label="$t('trade.lossRate')"
         align="center"
-        width="80"
+        width="75"
       >
         <template slot-scope="scope">
           <el-input
             v-model="scope.row.loss"
             class="edit-input"
-            size="small"
+            size="mini"
             @blur="edit(scope.row)"
           />
         </template>
       </el-table-column>
-      <el-table-column :label="$t('trade.enable')" align="center" width="80">
+      <el-table-column :label="$t('trade.enable')" align="center" width="75">
         <template slot-scope="{ row }">
           <el-switch
             v-model="row.enable"
@@ -282,7 +294,7 @@
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="80"
+        width="75"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row}">
@@ -323,7 +335,7 @@
         style="width: 500px; margin-left:50px;"
       >
         <el-form-item :label="$t('trade.strategyType')" prop="strategyType">
-          <el-select v-model="batchInfo.strategyType" clearable size="small">
+          <el-select v-model="batchInfo.strategyType" clearable size="mini">
             <el-option :label="$t('strategyType.global')" value="global" />
             <el-option :label="$t('strategyType.custom')" value="custom" />
             <el-option :label="$t('strategyType.line1')" value="line1" />
@@ -336,12 +348,12 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('trade.strategyTemplate')" prop="strategyTemplates">
-          <el-select v-model="batchInfo.strategyTemplateId" clearable size="small">
+          <el-select v-model="batchInfo.strategyTemplateId" clearable size="mini">
             <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('trade.marginType')" prop="marginType">
-          <el-select v-model="batchInfo.marginType" clearable size="small">
+          <el-select v-model="batchInfo.marginType" clearable size="mini">
             <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
             <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
           </el-select>
@@ -387,7 +399,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -397,7 +409,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -411,7 +423,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -465,7 +477,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -475,7 +487,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -489,7 +501,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -543,7 +555,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -553,7 +565,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -567,7 +579,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -621,7 +633,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -631,7 +643,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -645,7 +657,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -658,7 +670,7 @@
                 <el-input
                   v-model="scope.row.multiplier"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -712,7 +724,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -722,7 +734,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -736,7 +748,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -749,7 +761,7 @@
                 <el-input
                   v-model="scope.row.std_dev_multiplier"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -803,7 +815,7 @@
                 <el-input
                   v-model="scope.row.name"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -813,7 +825,7 @@
               width="100"
             >
               <template slot-scope="scope">
-                <el-select v-model="scope.row.kline_interval" size="small">
+                <el-select v-model="scope.row.kline_interval" size="mini">
                   <el-option v-for="item in klineInterval" :key="item" :label="item" :value="item" />
                 </el-select>
               </template>
@@ -827,7 +839,7 @@
                 <el-input
                   v-model="scope.row.period"
                   class="edit-input"
-                  size="small"
+                  size="mini"
                 />
               </template>
             </el-table-column>
@@ -871,7 +883,7 @@
     <el-dialog :title="dialogStrategyTitle" :visible.sync="dialogStrategyVisible" width="75%">
       <div style="display:flex; gap: 10px;">
         <el-button type="primary" @click="addStrategy">{{ $t('table.add') }}</el-button>
-        <el-select v-model="batchInfo.strategyTemplateId" clearable size="small" placeholder="select template" @change="selectStrategyTemplate">
+        <el-select v-model="batchInfo.strategyTemplateId" clearable size="mini" placeholder="select template" @change="selectStrategyTemplate">
           <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </div>
@@ -892,7 +904,7 @@
             <el-input
               v-model="scope.row.name"
               class="edit-input"
-              size="small"
+              size="mini"
             />
           </template>
         </el-table-column>
@@ -905,7 +917,7 @@
               v-model="scope.row.code"
               type="textarea"
               :rows="6"
-              size="small"
+              size="mini"
               class="edit-input"
             />
           </template>
@@ -930,7 +942,7 @@
           width="140"
         >
           <template slot-scope="scope">
-            <el-select v-model="scope.row.type" size="small">
+            <el-select v-model="scope.row.type" size="mini">
               <el-option :label="$t('trade.long')" value="long" />
               <el-option :label="$t('trade.short')" value="short" />
               <el-option :label="$t('trade.close_long')" value="close_long" />
@@ -1077,7 +1089,7 @@ export default {
         '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
       list: [],
-      sort: '+',
+      sort: '',
       listLoading: false,
       serviceLoading: false,
       enableLoading: false,
@@ -1087,6 +1099,7 @@ export default {
         symbol: '',
         enable: '',
         margin_type: '',
+        pin: '',
       },
 
       dialogFormVisible: false,
@@ -1162,7 +1175,6 @@ export default {
     },
   },
   activated() {
-    console.log('activated')
     this.interval = localStorage.getItem('refreshInterval') || 30
     this.fetchData()
   },
@@ -1179,7 +1191,6 @@ export default {
     await this.fetchData()
   },
   beforeDestroy() {
-    localStorage.setItem('futures_search', JSON.stringify(this.search))
     clearInterval(this.timeId)
   },
   methods: {
@@ -1363,12 +1374,17 @@ export default {
       this.expandKeys = expandedRows.map(item => item.symbol)
     },
     sortChange(data) {
-      const { order } = data
-      this.sort = order === 'ascending' ? '+' : '-'
+      const { prop, order } = data
+      if (!order) {
+        this.sort = ''
+      } else {
+        this.sort = prop + (order === 'ascending' ? '+' : '-')
+      }
       this.fetchData()
     },
     async fetchData() {
       clearInterval(this.timeId)
+      localStorage.setItem('futures_search', JSON.stringify(this.search))
       // this.listLoading = true
       this.getFutures()
       this.timeId = setInterval(() => this.getFutures(), this.interval * 1000)
@@ -1377,7 +1393,26 @@ export default {
     async getFutures() {
       const search = this.search
       const { data } = await getFeatures({ sort: this.sort, ...search })
-      this.list = data.map(item => ({ ...item, enable: item.enable > 0 }))
+      this.list = data.map(item => {
+        const { pin, enable, ...other } = item
+        return { enable: enable > 0, pin_read: pin, pin, ...other }
+      })
+    },
+    async editPin(row) {
+      if (row.pin_read && !row.pin) {
+        row.pin = 1
+      } else if (row.pin_read && row.pin) {
+        row.pin_read = 0
+        row.pin = 0
+      }
+      try {
+        await setFeature(row.id, { pin: row.pin })
+        this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.editFail'), type: 'success' })
+      }
+      console.log(row)
     },
     async edit(row) {
       const { id, enable, leverage, usdt, ...data } = row
