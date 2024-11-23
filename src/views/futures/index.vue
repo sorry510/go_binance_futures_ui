@@ -1212,7 +1212,7 @@ export default {
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
-        'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend', // symbol
+        'SystemStartTime', 'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend', // symbol
         'ROI', 'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.PositionAmt', 'Position.UnRealizedProfit', 'Position.MarginType', 'Position.Leverage', 'Position.PositionSide', // position
       ]
       if (this.strategySymbolId !== undefined) {
