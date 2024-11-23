@@ -203,7 +203,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              {{ scope.row.isolatedWallet == 0 ? $t('position.isolated') : $t('position.crossed') }}
+              {{ scope.row.isolatedWallet != 0 ? $t('position.isolated') : $t('position.crossed') }}
             </template>
           </el-table-column>
         </el-table>
