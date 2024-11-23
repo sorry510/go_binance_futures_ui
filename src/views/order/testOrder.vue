@@ -5,10 +5,15 @@
         v-model="listQuery.symbol"
         size="mini"
         :placeholder="$t('trade.coin')"
-        style="width: 200px; margin-right: 10px"
+        style="width: 150px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <el-select v-model="listQuery.type" size="mini" class="filter-item" style="width: 75px;" placeholder="status">
+        <el-option :label="$t('table.all')" value="all" />
+        <el-option :label="$t('table.open')" value="open" />
+        <el-option :label="$t('table.close')" value="close" />
+      </el-select>
       <el-date-picker
         v-model="listQuery.start_time"
         size="mini"
@@ -144,10 +149,20 @@
       <el-table-column
         :label="$t('trade.time')"
         align="center"
+        width="140"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ parseTime(scope.row.updateTime) }}
+          {{ parseTime(scope.row.createTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.period')"
+        align="center"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          {{ scope.row.createTime === scope.row.updateTime ? '-' : toPeriod(scope.row.updateTime, scope.row.createTime) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -167,7 +182,7 @@
       </el-table-column>
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-form label-position="left" inline class="info-table-expand">
+          <el-form label-position="left" class="info-table-expand">
             <el-form-item :label="`${$t('trade.open_strategy')}`">
               <codemirror
                 style="width: 100%"
@@ -199,10 +214,21 @@
 </template>
 
 <style scoped>
-.filter-item {
-  margin-right: 10px;
-}
-
+  .filter-item {
+    margin-right: 10px;
+  }
+  .info-table-expand {
+    font-size: 0;
+  }
+  .info-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .info-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
+  }
 </style>
 
 <script>
@@ -284,6 +310,7 @@ export default {
         start_time: undefined,
         end_time: undefined,
         symbol: undefined,
+        type: 'all',
       },
       listLoading: false,
       rowKey(row) {
@@ -308,6 +335,15 @@ export default {
   },
   methods: {
     parseTime,
+    toPeriod(endTime, startTime) {
+      const totalMinutes = (endTime - startTime) / 1000 / 60
+      const hours = Math.floor(totalMinutes / 60)
+      const minutes = Math.floor(totalMinutes % 60)
+      return `${this.padTo2Digits(hours)}:${this.padTo2Digits(minutes)}`
+    },
+    padTo2Digits(num) {
+      return num.toString().padStart(2, '0')
+    },
     round(data, num = 3) {
       return round(data, num)
     },

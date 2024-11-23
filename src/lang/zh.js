@@ -311,6 +311,7 @@ export default {
     startTime: '开始时间',
     endTime: '结束时间',
     strategyTemplate: '策略模板',
+    period: '周期',
   },
   assets: {
     'asset': '资产',

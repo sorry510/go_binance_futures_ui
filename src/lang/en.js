@@ -310,6 +310,7 @@ export default {
     startTime: 'start time',
     endTime: 'end time',
     strategyTemplate: 'strategy template',
+    period: 'period',
   },
   assets: {
     'asset': 'asset',

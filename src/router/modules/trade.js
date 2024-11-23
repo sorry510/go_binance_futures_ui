@@ -133,7 +133,7 @@ const tradeRouter = [
         path: 'code',
         name: 'TradeCode',
         component: () => import('@/views/trade/TradeCode'),
-        meta: { title: 'systemConfig', icon: 'form', affix: true, noCache: true },
+        meta: { title: 'systemConfig', icon: 'form', affix: false, noCache: true },
       },
     ],
   },

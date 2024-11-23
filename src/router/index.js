@@ -47,29 +47,29 @@ export const constantRoutes = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index')
-      }
-    ]
+        component: () => import('@/views/redirect/index'),
+      },
+    ],
   },
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/404',
     component: () => import('@/views/error-page/404'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/401',
     component: () => import('@/views/error-page/401'),
-    hidden: true
+    hidden: true,
   },
   {
     path: '/',
@@ -80,10 +80,10 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/configShow'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', affix: true, noCache: true }
-      }
-    ]
-  }
+        meta: { title: 'dashboard', icon: 'dashboard', affix: true, noCache: true },
+      },
+    ],
+  },
   // {
   //   path: '/documentation',
   //   component: Layout,
@@ -395,13 +395,13 @@ export const asyncRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: constantRoutes,
 })
 
 const router = createRouter()
