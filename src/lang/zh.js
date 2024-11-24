@@ -81,6 +81,7 @@ export default {
     systemConfig: '系统设置',
     strategyTemplate: '策略模板',
     testStrategyResult: '测试策略结果',
+    spotsTrade: '现货交易',
   },
   navbar: {
     dashboard: '首页',

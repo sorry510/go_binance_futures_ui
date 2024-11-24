@@ -11,13 +11,13 @@
         >
           {{ $t('table.add') }}
         </el-button>
-        <el-button
+        <!-- <el-button
           type="info"
           size="mini"
           @click="$router.push({ name: 'futuresAccount' })"
         >
           {{ $t('route.futuresAccount') }}
-        </el-button>
+        </el-button> -->
         <el-button
           type="success"
           size="mini"
@@ -41,13 +41,13 @@
         >
           {{ $t('table.editBatch') }}
         </el-button>
-        <el-button
+        <!-- <el-button
           type="primary"
           size="mini"
           @click="$router.push({ name: 'strategyTemplate' })"
         >
           {{ $t('route.strategyTemplate') }}
-        </el-button>
+        </el-button> -->
       </div>
       <div style="width:25%;text-align:right;">
         {{ $t('table.totalCount') }}: {{ list.length }}
@@ -68,10 +68,6 @@
         <el-select v-model="search.enable" size="mini" style="width: 100px;" clearable placeholder="status">
           <el-option :label="$t('table.open')" value="1" />
           <el-option :label="$t('table.close')" value="0" />
-        </el-select>
-        <el-select v-model="search.margin_type" size="mini" style="width: 120px;" clearable placeholder="margin_type">
-          <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
-          <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
         </el-select>
         <el-button
           type="success"
@@ -190,43 +186,6 @@
               <span v-else style="color: green;">{{ scope.row.percentChange }}%↑ </span>
             </template>
           </el-table-column>
-          <!-- <el-table-column
-        :label="$t('trade.klineInterval')"
-        align="center"
-        width="110"
-      >
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.kline_interval" size="mini" @change="edit(scope.row)">
-            <el-option label="1m" value="1m" />
-            <el-option label="3m" value="3m" />
-            <el-option label="5m" value="5m" />
-            <el-option label="15m" value="15m" />
-            <el-option label="30m" value="30m" />
-            <el-option label="1h" value="1h" />
-            <el-option label="2h" value="2h" />
-            <el-option label="4h" value="4h" />
-            <el-option label="6h" value="6h" />
-            <el-option label="8h" value="8h" />
-            <el-option label="12h" value="12h" />
-            <el-option label="1d" value="1d" />
-            <el-option label="3d" value="3d" />
-            <el-option label="1w" value="1w" />
-            <el-option label="1M" value="1M" />
-          </el-select>
-        </template>
-      </el-table-column> -->
-          <el-table-column
-            :label="$t('trade.marginType')"
-            align="center"
-            width="125"
-          >
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.marginType" size="mini" @change="edit(scope.row)">
-                <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
-                <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
-              </el-select>
-            </template>
-          </el-table-column>
           <el-table-column
             :label="$t('trade.usdt')"
             align="center"
@@ -235,20 +194,6 @@
             <template slot-scope="scope">
               <el-input
                 v-model="scope.row.usdt"
-                class="edit-input"
-                size="mini"
-                @blur="edit(scope.row)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('trade.leverage')"
-            align="center"
-            width="75"
-          >
-            <template slot-scope="scope">
-              <el-input
-                v-model="scope.row.leverage"
                 class="edit-input"
                 size="mini"
                 @blur="edit(scope.row)"
@@ -411,43 +356,6 @@
               <span v-else style="color: green;">{{ scope.row.percentChange }}%↑ </span>
             </template>
           </el-table-column>
-          <!-- <el-table-column
-        :label="$t('trade.klineInterval')"
-        align="center"
-        width="110"
-      >
-        <template slot-scope="scope">
-          <el-select v-model="scope.row.kline_interval" size="mini" @change="edit(scope.row)">
-            <el-option label="1m" value="1m" />
-            <el-option label="3m" value="3m" />
-            <el-option label="5m" value="5m" />
-            <el-option label="15m" value="15m" />
-            <el-option label="30m" value="30m" />
-            <el-option label="1h" value="1h" />
-            <el-option label="2h" value="2h" />
-            <el-option label="4h" value="4h" />
-            <el-option label="6h" value="6h" />
-            <el-option label="8h" value="8h" />
-            <el-option label="12h" value="12h" />
-            <el-option label="1d" value="1d" />
-            <el-option label="3d" value="3d" />
-            <el-option label="1w" value="1w" />
-            <el-option label="1M" value="1M" />
-          </el-select>
-        </template>
-      </el-table-column> -->
-          <el-table-column
-            :label="$t('trade.marginType')"
-            align="center"
-            width="125"
-          >
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.marginType" size="mini" @change="edit(scope.row)">
-                <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
-                <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
-              </el-select>
-            </template>
-          </el-table-column>
           <el-table-column
             :label="$t('trade.usdt')"
             align="center"
@@ -463,13 +371,169 @@
             </template>
           </el-table-column>
           <el-table-column
-            :label="$t('trade.leverage')"
+            :label="$t('trade.profitRate')"
             align="center"
             width="75"
           >
             <template slot-scope="scope">
               <el-input
-                v-model="scope.row.leverage"
+                v-model="scope.row.profit"
+                class="edit-input"
+                size="mini"
+                @blur="edit(scope.row)"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.lossRate')"
+            align="center"
+            width="75"
+          >
+            <template slot-scope="scope">
+              <el-input
+                v-model="scope.row.loss"
+                class="edit-input"
+                size="mini"
+                @blur="edit(scope.row)"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('trade.enable')" align="center" width="75">
+            <template slot-scope="{ row }">
+              <el-switch
+                v-model="row.enable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                @change="isChangeBuy($event, row)"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('table.actions')"
+            align="center"
+            width="75"
+            class-name="small-padding fixed-width"
+          >
+            <template slot-scope="{row}">
+              <el-button
+                type="danger"
+                size="mini"
+                @click="del(row)"
+              >{{ $t('table.delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="FDUSD" name="FDUSD">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          size="mini"
+          :row-key="rowKey"
+          :expand-row-keys="expandKeys"
+          highlight-current-row
+          @sort-change="sortChange"
+          @expand-change="expandChange"
+        >
+          <el-table-column
+            :label="$t('trade.pin')"
+            width="50"
+            align="center"
+          >
+            <template slot-scope="{ row }">
+              <el-rate v-model="row.pin_read" :max="1" @change="editPin(row)" />
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.coin')"
+            align="center"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              {{ scope.row.symbol }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.strategyType')"
+            align="center"
+            width="115"
+          >
+            <template slot-scope="scope">
+              <el-select v-model="scope.row.strategy_type" size="mini" @change="edit(scope.row)">
+                <el-option :label="$t('strategyType.global')" value="global" />
+                <el-option :label="$t('strategyType.custom')" value="custom" />
+                <el-option :label="$t('strategyType.line1')" value="line1" />
+                <el-option :label="$t('strategyType.line2')" value="line2" />
+                <el-option :label="$t('strategyType.line3')" value="line3" />
+                <el-option :label="$t('strategyType.line4')" value="line4" />
+                <el-option :label="$t('strategyType.line5')" value="line5" />
+                <el-option :label="$t('strategyType.line6')" value="line6" />
+                <el-option :label="$t('strategyType.line7')" value="line7" />
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.technology')"
+            align="center"
+            width="115"
+          >
+            <template slot-scope="scope">
+              <el-button
+                type="success"
+                size="mini"
+                @click="openTechnologyDialog(scope.row)"
+              > {{ $t('trade.technology') }}
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.strategy')"
+            align="center"
+            width="100"
+          >
+            <template slot-scope="scope">
+              <el-button
+                type="success"
+                size="mini"
+                @click="openStrategyDialog(scope.row)"
+              > {{ $t('trade.strategy') }}
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.nowPrice')"
+            align="center"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              {{ round(scope.row.close, 10) }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="24h↑↓"
+            align="center"
+            width="90"
+            show-overflow-tooltip
+            prop="percent_change"
+            sortable="custom"
+          >
+            <template slot-scope="scope">
+              <span v-if="scope.row.percentChange < 0" style="color: red;">{{ scope.row.percentChange }}%↓ </span>
+              <span v-else style="color: green;">{{ scope.row.percentChange }}%↑ </span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('trade.usdt')"
+            align="center"
+            width="75"
+          >
+            <template slot-scope="scope">
+              <el-input
+                v-model="scope.row.usdt"
                 class="edit-input"
                 size="mini"
                 @blur="edit(scope.row)"
@@ -1248,7 +1312,7 @@
 </style>
 
 <script>
-import { getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit, testStrategyRule } from '@/api/trade'
+import { getSpots, editSpot, addSpot, delSpot, enableSpot, batchEdit, testStrategyRule } from '@/api/spot'
 import { getList } from '@/api/strategy_template'
 import { round } from 'mathjs'
 
@@ -1401,7 +1465,7 @@ export default {
     },
   },
   activated() {
-    this.interval = localStorage.getItem('refreshInterval') || 30
+    this.interval = localStorage.getItem('spots_refresh_interval') || 30
     this.fetchData()
   },
   deactivated() {
@@ -1409,11 +1473,11 @@ export default {
   },
   async created() {
     this.getStrategyTemplates()
-    const search = localStorage.getItem('futures_search')
+    const search = localStorage.getItem('spots_search')
     if (search) {
       this.search = JSON.parse(search)
     }
-    this.interval = localStorage.getItem('refreshInterval') || 30
+    this.interval = localStorage.getItem('spots_refresh_interval') || 30
     await this.fetchData()
   },
   beforeDestroy() {
@@ -1589,7 +1653,7 @@ export default {
       }
     },
     changeRefreshInterval(val) {
-      localStorage.setItem('refreshInterval', val)
+      localStorage.setItem('spots_refresh_interval', val)
       clearInterval(this.timeId)
       this.timeId = setInterval(() => this.fetchData(), val * 1000)
     },
@@ -1614,15 +1678,15 @@ export default {
     },
     async fetchData() {
       clearInterval(this.timeId)
-      localStorage.setItem('futures_search', JSON.stringify(this.search))
+      localStorage.setItem('spots_search', JSON.stringify(this.search))
       // this.listLoading = true
-      this.getFutures()
-      this.timeId = setInterval(() => this.getFutures(), this.interval * 1000)
+      this.getSpots()
+      this.timeId = setInterval(() => this.getSpots(), this.interval * 1000)
       // this.listLoading = false
     },
-    async getFutures() {
+    async getSpots() {
       const search = this.search
-      const { data } = await getFeatures({ sort: this.sort, ...search })
+      const { data } = await getSpots({ sort: this.sort, ...search })
       this.list = data.map(item => {
         const { pin, enable, ...other } = item
         return { enable: enable > 0, pin_read: pin, pin, ...other }
@@ -1636,7 +1700,7 @@ export default {
         row.pin = 0
       }
       try {
-        await setFeature(row.id, { pin: row.pin })
+        await editSpot(row.id, { pin: row.pin })
         this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
@@ -1647,7 +1711,7 @@ export default {
     async edit(row) {
       const { id, enable, leverage, usdt, ...data } = row
       try {
-        await setFeature(id, { ...data, leverage: Number(leverage), usdt, enable: enable ? 1 : 0 })
+        await editSpot(id, { ...data, leverage: Number(leverage), usdt, enable: enable ? 1 : 0 })
         this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
@@ -1658,7 +1722,7 @@ export default {
       this.$confirm(`${this.$t('table.deleteConfirm')} ${row.symbol}?`)
         .then(async() => {
           try {
-            await delFeature(row.id)
+            await delSpot(row.id)
             this.$message({ message: this.$t('table.deleteSuccess'), type: 'success' })
             await this.fetchData()
           } catch (e) {
@@ -1672,7 +1736,7 @@ export default {
       this.$confirm(text)
         .then(async() => {
           try {
-            await enableFeature(flag)
+            await enableSpot(flag)
             this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
             await this.fetchData()
           } catch (e) {
@@ -1699,7 +1763,7 @@ export default {
         'enable': 1,
         'updateTime': +new Date(),
       }
-      await addFeature(data)
+      await addSpot(data)
       this.dialogFormVisible = false
     },
     async batchEdit(batchInfo) {
@@ -1779,7 +1843,7 @@ export default {
             }
           })
         })
-        await setFeature(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
+        await editSpot(this.technologySymbolId, { technology: JSON.stringify(this.technology) })
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
@@ -1796,7 +1860,7 @@ export default {
         if (this.copyTechnology) {
           data.technology = this.copyTechnology
         }
-        await setFeature(this.strategySymbolId, data)
+        await editSpot(this.strategySymbolId, data)
         this.copyTechnology = ''
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
         await this.fetchData()

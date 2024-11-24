@@ -39,6 +39,41 @@ const tradeRouter = [
     ],
   },
   {
+    path: '/spots',
+    component: Layout,
+    redirect: '/spots/symbols',
+    meta: { title: 'spotsTrade', icon: 'table' },
+    children: [
+      {
+        path: 'symbols',
+        name: 'spotSymbols',
+        component: () => import('@/views/spots/index'),
+        meta: { title: 'spotsTrade', icon: 'table', affix: false, noCache: false },
+      },
+      // {
+      //   path: 'account',
+      //   name: 'futuresAccount',
+      //   component: () => import('@/views/futures/Account'),
+      //   meta: { title: 'futuresAccount', icon: 'table', affix: false, noCache: true },
+      //   hidden: true,
+      // },
+      // {
+      //   path: 'strategy-template',
+      //   name: 'strategyTemplate',
+      //   component: () => import('@/views/futures/StrategyTemplate'),
+      //   meta: { title: 'strategyTemplate', icon: 'table', affix: false, noCache: true },
+      //   hidden: true,
+      // },
+      // {
+      //   path: 'test-strategy-results',
+      //   name: 'testStrategyResult',
+      //   component: () => import('@/views/order/testOrder'),
+      //   meta: { title: 'testStrategyResult', icon: 'table', affix: false, noCache: true },
+      //   hidden: true,
+      // },
+    ],
+  },
+  {
     path: '/order',
     component: Layout,
     redirect: '/order/list',

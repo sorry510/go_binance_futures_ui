@@ -81,6 +81,7 @@ export default {
     systemConfig: 'System Config',
     strategyTemplate: 'Strategy Template',
     testStrategyResult: 'Test Strategy Result',
+    spotsTrade: 'Spots Trade',
   },
   navbar: {
     dashboard: 'Dashboard',
