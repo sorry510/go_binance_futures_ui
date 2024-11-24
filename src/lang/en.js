@@ -82,6 +82,7 @@ export default {
     strategyTemplate: 'Strategy Template',
     testStrategyResult: 'Test Strategy Result',
     spotsTrade: 'Spots Trade',
+    deliveryTrade: 'Delivery Trade',
   },
   navbar: {
     dashboard: 'Dashboard',
@@ -239,6 +240,8 @@ export default {
     testStrategy: 'test strategy',
     testStrategyNoticeLimitMin: 'test strategy notice limit min',
     externalLinks: 'external links',
+    websocket: 'websocket',
+    autoUpdatePrice: 'auto update price',
   },
   trade: {
     name: 'name',
@@ -313,6 +316,7 @@ export default {
     strategyTemplate: 'strategy template',
     period: 'period',
     pin: 'pin',
+    notYet: 'not yet',
   },
   assets: {
     'asset': 'asset',

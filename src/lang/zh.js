@@ -82,6 +82,7 @@ export default {
     strategyTemplate: '策略模板',
     testStrategyResult: '测试策略结果',
     spotsTrade: '现货交易',
+    deliveryTrade: '币本位交易',
   },
   navbar: {
     dashboard: '首页',
@@ -239,6 +240,8 @@ export default {
     testStrategy: '测试策略',
     testStrategyNoticeLimitMin: '测试策略通知限制(min)',
     externalLinks: '外部链接',
+    websocket: 'websocket',
+    autoUpdatePrice: '自动更新币价',
   },
   trade: {
     name: '名称',
@@ -314,6 +317,7 @@ export default {
     strategyTemplate: '策略模板',
     period: '周期',
     pin: '置顶',
+    notYet: '暂未开放',
   },
   assets: {
     'asset': '资产',

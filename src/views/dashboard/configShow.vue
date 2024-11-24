@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
-    <el-collapse :value="['1', '2', '5', '6']">
-      <el-collapse-item name="1">
+    <el-collapse :value="['futures', 'spot', 'delivery', 'new_coin_rush', 'debug', 'external']">
+      <el-collapse-item name="futures">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.futuresTrade') }}: </span>
@@ -17,6 +17,18 @@
         </template>
         <div class="dashboard-text">
           <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.websocket') }}: </span>
+              <el-switch
+                :value="config.wsFuturesEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'ws_futures_enable')"
+              />
+              <span class="green" style="margin-left: 20px;">{{ $t('showPage.autoUpdatePrice') }}</span>
+            </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowLong') }}: </span>
               <el-switch
@@ -105,7 +117,69 @@
           </div>
         </div>
       </el-collapse-item>
-      <el-collapse-item name="2">
+      <el-collapse-item name="spot">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.spotsTrade') }}({{ $t('trade.notYet') }}): </span>
+            <el-switch
+              v-model="config.tradeSpotEnable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'spot_enable')"
+            />
+          </div>
+        </template>
+        <div class="dashboard-text">
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.websocket') }}: </span>
+              <el-switch
+                :value="config.wsSpotEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'ws_spot_enable')"
+              />
+              <span class="green" style="margin-left: 20px;">{{ $t('showPage.autoUpdatePrice') }}</span>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item name="delivery">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.deliveryTrade') }}({{ $t('trade.notYet') }}): </span>
+            <el-switch
+              v-model="config.tradeDeliveryEnable"
+              active-color="#13ce66"
+              inactive-color="#dcdfe6"
+              :active-value="1"
+              :inactive-value="0"
+              @change="editConfig($event, 'delivery_enable')"
+            />
+          </div>
+        </template>
+        <div class="dashboard-text">
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.websocket') }}: </span>
+              <el-switch
+                :value="config.wsDeliveryEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'ws_delivery_enable')"
+              />
+              <span class="green" style="margin-left: 20px;">{{ $t('showPage.autoUpdatePrice') }}</span>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item name="new_coin_rush">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.newCoinRush') }}: </span>
@@ -138,7 +212,7 @@
           </div>
         </div>
       </el-collapse-item>
-      <el-collapse-item name="3">
+      <el-collapse-item name="coin_notice">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.coinNotice') }}: </span>
@@ -153,7 +227,7 @@
           </div>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="4">
+      <el-collapse-item name="market_listen">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.marketListen') }}: </span>
@@ -167,7 +241,7 @@
             />
           </div></template>
       </el-collapse-item>
-      <el-collapse-item name="5">
+      <el-collapse-item name="funding_rate">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.fundingRate') }}: </span>
@@ -182,11 +256,11 @@
           </div>
         </template>
       </el-collapse-item>
-      <el-collapse-item name="5">
+      <el-collapse-item name="debug">
         <template slot="title">
           <div class="dashboard-text">
             <span>debug: </span>
-            <span v-if="config.debug === '1'" class="red" />
+            <span v-if="config.debug === '1'" class="red">{{ $t('showPage.open') }}</span>
             <span v-else class="green">{{ $t('showPage.close') }}</span>
           </div>
         </template>
@@ -198,7 +272,7 @@
           </div>
         </div>
       </el-collapse-item>
-      <el-collapse-item name="6">
+      <el-collapse-item name="external">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('showPage.externalLinks') }}: </span>
@@ -238,9 +312,14 @@ export default {
         'tradeFutureTest': 0,
         'tradeFutureTestNoticeLimitMin': 0,
         'tradeFutureEnable': 0,
+        'tradeSpotEnable': 0,
+        'tradeDeliveryEnable': 0,
         'tradeNewEnable': 0,
         'tradeStrategyCoin': '',
         'tradeStrategyTrade': '',
+        wsFuturesEnable: 0,
+        wsSpotEnable: 0,
+        wsDeliveryEnable: 0,
       },
     }
   },
