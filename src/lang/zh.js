@@ -242,6 +242,7 @@ export default {
     externalLinks: '外部链接',
     websocket: 'websocket',
     autoUpdatePrice: '自动更新币价',
+    futuresPositionConvertEnable: '仓位收益正负转换通知',
   },
   trade: {
     name: '名称',

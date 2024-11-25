@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <el-collapse :value="['futures', 'spot', 'delivery', 'new_coin_rush', 'debug', 'external']">
+    <el-collapse v-loading="loading" :value="['futures', 'spot', 'delivery', 'new_coin_rush', 'debug', 'external']">
       <el-collapse-item name="futures">
         <template slot="title">
           <div class="dashboard-text">
@@ -28,6 +28,17 @@
                 @change="editConfig($event, 'ws_futures_enable')"
               />
               <span class="green" style="margin-left: 20px;">{{ $t('showPage.autoUpdatePrice') }}</span>
+            </div>
+            <div class="dashboard-text">
+              <span>{{ $t('showPage.futuresPositionConvertEnable') }}: </span>
+              <el-switch
+                :value="config.futuresPositionConvertEnable"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                :active-value="1"
+                :inactive-value="0"
+                @change="editConfig($event, 'futures_position_convert_enable')"
+              />
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.allowLong') }}: </span>
@@ -297,6 +308,7 @@ export default {
   name: 'Dashboard',
   data() {
     return {
+      loading: false,
       config: {
         'debug': '0',
         'coinAllowLong': 1,
@@ -320,6 +332,7 @@ export default {
         wsFuturesEnable: 0,
         wsSpotEnable: 0,
         wsDeliveryEnable: 0,
+        futuresPositionConvertEnable: 0,
       },
     }
   },
@@ -337,10 +350,11 @@ export default {
       this.config = data
     },
     async editConfig(value, field) {
-      if (field === 'future_max_count' || field === 'future_test_notice_limit_min') {
-        value = Number(value)
-      }
+      this.loading = true
       try {
+        if (field === 'future_max_count' || field === 'future_test_notice_limit_min') {
+          value = Number(value)
+        }
         await editData({
           [field]: value,
         })
@@ -348,6 +362,8 @@ export default {
         this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+      } finally {
+        this.loading = false
       }
     },
     async testPusher() {

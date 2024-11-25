@@ -465,7 +465,7 @@ export default {
       this.positions = positions
     },
     async getFuturesPositions() {
-      const { data: { positions = null }} = await getFuturesPositions()
+      const { data: { positions = [] }} = await getFuturesPositions()
       this.positions = positions.map(position => {
         const positionAmtFloatAbs = Math.abs(position.positionAmt) // 空单为负数,纠正为绝对值
         const unRealizedProfit = Number(position.unRealizedProfit)

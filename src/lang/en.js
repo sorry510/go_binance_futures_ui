@@ -242,6 +242,7 @@ export default {
     externalLinks: 'external links',
     websocket: 'websocket',
     autoUpdatePrice: 'auto update price',
+    futuresPositionConvertEnable: 'futures position convert enable',
   },
   trade: {
     name: 'name',
