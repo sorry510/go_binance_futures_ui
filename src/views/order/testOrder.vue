@@ -127,7 +127,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.now_price - scope.row.price < 0" style="color: red;">{{ scope.row.now_price }}</span>
+          <span v-if="scope.row.close_profit < 0" style="color: red;">{{ scope.row.now_price }}</span>
           <span v-else style="color: green;">{{ scope.row.now_price }}</span>
         </template>
       </el-table-column>
