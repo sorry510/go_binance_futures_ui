@@ -159,48 +159,48 @@ export default {
           text: this.$t('table.today'),
           onClick(picker) {
             picker.$emit('pick', new Date())
-          }
+          },
         }, {
           text: this.$t('table.yesterday'),
           onClick(picker) {
             const date = new Date()
             date.setTime(date.getTime() - 3600 * 1000 * 24)
             picker.$emit('pick', date)
-          }
+          },
         }, {
           text: this.$t('table.lastWeek'),
           onClick(picker) {
             const date = new Date()
             date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
             picker.$emit('pick', date)
-          }
-        }]
+          },
+        }],
       },
       list: [],
       total: 0,
       listQuery: {
         page: 1,
-        limit: 10,
+        limit: 200,
         sort: '+',
         start_time: undefined,
         end_time: undefined,
-        symbol: undefined
+        symbol: undefined,
       },
       listLoading: false,
       rowKey(row) {
         return row.symbol + row.id
       },
-      expandKeys: []
+      expandKeys: [],
     }
   },
   computed: {
     allProfit() {
       const profit = this.list.reduce(
         (carry, row) => carry + Number(row.inexact_profit),
-        0
+        0,
       )
       return round(profit, 2)
-    }
+    },
   },
   async created() {
     await this.getList()
@@ -224,7 +224,7 @@ export default {
       const { data } = await getOrders({
         ...this.listQuery,
         start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
-        end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined
+        end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
       })
       this.list = data.list ?? []
       this.total = data.total
@@ -246,7 +246,7 @@ export default {
           }
         })
         .catch(() => {})
-    }
-  }
+    },
+  },
 }
 </script>

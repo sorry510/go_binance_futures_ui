@@ -9,10 +9,15 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select v-model="listQuery.type" size="mini" class="filter-item" style="width: 75px;" placeholder="status">
+      <el-select v-model="listQuery.type" clearable size="mini" class="filter-item" style="width: 75px;" placeholder="status">
         <el-option :label="$t('table.all')" value="all" />
         <el-option :label="$t('table.open')" value="open" />
         <el-option :label="$t('table.close')" value="close" />
+      </el-select>
+      <el-select v-model="listQuery.position_side" clearable size="mini" class="filter-item" style="width: 75px;" placeholder="position_side">
+        <el-option :label="$t('table.all')" value="all" />
+        <el-option :label="$t('trade.long')" value="LONG" />
+        <el-option :label="$t('trade.short')" value="SHORT" />
       </el-select>
       <el-date-picker
         v-model="listQuery.start_time"
@@ -76,7 +81,8 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ $t('trade.' + scope.row.position_side.toLowerCase()) }}
+          <span v-if="scope.row.position_side === 'LONG'" style="color: green;">{{ $t('trade.' + scope.row.position_side.toLowerCase()) }}</span>
+          <span v-else style="color: red;">{{ $t('trade.' + scope.row.position_side.toLowerCase()) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -116,12 +122,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('trade.close_price')"
+        :label="$t('trade.now_price')"
         align="center"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ scope.row.close_profit !== '0' ? scope.row.close_price : '-' }}
+          <span v-if="scope.row.now_price - scope.row.price < 0" style="color: red;">{{ scope.row.now_price }}</span>
+          <span v-else style="color: green;">{{ scope.row.now_price }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -146,14 +153,14 @@
           <span v-else style="color: green;">{{ scope.row.profit_percent }}</span>
         </template>
       </el-table-column>
+
       <el-table-column
-        :label="$t('trade.time')"
+        :label="$t('trade.close_price')"
         align="center"
-        width="140"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ parseTime(scope.row.createTime) }}
+          {{ scope.row.close_price !== '0' ? scope.row.close_price : '-' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -162,7 +169,17 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ scope.row.createTime === scope.row.updateTime ? '-' : toPeriod(scope.row.updateTime, scope.row.createTime) }}
+          {{ scope.row.createTime === scope.row.updateTime ? '-' : toPeriod(scope.row.updateTime, scope.row.createTime ) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.time')"
+        align="center"
+        width="140"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          {{ parseTime(scope.row.createTime) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -305,12 +322,13 @@ export default {
       total: 0,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 200,
         sort: '+',
         start_time: undefined,
         end_time: undefined,
         symbol: undefined,
         type: 'all',
+        position_side: 'all',
       },
       listLoading: false,
       rowKey(row) {
@@ -349,7 +367,11 @@ export default {
     },
     profitPercent(row) {
       if (row.close_price === '0') {
-        return 0
+        if (row.position_side === 'LONG') {
+          return (row.now_price - row.price) / row.now_price * row.leverage * 100
+        } else if (row.position_side === 'SHORT') {
+          return -(row.now_price - row.price) / row.now_price * row.leverage * 100
+        }
       }
       if (row.position_side === 'LONG') {
         return (row.close_price - row.price) / row.close_price * row.leverage * 100
@@ -374,6 +396,10 @@ export default {
       })
       this.list = (data.list ?? []).map(item => {
         item.profit_percent = this.round(this.profitPercent(item))
+        item.now_profit = this.profit_percent
+        if (item.close_profit === '0') {
+          item.close_profit = this.round((item.now_price - item.price) * item.position_amt)
+        }
         return item
       })
       this.total = data.total

@@ -298,6 +298,7 @@ export default {
     fundRate: 'fund rate(%)',
     price: 'price',
     close_price: 'close price',
+    now_price: 'now price',
     nowFundRate: 'now fund rate(%)',
     history: 'history',
     fundRateHistory: 'fund rate history',

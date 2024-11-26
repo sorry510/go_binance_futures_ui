@@ -297,6 +297,7 @@ export default {
     fundRate: '资金费率(%)',
     price: '价格',
     close_price: '平仓价格',
+    now_price: '当前价格',
     nowFundRate: '当前费率(%)',
     history: '历史',
     fundRateHistory: '资金费率历史',
