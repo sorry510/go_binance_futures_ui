@@ -1515,6 +1515,10 @@ export default {
             keywords.push(`kline_${item}.Close[]`)
             keywords.push(`kline_${item}.Open`)
             keywords.push(`kline_${item}.Open[]`)
+            keywords.push(`kline_${item}.Amount`)
+            keywords.push(`kline_${item}.Amount[]`)
+            keywords.push(`kline_${item}.Qps`)
+            keywords.push(`kline_${item}.Qps[]`)
           })
         }
       }
