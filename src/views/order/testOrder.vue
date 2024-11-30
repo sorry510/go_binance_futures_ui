@@ -347,6 +347,10 @@ export default {
     },
   },
   async created() {
+    const search = localStorage.getItem('test_futures_strategy_search')
+    if (search) {
+      this.listQuery = JSON.parse(search)
+    }
     await this.getList()
   },
   beforeDestroy() {
@@ -388,6 +392,7 @@ export default {
       this.getList()
     },
     async getList() {
+      localStorage.setItem('test_futures_strategy_search', JSON.stringify(this.listQuery))
       this.listLoading = true
       const { data } = await getResults({
         ...this.listQuery,
