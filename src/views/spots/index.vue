@@ -596,6 +596,13 @@
         </el-table>
       </el-tab-pane>
     </el-tabs>
+    <pagination
+      v-show="allList.length > 0"
+      :total="allList.length"
+      :page.sync="search.page"
+      :limit.sync="search.limit"
+      @pagination="getPageList"
+    />
     <!-- add data -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form
@@ -1314,6 +1321,7 @@
 <script>
 import { getSpots, editSpot, addSpot, delSpot, enableSpot, batchEdit, testStrategyRule } from '@/api/spot'
 import { getList } from '@/api/strategy_template'
+import Pagination from '@/components/Pagination'
 import { round } from 'mathjs'
 
 import CodeMirror from 'codemirror'
@@ -1371,12 +1379,14 @@ const initTechnology = {
 export default {
   components: {
     codemirror,
+    Pagination,
   },
   data() {
     return {
       klineInterval: [
         '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
+      allList: [],
       list: [],
       sort: '',
       listLoading: false,
@@ -1385,6 +1395,8 @@ export default {
       buyAll: true,
       sellAll: true,
       search: {
+        page: 1,
+        limit: 50,
         symbol_type: 'USDT',
         symbol: '',
         enable: '',
@@ -1473,10 +1485,10 @@ export default {
   },
   async created() {
     this.getStrategyTemplates()
-    const search = localStorage.getItem('spots_search')
-    if (search) {
-      this.search = JSON.parse(search)
-    }
+    this.search = Object.assign(this.search, this.$route.query)
+    this.search.page = parseInt(this.search.page) || 1
+    this.search.limit = parseInt(this.search.limit) || 50
+
     this.interval = localStorage.getItem('spots_refresh_interval') || 30
     await this.fetchData()
   },
@@ -1678,6 +1690,7 @@ export default {
     },
     handleTabClick(tab) {
       this.search.symbol_type = tab.name
+      this.search.page = 1
       this.fetchData()
     },
     async fetchData() {
@@ -1691,10 +1704,23 @@ export default {
     async getSpots() {
       const search = this.search
       const { data } = await getSpots({ sort: this.sort, ...search })
-      this.list = data.map(item => {
+      this.allList = data.map(item => {
         const { pin, enable, ...other } = item
         return { enable: enable > 0, pin_read: pin, pin, ...other }
       })
+      this.getPageList()
+    },
+    replaceUrl: function() {
+      this.$router.push({
+        path: this.$route.path, // 保持当前路径不变
+        query: {
+          ...this.search,
+        },
+      })
+    },
+    getPageList() {
+      const search = this.search
+      this.list = this.allList.slice((search.page - 1) * search.limit, search.page * search.limit)
     },
     async editPin(row) {
       if (row.pin_read && !row.pin) {
@@ -1710,7 +1736,6 @@ export default {
       } catch (e) {
         this.$message({ message: this.$t('table.editFail'), type: 'success' })
       }
-      console.log(row)
     },
     async edit(row) {
       const { id, enable, leverage, usdt, ...data } = row
