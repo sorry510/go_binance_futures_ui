@@ -91,7 +91,10 @@
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.excludeSymbols') }}: </span>
-              <el-input v-model="config.coinExcludeSymbols" type="textarea" :rows="2" style="width:75%;" @change="editConfig($event, 'future_exclude_symbols')" />
+              <el-select v-model="excludeSymbols" multiple filterable style="width:80%;" size="small" @change="editConfig($event, 'future_exclude_symbols')">
+                <el-option v-for="symbol in symbols" :key="symbol" :label="symbol" :value="symbol" />
+              </el-select>
+              <!-- <el-input v-model="config.coinExcludeSymbols" type="textarea" :rows="2" style="width:75%;" @change="editConfig($event, 'future_exclude_symbols')" /> -->
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.orderType') }}: </span>
@@ -303,12 +306,16 @@
 
 <script>
 import { getServiceConfig, editData, testPusher } from '@/api/service'
+// import { debounce } from '@/utils'
+import { getFeatures } from '@/api/trade'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       loading: false,
+      symbols: [],
+      excludeSymbols: [],
       config: {
         'debug': '0',
         'coinAllowLong': 1,
@@ -337,23 +344,29 @@ export default {
     }
   },
   async created() {
-    await this.fetchConfig()
+    this.getSymbols()
+    this.fetchConfig()
   },
   methods: {
     async fetchConfig() {
       const { data } = await getServiceConfig()
       try {
         data.externalLinks = JSON.parse(data.externalLinks)
+        this.excludeSymbols = data.coinExcludeSymbols.trim() === '' ? [] : data.coinExcludeSymbols.split(',')
       } catch (error) {
         data.externalLinks = []
       }
       this.config = data
     },
+    // editConfig: debounce(this.apiEditConfig, 1000),
     async editConfig(value, field) {
       this.loading = true
       try {
         if (field === 'future_max_count' || field === 'future_test_notice_limit_min') {
           value = Number(value)
+        }
+        if (field === 'future_exclude_symbols') {
+          value = this.excludeSymbols.join(',')
         }
         await editData({
           [field]: value,
@@ -373,6 +386,10 @@ export default {
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'error' })
       }
+    },
+    async getSymbols() {
+      const { data } = await getFeatures()
+      this.symbols = data.map(item => item.symbol)
     },
   },
 }
