@@ -347,9 +347,16 @@ export default {
     },
   },
   async created() {
-    const search = localStorage.getItem('test_futures_strategy_search')
+    let search = localStorage.getItem('test_futures_strategy_search')
     if (search) {
-      this.listQuery = JSON.parse(search)
+      search = JSON.parse(search)
+      if (search.start_time) {
+        search.start_time = new Date(search.start_time)
+      }
+      if (search.end_time) {
+        search.end_time = new Date(search.end_time)
+      }
+      this.listQuery = search
     }
     await this.getList()
   },
