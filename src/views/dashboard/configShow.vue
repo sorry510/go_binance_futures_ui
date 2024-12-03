@@ -306,6 +306,7 @@
 
 <script>
 import { getServiceConfig, editData, testPusher } from '@/api/service'
+import { setSystemConfig } from '@/utils/auth'
 // import { debounce } from '@/utils'
 import { getFeatures } from '@/api/trade'
 
@@ -356,6 +357,7 @@ export default {
       } catch (error) {
         data.externalLinks = []
       }
+      setSystemConfig(data)
       this.config = data
     },
     // editConfig: debounce(this.apiEditConfig, 1000),

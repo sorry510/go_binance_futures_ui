@@ -50,7 +50,7 @@
         </el-button>
       </div>
       <div style="width:25%;text-align:right;">
-        {{ $t('table.totalCount') }}: {{ list.length }}
+        {{ $t('table.totalCount') }}: {{ allList.length }}
       </div>
     </div>
     <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
@@ -1256,9 +1256,11 @@
 
 <script>
 import { getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit, testStrategyRule } from '@/api/trade'
+import { testStrategyResultRule } from '@/api/testStrategyResult'
 import { getList } from '@/api/strategy_template'
 import Pagination from '@/components/Pagination'
 import { round } from 'mathjs'
+import { getSystemConfig } from '@/utils/auth'
 
 import CodeMirror from 'codemirror'
 import { codemirror } from 'vue-codemirror'
@@ -1573,17 +1575,34 @@ export default {
     },
     async testStrategyRule() {
       try {
-        const res = await testStrategyRule(this.strategySymbolId, { strategy: JSON.stringify([
-          {
-            name: 'test_strategy',
-            type: 'long',
-            code: this.code,
-            fullScreen: false,
-            enable: true,
-          },
-        ]) })
-        if (res.code === 200) {
-          this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
+        const config = getSystemConfig()
+        if (config.tradeFutureTest) {
+          const find = this.list.find(item => item.id === this.strategySymbolId)
+          const res = await testStrategyResultRule(find?.symbol, { strategy: JSON.stringify([
+            {
+              name: 'test_strategy',
+              type: 'long',
+              code: this.code,
+              fullScreen: false,
+              enable: true,
+            },
+          ]) })
+          if (res.code === 200) {
+            this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
+          }
+        } else {
+          const res = await testStrategyRule(this.strategySymbolId, { strategy: JSON.stringify([
+            {
+              name: 'test_strategy',
+              type: 'long',
+              code: this.code,
+              fullScreen: false,
+              enable: true,
+            },
+          ]) })
+          if (res.code === 200) {
+            this.$message({ message: `result: ${res?.data?.pass}`, type: 'success' })
+          }
         }
       } catch (e) {
         this.$message({ message: this.$t('table.actionFail'), type: 'error' })

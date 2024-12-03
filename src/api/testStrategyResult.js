@@ -22,3 +22,10 @@ export function delResults(id) {
   })
 }
 
+export function testStrategyResultRule(symbol, data) {
+  return request({
+    url: `/test-strategy-results/test/${symbol}`,
+    method: 'post',
+    data,
+  })
+}

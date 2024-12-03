@@ -25,3 +25,11 @@ export function setToken(token) {
 export function removeToken() {
   localStorage.setItem('_token', '')
 }
+
+export function getSystemConfig() {
+  return JSON.parse(localStorage.getItem('_config'))
+}
+
+export function setSystemConfig(config) {
+  localStorage.setItem('_config', JSON.stringify(config))
+}
