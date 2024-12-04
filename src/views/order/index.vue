@@ -245,6 +245,17 @@ export default {
     },
   },
   async created() {
+    let search = localStorage.getItem('futures_order_search')
+    if (search) {
+      search = JSON.parse(search)
+      if (search.start_time) {
+        search.start_time = new Date(search.start_time)
+      }
+      if (search.end_time) {
+        search.end_time = new Date(search.end_time)
+      }
+      this.listQuery = search
+    }
     await this.getList()
   },
   beforeDestroy() {
@@ -279,37 +290,44 @@ export default {
       this.getList()
     },
     async getList() {
+      localStorage.setItem('futures_order_search', JSON.stringify(this.listQuery))
       this.listLoading = true
-      const { data } = await getOrders({
-        ...this.listQuery,
-        start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
-        end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
-      })
-      const dataList = data.list
-      const closeDataGroupByOrderId = {}
-      dataList.map(item => {
-        if (item.side === 'close') {
-          closeDataGroupByOrderId[item.order_id] = item
-        }
-      })
-      this.list = dataList.map(item => {
-        if (item.side === 'open') {
-          item.inexact_profit = 0
-          const closeData = closeDataGroupByOrderId[item.order_id]
-          item.is_close = !!closeData
-          if (!item.is_close) {
-            let cha = item.now_price - item.avg_price
-            if (item.positionSide === 'SHORT') {
-              cha = -cha
-            }
-            item.inexact_profit = this.round(cha * item.amount)
-            item.profit_percent = this.round(this.profitPercent(item))
+
+      try {
+        const { data } = await getOrders({
+          ...this.listQuery,
+          start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
+          end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
+        })
+        const dataList = data.list
+        const closeDataGroupByOrderId = {}
+        dataList.map(item => {
+          if (item.side === 'close') {
+            closeDataGroupByOrderId[item.order_id] = item
           }
-        }
-        return item
-      })
-      this.total = data.total
-      this.listLoading = false
+        })
+        this.list = dataList.map(item => {
+          if (item.side === 'open') {
+            item.inexact_profit = 0
+            const closeData = closeDataGroupByOrderId[item.order_id]
+            item.is_close = !!closeData
+            if (!item.is_close) {
+              let cha = item.now_price - item.avg_price
+              if (item.positionSide === 'SHORT') {
+                cha = -cha
+              }
+              item.inexact_profit = this.round(cha * item.amount)
+              item.profit_percent = this.round(this.profitPercent(item))
+            }
+          }
+          return item
+        })
+        this.total = data.total
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.listLoading = false
+      }
     },
     handleFilter() {
       this.listQuery.page = 1

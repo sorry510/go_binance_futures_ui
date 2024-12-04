@@ -401,20 +401,25 @@ export default {
     async getList() {
       localStorage.setItem('test_futures_strategy_search', JSON.stringify(this.listQuery))
       this.listLoading = true
-      const { data } = await getResults({
-        ...this.listQuery,
-        start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
-        end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
-      })
-      this.list = (data.list ?? []).map(item => {
-        item.profit_percent = this.round(this.profitPercent(item))
-        if (item.close_profit === '0') {
-          item.close_profit = this.round((item.now_price - item.price) * item.position_amt)
-        }
-        return item
-      })
-      this.total = data.total
-      this.listLoading = false
+      try {
+        const { data } = await getResults({
+          ...this.listQuery,
+          start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
+          end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
+        })
+        this.list = (data.list ?? []).map(item => {
+          item.profit_percent = this.round(this.profitPercent(item))
+          if (item.close_profit === '0') {
+            item.close_profit = this.round((item.now_price - item.price) * item.position_amt)
+          }
+          return item
+        })
+        this.total = data.total
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.listLoading = false
+      }
     },
     handleFilter() {
       this.listQuery.page = 1
