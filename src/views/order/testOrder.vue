@@ -327,8 +327,8 @@ export default {
         start_time: undefined,
         end_time: undefined,
         symbol: undefined,
-        type: 'all',
-        position_side: 'all',
+        type: '',
+        position_side: '',
       },
       listLoading: false,
       rowKey(row) {
@@ -408,7 +408,6 @@ export default {
       })
       this.list = (data.list ?? []).map(item => {
         item.profit_percent = this.round(this.profitPercent(item))
-        item.now_profit = this.profit_percent
         if (item.close_profit === '0') {
           item.close_profit = this.round((item.now_price - item.price) * item.position_amt)
         }

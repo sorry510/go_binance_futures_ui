@@ -302,6 +302,7 @@ export default {
     history: '历史',
     fundRateHistory: '资金费率历史',
     fundRateEatTips: '!!! 这是一个实验性功能，尚未完善，不保证能够稳定运行，盈亏自负 !!!',
+    is_closed: '已平',
 
     assets: '资产',
     account: '账户信息',

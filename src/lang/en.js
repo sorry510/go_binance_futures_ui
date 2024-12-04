@@ -303,6 +303,7 @@ export default {
     history: 'history',
     fundRateHistory: 'fund rate history',
     fundRateEatTips: '!!! This is an experimental feature and cannot guarantee stable operation. The profit or loss will be borne by the user !!!',
+    is_closed: 'is closed',
 
     assets: 'assets',
     account: 'account',
