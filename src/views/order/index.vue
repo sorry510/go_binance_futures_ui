@@ -74,7 +74,8 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span :style="{ color: openToCloseOrderId === scope.row.id ? 'red': '#5F6266', fontSize: openToCloseOrderId === scope.row.id ? '15px': '12px' }">{{ scope.row.symbol }}</span>
+          <i v-if="!scope.row.is_close && scope.row.side === 'open'" class="el-icon-unlock symbol-open" />
+          <span :class="{ 'symbol-close-click': openToCloseOrderId === scope.row.id }">{{ scope.row.symbol }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -84,7 +85,7 @@
       >
         <template slot-scope="scope">
           <span>{{ $t('trade.' + scope.row.side) }}</span>
-          <span v-if="scope.row.is_close" style="color: green;">({{ $t('trade.is_closed') }})</span>
+          <span v-if="scope.row.is_close">(<i class="el-icon-lock symbol-open" />)</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -206,6 +207,14 @@
 <style scoped>
 .filter-item {
   margin-right: 10px;
+}
+
+.symbol-close-click {
+  color: red;
+  font-size: 15px;
+}
+.symbol-open {
+  color: green;
 }
 
 </style>
