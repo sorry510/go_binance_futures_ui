@@ -66,6 +66,7 @@
       highlight-current-row
       @sort-change="sortChange"
       @expand-change="expandChange"
+      @row-click="rowClick"
     >
       <el-table-column
         :label="$t('trade.coin')"
@@ -73,16 +74,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          {{ scope.row.symbol }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.amount')"
-        align="center"
-        show-overflow-tooltip
-      >
-        <template slot-scope="scope">
-          {{ scope.row.amount }}
+          <span :style="{ color: openToCloseOrderId === scope.row.id ? 'red': '#5F6266', fontSize: openToCloseOrderId === scope.row.id ? '15px': '12px' }">{{ scope.row.symbol }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -103,6 +95,15 @@
         <template slot-scope="scope">
           <span v-if="scope.row.positionSide === 'LONG'" style="color: green;">{{ $t('trade.' + scope.row.positionSide.toLowerCase()) }}</span>
           <span v-else style="color: red;">{{ $t('trade.' + scope.row.positionSide.toLowerCase()) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.amount')"
+        align="center"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
+          {{ scope.row.amount }}
         </template>
       </el-table-column>
       <el-table-column
@@ -157,12 +158,37 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('trade.time')"
+        :label="$t('trade.period')"
         align="center"
         show-overflow-tooltip
       >
         <template slot-scope="scope">
+          {{ scope.row.period || '-' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('trade.time')"
+        align="center"
+        width="140"
+        show-overflow-tooltip
+      >
+        <template slot-scope="scope">
           {{ parseTime(scope.row.updateTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('table.actions')"
+        align="center"
+        width="80"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{row}">
+          <el-button
+            type="danger"
+            size="mini"
+            @click="del(row)"
+          >{{ $t('table.delete') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -185,7 +211,7 @@
 </style>
 
 <script>
-import { getOrders, delAllTrade } from '@/api/order'
+import { getOrders, delAllTrade, delTrade } from '@/api/order'
 import Pagination from '@/components/Pagination'
 import { round } from 'mathjs'
 import { parseTime } from '@/utils/index'
@@ -233,6 +259,7 @@ export default {
         return row.symbol + row.id
       },
       expandKeys: [],
+      openToCloseOrderId: 0,
     }
   },
   computed: {
@@ -289,6 +316,13 @@ export default {
       this.listQuery.sort = order === 'ascending' ? '+' : '-'
       this.getList()
     },
+    rowClick(row) {
+      if (!this.openToCloseOrderId) {
+        this.openToCloseOrderId = row.close_id || 0
+      } else {
+        this.openToCloseOrderId = 0
+      }
+    },
     async getList() {
       localStorage.setItem('futures_order_search', JSON.stringify(this.listQuery))
       this.listLoading = true
@@ -300,16 +334,25 @@ export default {
           end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
         })
         const dataList = data.list
-        const closeDataGroupByOrderId = {}
-        dataList.map(item => {
+        const len = dataList.length
+        const closeDataSymbol = {}
+        dataList.reverse().map((item, index) => {
+          if (item.side === 'open') {
+            closeDataSymbol[`${item.symbol}-${item.amount}`] = len - index - 1 // 反转前的多 index
+          }
           if (item.side === 'close') {
-            closeDataGroupByOrderId[item.order_id] = item
+            // 找到最近的相同平仓数据
+            const openIndex = closeDataSymbol[`${item.symbol}-${item.amount}`]
+            if (openIndex) {
+              closeDataSymbol[`${item.symbol}-${item.amount}-${openIndex}`] = item
+              delete closeDataSymbol[`${item.symbol}-${item.amount}`] // 删除已经匹配的开仓数据
+            }
           }
         })
-        this.list = dataList.map(item => {
+        this.list = dataList.reverse().map((item, index) => {
           if (item.side === 'open') {
             item.inexact_profit = 0
-            const closeData = closeDataGroupByOrderId[item.order_id]
+            const closeData = closeDataSymbol[`${item.symbol}-${item.amount}-${index}`]
             item.is_close = !!closeData
             if (!item.is_close) {
               let cha = item.now_price - item.avg_price
@@ -318,6 +361,9 @@ export default {
               }
               item.inexact_profit = this.round(cha * item.amount)
               item.profit_percent = this.round(this.profitPercent(item))
+            } else {
+              item.period = this.toPeriod(closeData.updateTime, item.updateTime)
+              item.close_id = closeData.id
             }
           }
           return item
@@ -338,6 +384,19 @@ export default {
         .then(async() => {
           try {
             await delAllTrade()
+            this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+            await this.getList()
+          } catch (e) {
+            this.$message({ message: this.$t('table.actionFail'), type: 'success' })
+          }
+        })
+        .catch(() => {})
+    },
+    async del(row) {
+      this.$confirm(`${this.$t('table.deleteConfirm')} ${row.symbol}?`)
+        .then(async() => {
+          try {
+            await delTrade(row.id)
             this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
             await this.getList()
           } catch (e) {
