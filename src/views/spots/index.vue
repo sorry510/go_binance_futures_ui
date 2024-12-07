@@ -648,17 +648,8 @@
             <el-option v-for="item in strategyTemplates" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('trade.marginType')" prop="marginType">
-          <el-select v-model="batchInfo.marginType" clearable size="mini">
-            <el-option :label="$t('trade.ISOLATED')" value="ISOLATED" />
-            <el-option :label="$t('trade.CROSSED')" value="CROSSED" />
-          </el-select>
-        </el-form-item>
         <el-form-item :label="$t('trade.usdt')" prop="usdt">
           <el-input v-model="batchInfo.usdt" />
-        </el-form-item>
-        <el-form-item :label="$t('trade.leverage')" prop="leverage">
-          <el-input v-model="batchInfo.leverage" />
         </el-form-item>
         <el-form-item :label="$t('trade.profitRate')" prop="profit">
           <el-input v-model="batchInfo.profit" />
@@ -1416,8 +1407,6 @@ export default {
         usdt: undefined,
         profit: undefined,
         loss: undefined,
-        marginType: undefined,
-        leverage: undefined,
         strategyType: undefined,
         strategyTemplateId: undefined,
       },
@@ -1802,8 +1791,6 @@ export default {
           usdt: undefined,
           profit: undefined,
           loss: undefined,
-          marginType: undefined,
-          leverage: undefined,
           strategyType: undefined,
           strategyTemplateId: undefined,
         }
