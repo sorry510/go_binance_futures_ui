@@ -151,6 +151,20 @@
           />
         </template>
       </el-table-column>
+      <el-table-column
+        :label="$t('trade.price')"
+        align="center"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-input
+            v-model="scope.row.expect_price"
+            class="edit-input"
+            size="small"
+            @blur="edit(scope.row)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('trade.enable')" align="center" width="80">
         <template slot-scope="{ row }">
           <el-switch
@@ -219,7 +233,7 @@ export default {
       rowKey(row) {
         return row.symbol
       },
-      expandKeys: []
+      expandKeys: [],
     }
   },
   async created() {
@@ -286,12 +300,12 @@ export default {
         'open': 0,
         'low': 0,
         'enable': 1,
-        'updateTime': +new Date()
+        'updateTime': +new Date(),
       }
       await addFeature(data)
       await this.fetchData()
       this.dialogFormVisible = false
-    }
-  }
+    },
+  },
 }
 </script>
