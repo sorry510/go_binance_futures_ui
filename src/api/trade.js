@@ -4,7 +4,7 @@ export function getFeatures(query = {}) {
   return request({
     url: '/features',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
@@ -12,7 +12,7 @@ export function setFeature(id, data) {
   return request({
     url: `/features/${id}`,
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -20,20 +20,20 @@ export function addFeature(data) {
   return request({
     url: `/features`,
     method: 'post',
-    data
+    data,
   })
 }
 
 export function delFeature(id) {
   return request({
     url: `/features/${id}`,
-    method: 'delete'
+    method: 'delete',
   })
 }
 export function enableFeature(flag = 1) {
   return request({
     url: `/features/enable/${flag}`,
-    method: 'put'
+    method: 'put',
   })
 }
 
@@ -41,14 +41,14 @@ export function batchEdit(data) {
   return request({
     url: `/features/batch`,
     method: 'put',
-    data
+    data,
   })
 }
 
 export function getConfig() {
   return request({
     url: '/config',
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -56,21 +56,21 @@ export function setConfig(data) {
   return request({
     url: '/config',
     method: 'put',
-    data
+    data,
   })
 }
 
 export function startService() {
   return request({
     url: '/start',
-    method: 'post'
+    method: 'post',
   })
 }
 
 export function stopService() {
   return request({
     url: '/stop',
-    method: 'post'
+    method: 'post',
   })
 }
 
@@ -78,7 +78,7 @@ export function getFuturesAccount(query = {}) {
   return request({
     url: '/futures/account',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
@@ -86,7 +86,7 @@ export function getFuturesPositions(query = {}) {
   return request({
     url: '/futures/positions',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
@@ -94,7 +94,23 @@ export function getFuturesOpenOrders(query = {}) {
   return request({
     url: '/futures/open-orders',
     method: 'get',
-    params: query
+    params: query,
+  })
+}
+
+export function getLocalFuturesPositions(query = {}) {
+  return request({
+    url: '/futures/local/positions',
+    method: 'get',
+    params: query,
+  })
+}
+
+export function getLocalFuturesOpenOrders(query = {}) {
+  return request({
+    url: '/futures/local/open-orders',
+    method: 'get',
+    params: query,
   })
 }
 
@@ -102,6 +118,6 @@ export function testStrategyRule(id, data) {
   return request({
     url: `/features/strategy-rule/test/${id}`,
     method: 'post',
-    data
+    data,
   })
 }

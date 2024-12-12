@@ -23,6 +23,13 @@ const tradeRouter = [
         hidden: true,
       },
       {
+        path: 'account2',
+        name: 'futuresAccount2',
+        component: () => import('@/views/futures/Account2'),
+        meta: { title: 'futuresAccount2', icon: 'table', affix: false, noCache: true },
+        hidden: true,
+      },
+      {
         path: 'strategy-template',
         name: 'strategyTemplate',
         component: () => import('@/views/futures/StrategyTemplate'),
