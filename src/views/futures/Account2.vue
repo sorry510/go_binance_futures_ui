@@ -182,10 +182,15 @@
           <el-table-column
             :label="$t('position.leverage')"
             align="center"
-            show-overflow-tooltip
+            width="75"
           >
             <template slot-scope="scope">
-              {{ scope.row.leverage }}
+              <el-input
+                v-model="scope.row.leverage"
+                class="edit-input"
+                size="mini"
+                @blur="edit(scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column
@@ -203,7 +208,7 @@
             show-overflow-tooltip
           >
             <template slot-scope="scope">
-              {{ scope.row.isolatedWallet != 0 ? $t('position.isolated') : $t('position.crossed') }}
+              {{ scope.row.isolated_wallet != 0 ? $t('position.isolated') : $t('position.crossed') }}
             </template>
           </el-table-column>
         </el-table>
@@ -289,7 +294,7 @@
 </template>
 
 <script>
-import { getFuturesAccount, getLocalFuturesPositions, getLocalFuturesOpenOrders } from '@/api/trade'
+import { getFuturesAccount, getLocalFuturesPositions, getLocalFuturesOpenOrders, updateLocalFuturesPositions } from '@/api/trade'
 import { parseTime } from '@/utils'
 import { round } from 'mathjs'
 
@@ -569,6 +574,16 @@ export default {
       //     'goodTillDate': 0 // 订单TIF为GTD时的自动取消时间
       //   }
       // ]
+    },
+    async edit(row) {
+      const { id, leverage } = row
+      try {
+        await updateLocalFuturesPositions(id, { leverage: Number(leverage) })
+        this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.editFail'), type: 'success' })
+      }
     },
   },
 }

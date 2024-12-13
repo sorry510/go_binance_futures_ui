@@ -106,6 +106,14 @@ export function getLocalFuturesPositions(query = {}) {
   })
 }
 
+export function updateLocalFuturesPositions(id, data) {
+  return request({
+    url: `/futures/local/positions/${id}`,
+    method: 'put',
+    data,
+  })
+}
+
 export function getLocalFuturesOpenOrders(query = {}) {
   return request({
     url: '/futures/local/open-orders',
