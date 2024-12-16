@@ -114,6 +114,14 @@ export function updateLocalFuturesPositions(id, data) {
   })
 }
 
+export function delLocalFuturesPositions(id, data) {
+  return request({
+    url: `/futures/local/positions/${id}`,
+    method: 'delete',
+    data,
+  })
+}
+
 export function getLocalFuturesOpenOrders(query = {}) {
   return request({
     url: '/futures/local/open-orders',

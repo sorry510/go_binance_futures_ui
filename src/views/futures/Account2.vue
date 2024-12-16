@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="tabName">
-      <el-tab-pane :label="$t('trade.assets')" name="account">
+      <!-- <el-tab-pane :label="$t('trade.assets')" name="account">
         <el-table
           :data="account.assets"
           element-loading-text="Loading"
@@ -76,7 +76,7 @@
             </template>
           </el-table-column>
         </el-table>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane :label="$t('trade.position')" name="position">
         <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
           <div style="display: flex;flex-flow: row wrap;gap: 10px;">
@@ -211,6 +211,21 @@
               {{ scope.row.isolated_wallet != 0 ? $t('position.isolated') : $t('position.crossed') }}
             </template>
           </el-table-column>
+          <el-table-column
+            :label="$t('table.actions')"
+            align="center"
+            width="80"
+            class-name="small-padding fixed-width"
+          >
+            <template slot-scope="{row}">
+              <el-button
+                type="danger"
+                size="mini"
+                @click="del(row)"
+              >{{ $t('table.delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane :label="$t('trade.openOrder')" name="openOrder">
@@ -294,7 +309,7 @@
 </template>
 
 <script>
-import { getFuturesAccount, getLocalFuturesPositions, getLocalFuturesOpenOrders, updateLocalFuturesPositions } from '@/api/trade'
+import { getFuturesAccount, getLocalFuturesPositions, getLocalFuturesOpenOrders, updateLocalFuturesPositions, delLocalFuturesPositions } from '@/api/trade'
 import { parseTime } from '@/utils'
 import { round } from 'mathjs'
 
@@ -582,8 +597,21 @@ export default {
         this.$message({ message: this.$t('table.editSuccess'), type: 'success' })
         await this.fetchData()
       } catch (e) {
-        this.$message({ message: this.$t('table.editFail'), type: 'success' })
+        this.$message({ message: this.$t('table.editFail'), type: 'error' })
       }
+    },
+    async del(row) {
+      this.$confirm(`${this.$t('table.deleteConfirm')} ${row.symbol}?`)
+        .then(async() => {
+          try {
+            await delLocalFuturesPositions(row.id)
+            this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+            await this.fetchData()
+          } catch (e) {
+            this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+          }
+        })
+        .catch(() => {})
     },
   },
 }
