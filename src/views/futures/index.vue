@@ -1461,7 +1461,7 @@ export default {
         'keys', 'values', 'len',
         'Kdj', 'IsDesc', 'IsAsc', // function
         'SystemStartTime', 'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend', // symbol
-        'ROI', 'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.PositionAmt', 'Position.UnRealizedProfit', 'Position.MarginType', 'Position.Leverage', 'Position.PositionSide', // position
+        'ROI', 'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.Amount', 'Position.UnrealizedProfit', 'Position.Leverage', 'Position.Side', 'Position.Mock', // position
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)
