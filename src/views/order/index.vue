@@ -342,7 +342,7 @@ export default {
           start_time: this.listQuery.start_time ? +(this.listQuery.start_time) : undefined,
           end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
         })
-        const dataList = data.list
+        const dataList = data.list || []
         const len = dataList.length
         const closeDataSymbol = {}
         dataList.reverse().map((item, index) => {
