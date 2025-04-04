@@ -79,7 +79,7 @@
       </el-tab-pane> -->
       <el-tab-pane :label="$t('trade.position')" name="position">
         <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
-          <div style="display: flex;flex-flow: row wrap;gap: 10px;">
+          <div style="display: flex;flex-flow: row wrap;gap: 10px;justify-content: center;align-items: center;">
             <el-input
               v-model="search.symbol"
               :placeholder="$t('trade.coin')"
@@ -94,6 +94,7 @@
             >
               {{ $t('table.search') }}
             </el-button>
+            <div style="float:right; margin-right: 20px;">{{ $t('trade.nowProfit') }}: {{ allProfit }}</div>
           </div>
           <div style="display: flex;flex-flow: row wrap;gap: 10px;align-items: center;">
             <el-select v-model="interval" size="small" style="width: 80px;" @change="changeRefreshInterval">
@@ -341,10 +342,7 @@ export default {
   },
   computed: {
     allProfit() {
-      const profit = this.list.reduce(
-        (carry, row) => carry + row.nowProfit,
-        0,
-      )
+      const profit = this.positions.reduce((carry, row) => carry + Number(row.unrealized_profit), 0)
       return round(profit, 2)
     },
   },
