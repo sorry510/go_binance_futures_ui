@@ -322,7 +322,7 @@ export default {
   },
   computed: {
     allProfit() {
-      const profit = this.positions.reduce((carry, row) => carry + Number(row.unrealized_profit), 0)
+      const profit = this.positions.reduce((carry, row) => carry + Number(row.unRealizedProfit), 0)
       return round(profit, 2)
     },
   },
