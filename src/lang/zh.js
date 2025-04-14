@@ -232,6 +232,7 @@ export default {
     strategyTrade: '交易策略',
     strategyCoin: '选币策略',
     positionMaxCount: '最大持仓数量',
+    lossMaxCount: '最大持仓亏损数量',
     excludeSymbols: '排除自动交易的币',
     orderType: '自动下单类型',
     marketOrderType: '市价',

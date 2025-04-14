@@ -90,6 +90,10 @@
               <el-input v-model="config.coinMaxCount" type="number" style="width:75px;" @change="editConfig($event, 'future_max_count')" />
             </div>
             <div class="dashboard-text">
+              <span>{{ $t('showPage.lossMaxCount') }}: </span>
+              <el-input v-model="config.lossMaxCount" type="number" style="width:75px;" @change="editConfig($event, 'loss_max_count')" />
+            </div>
+            <div class="dashboard-text">
               <span>{{ $t('showPage.excludeSymbols') }}: </span>
               <el-select v-model="excludeSymbols" multiple filterable style="width:80%;" size="small" @change="editConfig($event, 'future_exclude_symbols')">
                 <el-option v-for="symbol in symbols" :key="symbol" :label="symbol" :value="symbol" />
@@ -341,6 +345,7 @@ export default {
         wsSpotEnable: 0,
         wsDeliveryEnable: 0,
         futuresPositionConvertEnable: 0,
+        lossMaxCount: 0,
       },
     }
   },
@@ -364,7 +369,7 @@ export default {
     async editConfig(value, field) {
       this.loading = true
       try {
-        if (field === 'future_max_count' || field === 'future_test_notice_limit_min') {
+        if (field === 'future_max_count' || field === 'future_test_notice_limit_min' || field === 'loss_max_count') {
           value = Number(value)
         }
         if (field === 'future_exclude_symbols') {

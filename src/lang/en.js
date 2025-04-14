@@ -232,6 +232,7 @@ export default {
     strategyTrade: 'strategy trade',
     strategyCoin: 'strategy coin',
     positionMaxCount: 'position max count',
+    lossMaxCount: 'position max loss count',
     excludeSymbols: 'excluded automatic trading coins',
     orderType: 'Order Type',
     marketOrderType: 'MARKET',
