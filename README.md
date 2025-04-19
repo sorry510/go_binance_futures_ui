@@ -18,6 +18,6 @@ pnpm dev
 ### build
 
 ```
-pnpm build:prod
+pnpm run build
 ```
 
