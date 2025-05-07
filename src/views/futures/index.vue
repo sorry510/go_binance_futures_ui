@@ -50,7 +50,7 @@
         </el-button>
       </div>
       <div style="width:25%;text-align:right;">
-        {{ $t('table.totalCount') }}: {{ allList.length }}
+        {{ $t('table.totalCount') }}: {{ total }}
       </div>
     </div>
     <div style="display: flex;justify-content: space-between;align-items: center; margin-bottom: 10px;">
@@ -183,7 +183,6 @@
             width="90"
             show-overflow-tooltip
             prop="percent_change"
-            sortable="custom"
           >
             <template slot-scope="scope">
               <span v-if="scope.row.percentChange < 0" style="color: red;">{{ scope.row.percentChange }}%↓ </span>
@@ -533,11 +532,11 @@
       </el-tab-pane>
     </el-tabs>
     <pagination
-      v-show="allList.length > 0"
-      :total="allList.length"
+      v-show="total > 0"
+      :total="total"
       :page.sync="search.page"
       :limit.sync="search.limit"
-      @pagination="getPageList"
+      @pagination="getFutures"
     />
     <!-- add data -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
@@ -1322,6 +1321,7 @@ export default {
       klineInterval: [
         '1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M',
       ],
+      total: 0,
       allList: [],
       list: [],
       sort: '',
@@ -1638,12 +1638,13 @@ export default {
     },
     async getFutures() {
       const search = this.search
-      const { data } = await getFeatures({ sort: this.sort, ...search })
-      this.allList = data.map(item => {
+      search.symbol = search.symbol.trim().toUpperCase()
+      const { data: { list, total }} = await getFeatures({ sort: this.sort, ...search })
+      this.list = list.map(item => {
         const { pin, enable, ...other } = item
         return { enable: enable > 0, pin_read: pin, pin, ...other }
       })
-      this.getPageList()
+      this.total = total
     },
     replaceUrl: function() {
       this.$router.push({
@@ -1653,10 +1654,10 @@ export default {
         },
       })
     },
-    getPageList() {
-      const search = this.search
-      this.list = this.allList.slice((search.page - 1) * search.limit, search.page * search.limit)
-    },
+    // getPageList() {
+    //   const search = this.search
+    //   this.list = this.allList.slice((search.page - 1) * search.limit, search.page * search.limit)
+    // },
     async editPin(row) {
       if (row.pin_read && !row.pin) {
         row.pin = 1

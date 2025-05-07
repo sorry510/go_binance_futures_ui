@@ -233,6 +233,7 @@ export default {
     strategyCoin: '选币策略',
     positionMaxCount: '最大持仓数量',
     lossMaxCount: '最大持仓亏损数量',
+    lossAutoScale: '自动缩放最大持仓亏损数量',
     excludeSymbols: '排除自动交易的币',
     orderType: '自动下单类型',
     marketOrderType: '市价',
@@ -308,6 +309,7 @@ export default {
     assets: '资产',
     account: '账户信息',
     position: '仓位',
+    positionCount: '仓位数量',
     openOrder: '当前委托',
 
     technology: '技术指标',

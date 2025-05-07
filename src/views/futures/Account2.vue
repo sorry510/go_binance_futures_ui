@@ -95,6 +95,7 @@
               {{ $t('table.search') }}
             </el-button>
             <div style="float:right; margin-right: 20px;">{{ $t('trade.nowProfit') }}: {{ allProfit }}</div>
+            <div style="float:right; margin-right: 130px;">{{ $t('trade.positionCount') }}: {{ positions.length }}</div>
           </div>
           <div style="display: flex;flex-flow: row wrap;gap: 10px;align-items: center;">
             <el-select v-model="interval" size="small" style="width: 80px;" @change="changeRefreshInterval">

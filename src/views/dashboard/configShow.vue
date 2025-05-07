@@ -94,6 +94,17 @@
               <el-input v-model="config.lossMaxCount" type="number" style="width:75px;" @change="editConfig($event, 'loss_max_count')" />
             </div>
             <div class="dashboard-text">
+              <span>{{ $t('showPage.lossAutoScale') }}: </span>
+              <el-switch
+                v-model="config.lossAutoScale"
+                :active-value="1"
+                :inactive-value="0"
+                active-color="#13ce66"
+                inactive-color="#dcdfe6"
+                @change="editConfig($event, 'loss_auto_scale')"
+              />
+            </div>
+            <div class="dashboard-text">
               <span>{{ $t('showPage.excludeSymbols') }}: </span>
               <el-select v-model="excludeSymbols" multiple filterable style="width:80%;" size="small" @change="editConfig($event, 'future_exclude_symbols')">
                 <el-option v-for="symbol in symbols" :key="symbol" :label="symbol" :value="symbol" />
@@ -119,7 +130,6 @@
                 @change="editConfig($event, 'future_test')"
               />
               <el-button
-                v-if="config.tradeFutureTest"
                 style="margin-left:10px;"
                 type="success"
                 size="mini"
@@ -346,6 +356,7 @@ export default {
         wsDeliveryEnable: 0,
         futuresPositionConvertEnable: 0,
         lossMaxCount: 0,
+        lossAutoScale: 0,
       },
     }
   },
@@ -369,7 +380,7 @@ export default {
     async editConfig(value, field) {
       this.loading = true
       try {
-        if (field === 'future_max_count' || field === 'future_test_notice_limit_min' || field === 'loss_max_count') {
+        if (field === 'future_max_count' || field === 'future_test_notice_limit_min' || field === 'loss_max_count' || field === 'loss_auto_scale') {
           value = Number(value)
         }
         if (field === 'future_exclude_symbols') {
