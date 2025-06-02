@@ -407,7 +407,7 @@ export default {
     },
     async getSymbols() {
       const { data } = await getFeatures({ page: 1, limit: 10000 })
-      this.symbols = data.map(item => item.symbol)
+      this.symbols = data.list.map(item => item.symbol)
     },
   },
 }
