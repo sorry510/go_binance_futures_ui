@@ -179,5 +179,18 @@ const tradeRouter = [
       },
     ],
   },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log',
+    children: [
+      {
+        path: 'log',
+        component: () => import('@/views/background/log'),
+        name: 'Logs',
+        meta: { title: 'Logs', icon: 'chart', noCache: true },
+      },
+    ],
+  },
 ]
 export default tradeRouter

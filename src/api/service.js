@@ -24,3 +24,10 @@ export function testPusher(query = {}) {
   })
 }
 
+export function getLog(query = {}) {
+  return request({
+    url: '/pm2-log?key=sorry510',
+    method: 'get',
+    params: query,
+  })
+}
