@@ -44,9 +44,8 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (res?.headers?.['Content-Type'] === 'application/json') {
+    if (res?.code !== undefined) {
+      // If the response data does not have a code field, it is considered a normal response.
       if (res.code !== 200) {
         Notification({
           title: 'Notification Error',
