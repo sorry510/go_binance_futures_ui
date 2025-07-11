@@ -322,7 +322,7 @@
 import { getServiceConfig, editData, testPusher } from '@/api/service'
 import { setSystemConfig } from '@/utils/auth'
 // import { debounce } from '@/utils'
-import { getFeatures } from '@/api/trade'
+import { getFeatures, getFeaturesOptions } from '@/api/trade'
 
 export default {
   name: 'Dashboard',
@@ -406,8 +406,8 @@ export default {
       }
     },
     async getSymbols() {
-      const { data } = await getFeatures({ page: 1, limit: 10000 })
-      this.symbols = data.list.map(item => item.symbol)
+      const { data } = await getFeaturesOptions()
+      this.symbols = data
     },
   },
 }

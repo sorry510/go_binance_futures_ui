@@ -8,6 +8,14 @@ export function getFeatures(query = {}) {
   })
 }
 
+export function getFeaturesOptions(query = {}) {
+  return request({
+    url: '/features-options',
+    method: 'get',
+    params: query,
+  })
+}
+
 export function setFeature(id, data) {
   return request({
     url: `/features/${id}`,
