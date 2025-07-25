@@ -5,16 +5,16 @@
         v-model="listQuery.symbol"
         size="mini"
         :placeholder="$t('trade.coin')"
-        style="width: 200px; margin-right: 10px"
+        style="width: 120px; margin-right: 10px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select v-model="listQuery.type" clearable size="mini" class="filter-item" style="width: 75px;" placeholder="status">
+      <el-select v-model="listQuery.type" clearable size="mini" class="filter-item" style="width: 100px;" placeholder="status">
         <el-option :label="$t('table.all')" value="all" />
-        <el-option :label="$t('table.open')" value="open" />
-        <el-option :label="$t('table.close')" value="close" />
+        <el-option :label="$t('table.notClosed')" value="open" />
+        <el-option :label="$t('table.closed')" value="close" />
       </el-select>
-      <el-select v-model="listQuery.position_side" clearable size="mini" class="filter-item" style="width: 75px;" placeholder="position_side">
+      <el-select v-model="listQuery.position_side" clearable size="mini" class="filter-item" style="width: 100px;" placeholder="position_side">
         <el-option :label="$t('table.all')" value="all" />
         <el-option :label="$t('trade.long')" value="LONG" />
         <el-option :label="$t('trade.short')" value="SHORT" />
@@ -74,18 +74,8 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <i v-if="!scope.row.is_close && scope.row.side === 'open'" class="el-icon-unlock symbol-open" />
-          <span :class="{ 'symbol-close-click': openToCloseOrderId === scope.row.id }">{{ scope.row.symbol }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('trade.tradeType')"
-        align="center"
-        show-overflow-tooltip
-      >
-        <template slot-scope="scope">
-          <span>{{ $t('trade.' + scope.row.side) }}</span>
-          <span v-if="scope.row.is_close">(<i class="el-icon-lock symbol-open" />)</span>
+          <i v-if="!scope.row.closedTime && scope.row.side === 'open'" class="el-icon-unlock symbol-open" />
+          <span>{{ scope.row.symbol }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,8 +121,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.is_close">-</span>
-          <span v-else-if="scope.row.inexact_profit < 0" style="color: red;">{{ scope.row.now_price }}</span>
+          <span v-if="scope.row.inexact_profit < 0" style="color: red;">{{ scope.row.now_price }}</span>
           <span v-else style="color: green;">{{ scope.row.now_price }}</span>
         </template>
       </el-table-column>
@@ -142,8 +131,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.is_close">-</span>
-          <span v-else-if="scope.row.inexact_profit < 0" style="color: red;">{{ scope.row.inexact_profit }}</span>
+          <span v-if="scope.row.inexact_profit < 0" style="color: red;">{{ scope.row.inexact_profit }}</span>
           <span v-else style="color: green;">{{ scope.row.inexact_profit }}</span>
         </template>
       </el-table-column>
@@ -153,7 +141,7 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
-          <span v-if="scope.row.is_close || scope.row.side === 'close'">-</span>
+          <span v-if="scope.row.closedTime">-</span>
           <span v-else-if="scope.row.profit_percent < 0" style="color: red;">{{ scope.row.profit_percent }}</span>
           <span v-else style="color: green;">{{ scope.row.profit_percent }}</span>
         </template>
@@ -209,12 +197,9 @@
   margin-right: 10px;
 }
 
-.symbol-close-click {
+.symbol-open {
   color: red;
   font-size: 15px;
-}
-.symbol-open {
-  color: green;
 }
 
 </style>
@@ -299,6 +284,7 @@ export default {
   methods: {
     parseTime,
     toPeriod(endTime, startTime) {
+      if (!endTime || !startTime) return '-'
       const totalMinutes = (endTime - startTime) / 1000 / 60
       const hours = Math.floor(totalMinutes / 60)
       const minutes = Math.floor(totalMinutes % 60)
@@ -343,38 +329,20 @@ export default {
           end_time: this.listQuery.end_time ? +(this.listQuery.end_time) : undefined,
         })
         const dataList = data.list || []
-        const len = dataList.length
-        const closeDataSymbol = {}
-        dataList.reverse().map((item, index) => {
-          if (item.side === 'open') {
-            closeDataSymbol[`${item.symbol}-${item.amount}`] = len - index - 1 // 反转前的多 index
-          }
-          if (item.side === 'close') {
-            // 找到最近的相同平仓数据
-            const openIndex = closeDataSymbol[`${item.symbol}-${item.amount}`]
-            if (openIndex) {
-              closeDataSymbol[`${item.symbol}-${item.amount}-${openIndex}`] = item
-              delete closeDataSymbol[`${item.symbol}-${item.amount}`] // 删除已经匹配的开仓数据
+        this.list = dataList.map(item => {
+          if (item.closedTime) {
+            // 已经平仓了
+            item.inexact_profit = this.round(item.inexact_profit)
+            item.period = this.toPeriod(item.closedTime, item.updateTime)
+          } else {
+            // 计算未平仓的盈亏
+            let cha = item.now_price - item.avg_price
+            if (item.positionSide === 'SHORT') {
+              cha = -cha
             }
+            item.inexact_profit = this.round(cha * item.amount)
           }
-        })
-        this.list = dataList.reverse().map((item, index) => {
-          if (item.side === 'open') {
-            item.inexact_profit = 0
-            const closeData = closeDataSymbol[`${item.symbol}-${item.amount}-${index}`]
-            item.is_close = !!closeData
-            if (!item.is_close) {
-              let cha = item.now_price - item.avg_price
-              if (item.positionSide === 'SHORT') {
-                cha = -cha
-              }
-              item.inexact_profit = this.round(cha * item.amount)
-              item.profit_percent = this.round(this.profitPercent(item))
-            } else {
-              item.period = this.toPeriod(closeData.updateTime, item.updateTime)
-              item.close_id = closeData.id
-            }
-          }
+          item.profit_percent = this.round(this.profitPercent(item))
           return item
         })
         this.total = data.total

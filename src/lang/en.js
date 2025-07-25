@@ -296,7 +296,6 @@ export default {
     listenType: 'listen type',
     klineBase: 'kline base',
     keltnerChannels: 'kc chart',
-    fundingRateListenTips: 'tips: The futures fund rate changes every 30 seconds, and the historical rate query API is limited to a maximum of 500 queries within 5 minutes',
     fundRate: 'fund rate(%)',
     price: 'price',
     close_price: 'close price',

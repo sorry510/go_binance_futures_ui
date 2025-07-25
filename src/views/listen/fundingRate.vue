@@ -1,28 +1,25 @@
 <template>
   <div class="app-container">
     <div style="margin-bottom: 10px; display: flex;justify-content: space-between;align-items: center;">
-      <div style="color:red;">
-        {{ $t('trade.fundingRateListenTips') }}
+      <div style="display: flex;flex-flow: row wrap;gap: 10px; width:75%">
+        <el-input
+          v-model="search.symbol"
+          :placeholder="$t('trade.coin') "
+          style="width: 150px;"
+          class="filter-item"
+          size="small"
+        />
+        <el-button
+          type="success"
+          size="mini"
+          @click="fetchData"
+        >
+          {{ $t('table.search') }}
+        </el-button>
       </div>
       <div style="width:25%;text-align:right;">
         {{ $t('table.totalCount') }}: {{ list.length }}
       </div>
-    </div>
-    <div style="display: flex;flex-flow: row wrap;gap: 10px; margin-bottom: 10px;">
-      <el-input
-        v-model="search.symbol"
-        :placeholder="$t('trade.coin') "
-        style="width: 150px;"
-        class="filter-item"
-        size="small"
-      />
-      <el-button
-        type="success"
-        size="mini"
-        @click="fetchData"
-      >
-        {{ $t('table.search') }}
-      </el-button>
     </div>
     <el-table
       v-loading="listLoading"

@@ -185,6 +185,8 @@ export default {
     refreshInterval: '刷新间隔',
     startBot: '机器人开启',
     end: '机器人结束',
+    notClosed: '未平仓',
+    closed: '已平仓',
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见',
@@ -295,7 +297,6 @@ export default {
     listenType: '监听类型',
     klineBase: 'k线变化',
     keltnerChannels: 'kc通道',
-    fundingRateListenTips: 'tips: 合约资金费率变化 30 秒更新一次, 历史费率查询 api 限制 5min 中内最多查询 500 次',
     fundRate: '资金费率(%)',
     price: '价格',
     close_price: '平仓价格',
