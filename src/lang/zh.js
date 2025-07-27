@@ -65,6 +65,7 @@ export default {
     profile: '个人中心',
 
     futuresAccount: '合约账户',
+    futuresAccount2: '合约账户(ws)',
     futuresTrade: '合约交易',
     futuresTradeOrder: '合约订单',
     newCoinRush: '新币抢购',
@@ -83,6 +84,7 @@ export default {
     testStrategyResult: '测试策略结果',
     spotsTrade: '现货交易',
     deliveryTrade: '币本位交易',
+    logs: '后台日志',
   },
   navbar: {
     dashboard: '首页',
@@ -240,7 +242,7 @@ export default {
     orderType: '自动下单类型',
     marketOrderType: '市价',
     limitOrderType: '限价(根据价格深度取平均价挂单，有可能无法买入)',
-    testPusher: '测试推送',
+    testPusher: '测试推送功能是否可用',
     testStrategy: '测试策略',
     testStrategyNoticeLimitMin: '测试策略通知限制(min)',
     externalLinks: '外部链接',

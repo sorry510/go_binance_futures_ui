@@ -145,7 +145,7 @@
           </div>
         </div>
       </el-collapse-item>
-      <el-collapse-item name="spot">
+      <!-- <el-collapse-item name="spot">
         <template slot="title">
           <div class="dashboard-text">
             <span>{{ $t('route.spotsTrade') }}({{ $t('trade.notYet') }}): </span>
@@ -206,7 +206,7 @@
             </div>
           </div>
         </div>
-      </el-collapse-item>
+      </el-collapse-item> -->
       <el-collapse-item name="new_coin_rush">
         <template slot="title">
           <div class="dashboard-text">

@@ -65,6 +65,7 @@ export default {
     profile: 'Profile',
 
     futuresAccount: 'Futures Account',
+    futuresAccount2: 'Futures Account(ws)',
     futuresTrade: 'Futures Trade',
     futuresTradeOrder: 'Futures Trade Order',
     newCoinRush: 'New Coin Rush',
@@ -83,6 +84,7 @@ export default {
     testStrategyResult: 'Test Strategy Result',
     spotsTrade: 'Spots Trade',
     deliveryTrade: 'Delivery Trade',
+    logs: 'background logs',
   },
   navbar: {
     dashboard: 'Dashboard',

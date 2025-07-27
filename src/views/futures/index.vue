@@ -12,13 +12,6 @@
           {{ $t('table.add') }}
         </el-button>
         <el-button
-          type="info"
-          size="mini"
-          @click="$router.push({ name: 'futuresAccount' })"
-        >
-          {{ $t('route.futuresAccount') }}
-        </el-button>
-        <el-button
           type="success"
           size="mini"
           :loading="serviceLoading"
@@ -40,13 +33,6 @@
           @click="dialogFormVisible2 = true"
         >
           {{ $t('table.editBatch') }}
-        </el-button>
-        <el-button
-          type="primary"
-          size="mini"
-          @click="$router.push({ name: 'strategyTemplate' })"
-        >
-          {{ $t('route.strategyTemplate') }}
         </el-button>
       </div>
       <div style="width:25%;text-align:right;">
