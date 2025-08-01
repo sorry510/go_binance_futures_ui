@@ -284,6 +284,20 @@
           </div>
         </template>
       </el-collapse-item>
+      <el-collapse-item name="notify config">
+        <template slot="title">
+          <div class="dashboard-text">
+            <span>{{ $t('route.notifyConfig') }}: </span>
+          </div>
+        </template>
+        <div class="dashboard-text">
+          <div style="margin-left:20px;">
+            <div class="dashboard-text">
+              <el-button size="mini" type="primary" @click="gotoNotifyConfig">{{ $t('route.notifyConfig') }}</el-button>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
       <el-collapse-item name="debug">
         <template slot="title">
           <div class="dashboard-text">
@@ -322,7 +336,7 @@
 import { getServiceConfig, editData, testPusher } from '@/api/service'
 import { setSystemConfig } from '@/utils/auth'
 // import { debounce } from '@/utils'
-import { getFeatures, getFeaturesOptions } from '@/api/trade'
+import { getFeaturesOptions } from '@/api/trade'
 
 export default {
   name: 'Dashboard',
@@ -396,6 +410,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async gotoNotifyConfig() {
+      this.$router.push({ name: 'NotifyConfig' })
     },
     async testPusher() {
       try {

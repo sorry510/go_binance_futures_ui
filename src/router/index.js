@@ -82,6 +82,13 @@ export const constantRoutes = [
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', affix: false, noCache: true },
       },
+      {
+        path: 'notify-config',
+        component: () => import('@/views/notify/config'),
+        name: 'NotifyConfig',
+        meta: { title: 'notifyConfig', affix: false, noCache: true },
+        hidden: true,
+      },
     ],
   },
   // {
