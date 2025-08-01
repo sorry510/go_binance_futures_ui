@@ -162,7 +162,7 @@ export default {
       }
     },
     del(row) {
-      this.$confirm(this.$t('table.deleteConfirm') + ` ${row.symbol} ？`)
+      this.$confirm(this.$t('table.deleteConfirm'))
         .then(async() => {
           try {
             await delNotifyConfig(row.id)
@@ -189,7 +189,6 @@ export default {
     async addConfig(row) {
       const data = {
         ...row,
-        'type': 1, // 币币交易
         'createTime': +new Date(),
         'updateTime': +new Date(),
       }
