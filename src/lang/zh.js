@@ -250,6 +250,8 @@ export default {
     websocket: 'websocket',
     autoUpdatePrice: '自动更新币价',
     futuresPositionConvertEnable: '仓位收益正负转换通知',
+    marketCondition: '市场趋势',
+    marketConditionIsAuto: '市场趋势自动判断',
   },
   trade: {
     name: '名称',

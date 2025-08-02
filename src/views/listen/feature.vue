@@ -1080,7 +1080,7 @@ export default {
         'max', 'min', 'abs', 'ceil', 'floor', 'round', // number
         'all', 'any', 'one', 'none', 'map', 'filter', 'find', 'findIndex', 'findLast', 'groupBy', 'count', 'concat', 'join', 'reduce', 'sum', 'mean', 'median', 'first', 'last', 'take', 'reverse', 'sort', 'sortBy', // array
         'keys', 'values', 'len',
-        'SystemStartTime', 'Kdj', 'IsDesc', 'IsAsc', // function
+        'SystemStartTime', 'MarketCondition', 'Kdj', 'IsDesc', 'IsAsc', // function
         'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend', // symbol
       ]
       if (this.strategySymbolId !== undefined) {

@@ -248,6 +248,8 @@ export default {
     websocket: 'websocket',
     autoUpdatePrice: 'auto update price',
     futuresPositionConvertEnable: 'futures position convert enable',
+    marketCondition: 'market condition',
+    marketConditionIsAuto: 'market condition is auto',
   },
   trade: {
     name: 'name',
