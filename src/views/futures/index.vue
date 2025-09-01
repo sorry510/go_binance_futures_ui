@@ -1240,7 +1240,7 @@
 </style>
 
 <script>
-import { getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit, testStrategyRule } from '@/api/trade'
+import { getFeature, getFeatures, setFeature, addFeature, delFeature, enableFeature, batchEdit, testStrategyRule } from '@/api/trade'
 import { getList } from '@/api/strategy_template'
 import Pagination from '@/components/Pagination'
 import { round } from 'mathjs'
@@ -1632,6 +1632,10 @@ export default {
       })
       this.total = total
     },
+    async getFuture(id) {
+      const { data } = await getFeature(id)
+      return data
+    },
     replaceUrl: function() {
       this.$router.push({
         path: this.$route.path, // 保持当前路径不变
@@ -1736,13 +1740,14 @@ export default {
       }
     },
     async openTechnologyDialog(row) {
+      const data = await this.getFuture(row.id)
       this.copyTechnology = ''
       this.technologySymbolId = row.id
-      if (row.technology) {
+      if (data.technology) {
         try {
           this.technology = {
             ...JSON.parse(JSON.stringify(initTechnology)),
-            ...JSON.parse(row.technology),
+            ...JSON.parse(data.technology),
           }
         } catch (e) {
           this.technology = JSON.parse(JSON.stringify(initTechnology))
@@ -1754,11 +1759,12 @@ export default {
       this.dialogTechnologyVisible = true
     },
     async openStrategyDialog(row) {
+      const data = await this.getFuture(row.id)
       this.copyTechnology = ''
       this.strategySymbolId = row.id
-      if (row.strategy) {
+      if (data.strategy) {
         try {
-          this.strategy = JSON.parse(row.strategy)
+          this.strategy = JSON.parse(data.strategy)
         } catch (e) {
           this.strategy = []
         }
@@ -1767,17 +1773,6 @@ export default {
       }
       this.dialogStrategyTitle = `${row.symbol} ${this.$t('trade.strategy')}`
       this.dialogStrategyVisible = true
-    },
-    async openKlineDialog(row) {
-      try {
-        await this.getKcLineChart(row)
-      } catch (e) {
-        console.log(e)
-        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
-        return
-      }
-      this.dialogTitleKline = `${row.symbol}(${row.kline_interval})`
-      this.dialogKlineVisible = true
     },
     async confirmTechnology() {
       try {

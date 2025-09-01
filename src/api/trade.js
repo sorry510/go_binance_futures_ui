@@ -8,6 +8,13 @@ export function getFeatures(query = {}) {
   })
 }
 
+export function getFeature(id) {
+  return request({
+    url: `/features/${id}`,
+    method: 'get',
+  })
+}
+
 export function getFeaturesOptions(query = {}) {
   return request({
     url: '/features-options',
