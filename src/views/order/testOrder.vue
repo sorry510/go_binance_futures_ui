@@ -62,9 +62,9 @@
       fit
       size="mini"
       :row-key="rowKey"
-      :expand-row-keys="expandKeys"
       highlight-current-row
       @sort-change="sortChange"
+      @expand-change="expandChange"
     >
       <el-table-column
         :label="$t('trade.coin')"
@@ -203,15 +203,15 @@
             <el-form-item :label="`${$t('trade.open_strategy')}`">
               <codemirror
                 style="width: 100%"
-                :value="props.row.open_strategy"
+                :value="info.open_strategy"
                 :options="cmOptions"
                 disabled
               />
             </el-form-item>
-            <el-form-item v-if="props.row.close_strategy" :label="`${$t('trade.close_strategy')}`">
+            <el-form-item v-if="props && info.close_strategy" :label="`${$t('trade.close_strategy')}`">
               <codemirror
                 style="width: 100%"
-                :value="props.row.close_strategy"
+                :value="info.close_strategy"
                 :options="cmOptions"
               />
             </el-form-item>
@@ -249,7 +249,7 @@
 </style>
 
 <script>
-import { getResults, delAllResults, delResults } from '@/api/testStrategyResult'
+import { getResult, getResults, delAllResults, delResults } from '@/api/testStrategyResult'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils/index'
 import { round } from 'mathjs'
@@ -319,6 +319,11 @@ export default {
         }],
       },
       list: [],
+      info: {
+        id: 0,
+        open_strategy: '',
+        close_strategy: '',
+      },
       total: 0,
       listQuery: {
         page: 1,
@@ -334,7 +339,6 @@ export default {
       rowKey(row) {
         return row.symbol + row.id
       },
-      expandKeys: [],
     }
   },
   computed: {
@@ -391,7 +395,7 @@ export default {
       }
     },
     expandChange(row, expandedRows) {
-      this.expandKeys = expandedRows.map(item => item.symbol)
+      this.getInfo(row)
     },
     sortChange(data) {
       const { order } = data
@@ -420,6 +424,11 @@ export default {
       } finally {
         this.listLoading = false
       }
+    },
+    async getInfo(row) {
+      this.info = {}
+      const { data } = await getResult(row.id)
+      this.info = data
     },
     handleFilter() {
       this.listQuery.page = 1

@@ -8,6 +8,13 @@ export function getResults(query = {}) {
   })
 }
 
+export function getResult(id) {
+  return request({
+    url: `/test-strategy-results/${id}`,
+    method: 'get',
+  })
+}
+
 export function delAllResults() {
   return request({
     url: '/test-strategy-results',
