@@ -888,6 +888,7 @@ export default {
         'Kdj', 'IsDesc', 'IsAsc', // custom function
         'SystemStartTime', 'MarketCondition', 'NowPrice', 'NowTime', 'NowSymbolPercentChange', 'NowSymbolClose', 'NowSymbolOpen', 'NowSymbolLow', 'NowSymbolHigh', 'BasicTrend',
         'ROI', 'Position', 'Position.EntryPrice', 'Position.MarkPrice', 'Position.Amount', 'Position.UnrealizedProfit', 'Position.Leverage', 'Position.Side', 'Position.Mock', 'Position.CreateTime', 'Position.SourceType', // position
+        'Positions', 'Positions[]', 'Positions[0].Symbol', 'Positions[0].Side', 'Positions[0].Amount', 'Positions[0].MarginType', 'Positions[0].Leverage', 'Positions[0].EntryPrice', 'Positions[0].MarkPrice', 'Positions[0].UnrealizedProfit', // positions
       ]
       if (this.strategySymbolId !== undefined) {
         const find = this.list.find(item => item.id === this.strategySymbolId)

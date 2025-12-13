@@ -477,7 +477,7 @@ export default {
     },
     async getFuturesPositions() {
       const { data: { positions = [] }} = await getLocalFuturesPositions()
-      this.positions = positions.filter(item => {
+      this.positions = positions?.filter(item => {
         if (this.search.symbol) {
           return item.symbol.includes(this.search.symbol)
         }
