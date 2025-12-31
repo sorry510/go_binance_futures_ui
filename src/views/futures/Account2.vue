@@ -482,7 +482,7 @@ export default {
           return item.symbol.includes(this.search.symbol)
         }
         return true
-      }).map(position => {
+      })?.map(position => {
         const positionAmtFloatAbs = Math.abs(position.amount) // 空单为负数,纠正为绝对值
         const unRealizedProfit = Number(position.unrealized_profit)
         const leverage = Number(position.leverage)

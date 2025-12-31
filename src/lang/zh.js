@@ -252,6 +252,12 @@ export default {
     futuresPositionConvertEnable: '仓位收益正负转换通知',
     marketCondition: '市场趋势',
     marketConditionIsAuto: '市场趋势自动判断',
+    updateMarketCondition: '手动更新',
+    strongBullish: '强多头',
+    bullish: '偏多头',
+    sideways: '震荡',
+    bearish: '偏空头',
+    strongBearish: '强空头',
   },
   trade: {
     name: '名称',

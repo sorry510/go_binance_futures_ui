@@ -250,6 +250,12 @@ export default {
     futuresPositionConvertEnable: 'futures position convert enable',
     marketCondition: 'market condition',
     marketConditionIsAuto: 'market condition is auto',
+    updateMarketCondition: 'manual update',
+    strongBullish: 'strong bullish',
+    bullish: 'bullish',
+    sideways: 'sideways',
+    bearish: 'bearish',
+    strongBearish: 'strong bearish',
   },
   trade: {
     name: 'name',

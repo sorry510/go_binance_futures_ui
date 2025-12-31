@@ -106,7 +106,13 @@
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.marketCondition') }}: </span>
-              <el-input v-model="config.marketCondition" type="number" style="width:75px;" @change="editConfig($event, 'market_condition')" /> 自定义策略时可以使用此变量(string 类型) MarketCondition
+              <el-select v-model="config.marketCondition" style="width:150px;" size="small" @change="editConfig($event, 'market_condition')">
+                <el-option :label="$t('showPage.strongBullish')" :value="1" />
+                <el-option :label="$t('showPage.bullish')" :value="2" />
+                <el-option :label="$t('showPage.sideways')" :value="3" />
+                <el-option :label="$t('showPage.bearish')" :value="4" />
+                <el-option :label="$t('showPage.strongBearish')" :value="5" />
+              </el-select>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.marketConditionIsAuto') }}: </span>
@@ -118,11 +124,21 @@
                 inactive-color="#dcdfe6"
                 @change="editConfig($event, 'market_condition_is_auto')"
               />
+              <el-button
+                v-if="config.marketConditionIsAuto === 1"
+                style="margin-left:10px;"
+                type="success"
+                size="mini"
+                @click="updateMarketCondition"
+              >
+                {{ $t('showPage.updateMarketCondition') }}
+              </el-button>
+              <span v-if="config.marketConditionIsAuto === 1"> (auto update every 10 mins)</span>
             </div>
             <div class="dashboard-text">
               <span>{{ $t('showPage.excludeSymbols') }}: </span>
               <el-select v-model="excludeSymbols" multiple filterable style="width:80%;" size="small" @change="editConfig($event, 'future_exclude_symbols')">
-                <el-option v-for="symbol in symbols" :key="symbol" :label="symbol" :value="symbol" />
+                <el-option v-for="(symbol, index) in symbols" :key="symbol + index" :label="symbol" :value="symbol" />
               </el-select>
               <!-- <el-input v-model="config.coinExcludeSymbols" type="textarea" :rows="2" style="width:75%;" @change="editConfig($event, 'future_exclude_symbols')" /> -->
             </div>
@@ -348,7 +364,7 @@
 </template>
 
 <script>
-import { getServiceConfig, editData, testPusher } from '@/api/service'
+import { getServiceConfig, editData, testPusher, updateMarketCondition } from '@/api/service'
 import { setSystemConfig } from '@/utils/auth'
 // import { debounce } from '@/utils'
 import { getFeaturesOptions } from '@/api/trade'
@@ -435,6 +451,15 @@ export default {
     },
     async gotoNotifyConfig() {
       this.$router.push({ name: 'NotifyConfig' })
+    },
+    async updateMarketCondition() {
+      try {
+        await updateMarketCondition()
+        await this.fetchConfig()
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'error' })
+      }
     },
     async testPusher() {
       try {
