@@ -88,6 +88,14 @@
           {{ scope.row.last_notice_funding_time !== 0 ? parseTime(scope.row.last_notice_time) : '' }}
         </template>
       </el-table-column> -->
+      <el-table-column :label="$t('trade.autoTrade')" align="center" width="100">
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.auto_order" size="small" @change="edit(scope.row)">
+            <el-option :label="$t('trade.yes')" :value="1" />
+            <el-option :label="$t('trade.no')" :value="0" />
+          </el-select>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('table.actions')"
         align="center"
@@ -147,7 +155,7 @@
 </template>
 
 <script>
-import { getFundingRates, getFundingRateHistory } from '@/api/listenCoin'
+import { getFundingRates, getFundingRateHistory, editFundingRates } from '@/api/listenCoin'
 import { parseTime } from '@/utils'
 import { round } from 'mathjs'
 
@@ -203,6 +211,16 @@ export default {
         symbol: row.symbol,
       })
       this.history = data.reverse() // 数据从最新到最旧
+    },
+    async edit(row) {
+      const { id, enable, ...data } = row
+      try {
+        await editFundingRates(id, { ...data, enable: enable ? 1 : 0 })
+        this.$message({ message: this.$t('table.actionSuccess'), type: 'success' })
+        await this.fetchData()
+      } catch (e) {
+        this.$message({ message: this.$t('table.actionFail'), type: 'success' })
+      }
     },
   },
 }
