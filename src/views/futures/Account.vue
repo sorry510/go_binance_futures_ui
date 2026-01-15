@@ -383,7 +383,7 @@ export default {
     async getFuturesAccount() {
       const { data: { assets }} = await getFuturesAccount()
       this.account = {
-        assets: assets || [],
+        assets: (assets || []).filter(item => item && Number(item.walletBalance) > 0),
         positions: [],
       }
       // this.account = {
