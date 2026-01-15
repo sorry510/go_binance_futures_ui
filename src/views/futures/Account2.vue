@@ -343,7 +343,7 @@ export default {
   },
   computed: {
     allProfit() {
-      const profit = this.positions.reduce((carry, row) => carry + Number(row.unrealized_profit), 0)
+      const profit = this.positions?.reduce((carry, row) => carry + Number(row.unrealized_profit), 0)
       return round(profit, 2)
     },
   },
@@ -404,7 +404,7 @@ export default {
       const { data: { assets = [], positions = [] }} = await getFuturesAccount()
       this.account = {
         assets,
-        positions,
+        positions: positions || [],
       }
       // this.account = {
       //   'assets': [
@@ -477,7 +477,7 @@ export default {
     },
     async getFuturesPositions() {
       const { data: { positions = [] }} = await getLocalFuturesPositions()
-      this.positions = positions?.filter(item => {
+      this.positions = (positions || []).filter(item => {
         if (this.search.symbol) {
           return item.symbol.includes(this.search.symbol)
         }

@@ -381,10 +381,10 @@ export default {
       }, this.interval * 1000)
     },
     async getFuturesAccount() {
-      const { data: { assets = [], positions = [] }} = await getFuturesAccount()
+      const { data: { assets }} = await getFuturesAccount()
       this.account = {
-        assets,
-        positions,
+        assets: assets || [],
+        positions: [],
       }
       // this.account = {
       //   'assets': [
@@ -453,7 +453,7 @@ export default {
       // }
     },
     async searchFuturesPositions() {
-      const positions = this.positions.filter(item => {
+      const positions = (this.positions || []).filter(item => {
         let flag = true
         if (this.search.symbol) {
           console.log(item.symbol, this.search.symbol)
@@ -465,7 +465,7 @@ export default {
     },
     async getFuturesPositions() {
       const { data: { positions = [] }} = await getFuturesPositions()
-      this.positions = positions.map(position => {
+      this.positions = (positions || []).map(position => {
         const positionAmtFloatAbs = Math.abs(position.positionAmt) // 空单为负数,纠正为绝对值
         const unRealizedProfit = Number(position.unRealizedProfit)
         const leverage = Number(position.leverage)
