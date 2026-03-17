@@ -30,6 +30,11 @@
               <span class="green" style="margin-left: 20px;">{{ $t('showPage.autoUpdatePrice') }}</span>
             </div>
             <div class="dashboard-text">
+              <span>{{ $t('showPage.ws_futures_price_change_limit') }}: </span>
+              <el-input v-model="config.WsFuturesPriceChangeLimit" type="number" style="width:75px;" @change="editConfig($event, 'ws_futures_price_change_limit')" />
+              <span class="red" style="margin-left: 20px;">({{ $t('showPage.ws_futures_price_change_limit_desc') }})</span>
+            </div>
+            <div class="dashboard-text">
               <span>{{ $t('showPage.futuresPositionConvertEnable') }}: </span>
               <el-switch
                 :value="config.futuresPositionConvertEnable"
@@ -170,9 +175,14 @@
               </el-button>
             </div>
             <div class="dashboard-text">
+              <span>{{ $t('showPage.future_test_auto_trade_count_limit') }}: </span>
+              <el-input v-model="config.FutureTestAutoTradeCountLimit" type="number" style="width:75px;" @change="editConfig($event, 'future_test_auto_trade_count_limit')" />
+              <span class="red" style="margin-left: 20px;">({{ $t('showPage.future_test_auto_trade_count_limit_desc') }})</span>
+            </div>
+            <!-- <div class="dashboard-text">
               <span>{{ $t('showPage.testStrategyNoticeLimitMin') }}: </span>
               <el-input v-model="config.tradeFutureTestNoticeLimitMin" type="number" style="width:75px;" @change="editConfig($event, 'future_test_notice_limit_min')" />
-            </div>
+            </div> -->
           </div>
         </div>
       </el-collapse-item>
@@ -404,6 +414,8 @@ export default {
         lossAutoScale: 0,
         MarketCondition: 0,
         MarketConditionIsAuto: 0,
+        FutureTestAutoTradeCountLimit: 0,
+        WsFuturesPriceChangeLimit: 0,
       },
     }
   },
@@ -432,7 +444,9 @@ export default {
             field === 'loss_max_count' ||
             field === 'loss_auto_scale' ||
             field === 'market_condition' ||
-            field === 'market_condition_is_auto') {
+            field === 'market_condition_is_auto' ||
+            field === 'future_test_auto_trade_count_limit' ||
+            field === 'ws_futures_price_change_limit') {
           value = Number(value)
         }
         if (field === 'future_exclude_symbols') {

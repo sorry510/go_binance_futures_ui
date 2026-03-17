@@ -256,6 +256,10 @@ export default {
     sideways: 'sideways',
     bearish: 'bearish',
     strongBearish: 'strong bearish',
+    future_test_auto_trade_count_limit: 'future test auto trade count limit',
+    future_test_auto_trade_count_limit_desc: 'Non-zero: after n consecutive wins of the test strategy, automatically switch to real trading. After n consecutive losses in real trading, switch back to the test strategy.',
+    ws_futures_price_change_limit: 'ws futures price change notice limit(%)',
+    ws_futures_price_change_limit_desc: 'Non-zero: when the futures price change exceeds this value, a notification will be sent (once every 4 hours)',
   },
   trade: {
     name: 'name',

@@ -258,6 +258,10 @@ export default {
     sideways: '震荡',
     bearish: '偏空头',
     strongBearish: '强空头',
+    future_test_auto_trade_count_limit: '测试自动转换次数限制',
+    future_test_auto_trade_count_limit_desc: '非 0 时，测试策略连续盈利 n 次后，自动切换真实交易，真实交易连续亏损后 n 次后，切换回测试策略',
+    ws_futures_price_change_limit: '合约价格变动通知阈值(%)',
+    ws_futures_price_change_limit_desc: '非 0 时，合约价格变动超过该值时发送通知(4小时间隔一次)',
   },
   trade: {
     name: '名称',
